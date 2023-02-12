@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"java.project.sourcePaths": [
+			"yac8-server/src"
+		],
+		"java.configuration.updateBuildConfiguration": "disabled"
+	}
+}
