@@ -1,5 +1,44 @@
+# Secrets, secrets hurt someone.
 .env
 
-/**/node_modules/
-/**/package-lock.json
-/**/dist
+# NodeJS
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Compiled
+tmp
+out-tsc
+bazel-out
+dist
+
+# IDEs/Editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+.angular/
+.sass/cache
+connect.lock
+coverage
+libpeerconnection.log
+testem.log
+typings
+
+# System Files
+.DS_Store
+Thumbs.db
