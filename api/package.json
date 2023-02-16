@@ -41,7 +41,9 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-promise-router": "^4.1.1",
+    "generic-pool": "^3.9.0",
     "image-js": "^0.35.3",
-    "postgres": "^3.3.3"
+    "postgres": "^3.3.3",
+    "ts-postgres": "^1.3.0"
   }
 }
