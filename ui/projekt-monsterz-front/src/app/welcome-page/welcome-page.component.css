@@ -1,0 +1,20 @@
+* {
+     margin: 8px;
+     padding: 8px;
+     z-index: 3;
+}
+button {
+     margin: 0 auto;
+     padding: 20px 35px;
+     border-radius: 20px;
+     border: 2px dotted black;
+}
+div:first-of-type {
+     background-color: #B795C4;
+     color: white;
+}
+a:hover{
+     cursor: pointer;
+     color: black;
+     
+}

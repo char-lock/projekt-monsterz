@@ -1,0 +1,31 @@
+* {
+     padding: 5px;
+     margin: 0;
+     
+}
+div:first-of-type {
+     width: 98%;
+     margin: 0 auto;
+     border: 5px solid white;
+     border-radius: 20px 20px 0 0;
+}
+form {
+     background-color: #236925;
+     width: 98%;
+     margin: 0 auto;
+     border: 5px solid white;
+     border-radius: 0 0 20px 20px ;
+
+}
+
+.exit {
+     position: absolute;
+     top: 5px;
+     right: 14px;
+     width: auto;
+     border-top-right-radius: 20px;
+}
+.submit {
+     margin-top: 5px;
+}
+

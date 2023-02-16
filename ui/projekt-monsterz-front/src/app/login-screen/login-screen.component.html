@@ -1,0 +1,50 @@
+<div class="bg-base-darker">
+<button type="" class="exit usa-button usa-button--secondary" (click)="sendEmitterToExitLoginScreen('exitRegister')">X</button>
+<ul class="usa-button-group"> 
+     <li>
+<button class="usa-button usa-button--accent-warm" (click)="getSelectedForm('register')">Register</button>
+</li>
+<li>
+<button class="usa-button usa-button--accent-warm" (click)="getSelectedForm('login')">Login</button>
+</li>
+<li>
+<button class="usa-button usa-button--accent-warm" (click)="getSelectedForm('educatorCode')">Login with Educator Code!</button>
+</li>
+</ul> 
+</div>
+<form *ngIf="currentForm === 'register'" class="grid-row flex-column text-center border-top border-bottom bg-primary-dark text-base-lightest">
+
+<h3>Register!</h3>
+<label class="grid-col" for="username">Username</label>
+<input class="grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
+<label class="grid-col" for="password">Password</label>
+<input placeholder="enter your password!" class="grid-col" id="password" name="password" type="password">
+<label class="grid-col" for="passwordVerify">Verify Your Password</label>
+<input placeholder="enter your password again" class="grid-col" id="passwordVerify" name="passwordVerify" type="password">
+<button class="grid-col" type="submit" class="submit usa-button ">Submit</button>
+</form>
+
+
+
+<form *ngIf="currentForm === 'login'" class="grid-row flex-column text-center border-top border-bottom bg-primary-dark text-base-lightest">
+<h3>Login!</h3>
+<label class="grid-col" for="username">Username</label>
+<input class="grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
+<label class="grid-col" for="password">Password</label>
+<input placeholder="enter your password!" class="grid-col" id="password" name="password" type="password">
+<button class="grid-col" type="submit" class="submit usa-button ">Submit</button>
+</form>
+
+
+
+<form *ngIf="currentForm === 'educatorCode'" class="grid-row flex-column text-center border-top border-bottom bg-primary-dark text-base-lightest">
+     <h3>Use an Educator Code</h3>
+     <label class="grid-col" for="username">Username</label>
+     <input class="grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
+     <label class="grid-col" for="educatorCode">Password</label>
+     <input placeholder="enter your educator code!" class="grid-col" id="educatorCode" name="educatorCode" type="number">
+     <button class="grid-col" type="submit" class="submit usa-button ">Submit</button>
+</form>
+
+
+
