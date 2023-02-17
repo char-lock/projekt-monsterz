@@ -1,0 +1,17 @@
+* {
+     margin: 0 auto;
+}
+app-login-screen {
+     position: sticky;
+     top: 0;
+     z-index: 2;  
+     width: 95%;
+}
+ app-header, app-welcome-page {
+     position: relative;
+     z-index: 1;
+}
+
+
+
+

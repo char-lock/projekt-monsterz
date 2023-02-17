@@ -1,0 +1,125 @@
+* {
+     margin: 8px;
+     padding: 8px;
+     z-index: 3;
+}
+button {
+     margin: 0 auto;
+     padding: 20px 35px;
+     border-radius: 20px;
+     border: 2px dotted black;
+}
+div:first-of-type {
+     background-color: #B795C4;
+     color: white;
+}
+div {
+     border-radius: 10px;
+}
+a:hover{
+     cursor: pointer;
+     color: black;
+     
+}
+.welcomeScreenMonster1 {
+     text-align: center;
+     margin: 0 auto;
+     display: flex;
+     flex-direction: column;
+     height: 200px;
+}
+
+.welcomeScreenMonster1Decor {
+     position: relative;
+     max-width: 120px;
+     top: -14px;
+     right: 9px;
+     z-index: 1;
+}
+.welcomeScreenMonster1Eyes {
+     
+    position: relative;
+    top: -43px;
+    width: 68px;
+    right: -15px;
+
+}
+.characterSheet {
+     display: flex;
+     
+}
+.welcomeScreenMonster1Mouth {
+     position: relative;
+     top: -78px;
+     width: 100px;
+}
+.welcomeScreenMonster1Body {
+     position: relative;
+     top: -173px;
+     z-index: 1;
+     max-width: 100px;
+}
+.welcomeScreenMonster1LeftArm {
+     position: relative;
+     top: -268px;
+     transform: scaleX(-1);
+     right: 23px;
+     height: 49px;
+    width: 52px;
+     z-index: 0;
+}
+.welcomeScreenMonster2RightArm {
+     position: relative;
+    animation: handWave 2s 3s 24 alternate-reverse forwards;
+    z-index: 0;
+    top: -335px;
+    right: -70px;
+    height: 49px;
+    width: 52px;
+}
+.welcomeScreenMonster1RightArm {
+     position: relative;
+    animation: handWave 4s 1s 24 alternate-reverse forwards;
+    z-index: 0;
+    top: -335px;
+    right: -70px;
+    height: 49px;
+    width: 52px;
+}
+.welcomeScreenMonster1LeftLeg {
+     position: relative;
+     top: -351px;
+     height: 51px;
+     width: 34px;
+     z-index: 0;
+     right: -52px;
+
+}
+.welcomeScreenMonster1RightLeg {
+     position: relative;
+     top: -418px;
+     right: -16px;
+     height: 51px;
+     width: 34px;
+     transform: scaleX(-1);
+     z-index: 0;
+
+}
+
+@keyframes handWave {
+     from {
+          transform: rotate(0deg);
+     }
+     10% {
+          transform: rotate(-35deg);
+     }
+     20% {
+          transform: rotate(0deg);
+     }
+     30% {
+          transform: rotate(-35deg);
+     }
+     40% {
+          transform: rotate(0deg);
+     }
+}
