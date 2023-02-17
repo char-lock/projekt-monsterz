@@ -1,0 +1,14 @@
+a, span {
+     color: white;
+}
+header {
+     background-color: #4D3F5C;
+}
+button {
+     background-color: #38A83B;
+}
+a:hover{
+     cursor: pointer;
+     color: black;
+     
+}
