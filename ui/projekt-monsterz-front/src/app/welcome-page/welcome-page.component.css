@@ -4,14 +4,23 @@
      z-index: 3;
 }
 button {
-     margin: 0 auto;
+     margin: 20px auto;
      padding: 20px 35px;
      border-radius: 20px;
      border: 2px dotted black;
+     display: block;
 }
 div:first-of-type {
-     background-color: #B795C4;
+     background-color: transparent;
      color: white;
+}
+.background-image {
+     background-image: url(../../assets/backgrounds/vecteezy_beautiful-green-hills-with-big-tree-and-mountains-row-on-the_5949107.jpg);
+     background-repeat: no-repeat;
+     background-position: 25% ;
+     background-size: cover;
+     width: auto;
+     height: auto;
 }
 div {
      border-radius: 10px;
@@ -46,6 +55,7 @@ a:hover{
 }
 .characterSheet {
      display: flex;
+     flex-wrap: wrap;
      
 }
 .welcomeScreenMonster1Mouth {
@@ -123,3 +133,10 @@ a:hover{
           transform: rotate(0deg);
      }
 }
+
+@media screen and (max-width: 655px) {
+     .characterSheet div:first-of-type {
+          display: none;
+          
+     }
+   }
