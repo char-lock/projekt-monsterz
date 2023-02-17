@@ -27,26 +27,15 @@ export class Monster {
     };
     palette: MonsterPalette;
 
-    /**
-     * 
-     * Construct a Monster from its hash.
-     * There will be an attempt to get the details from the database,
-     * but the parts can be generated if the hash is a new one.
-     * 
-     * @param hash md5 hash representing the monster
-     * 
-     */
-    constructor(hash: string) {
-        if (!validateHash(hash)) throw new Error('Provided hash is not a valid MD5 hash.');
-        this.hash = hash;
+    async setup() {
         // Fetch part IDs for the hash, either through the database or through parsing.
         let partIds: number[] = []
-        pgPool.use((client) => {
+        await pgPool.use((client) => {
             client.query(`
                 SELECT bodyId, leftArmId, rightArmId, leftLegId, rightLegId, mouthId, eyeId, detailId
                 FROM monsters 
                 WHERE id = ${this.hash}
-            `, [], [DataType.Numeric]).then(
+            `).then(
                 (result) => {
                     if (result.rows.length > 0) {
                         partIds = result.rows[0].map(parseInt);
@@ -56,7 +45,7 @@ export class Monster {
         // Handle if the hash has never been seen before.
         if (partIds.length !== 8) {
             partIds = parsePartIdsFromHash(this.hash);
-            pgPool.use((client) => {
+            await pgPool.use((client) => {
                 client.query(`
                     INSERT INTO monsters
                       (id, bodyId, leftArmId, rightArmId, leftLegId, rightLegId, mouthId, eyeId, detailId)
@@ -67,7 +56,7 @@ export class Monster {
         // Fetch the part data from the database and assign them to the
         // relevant properties.
         let partDetails: MonsterPart[] = [];
-        pgPool.use((client) => {
+        await pgPool.use((client) => {
             client.query(`
                 SELECT * FROM monster_parts
                     WHERE partId IN (${partIds.join(', ')});
@@ -93,9 +82,9 @@ export class Monster {
           detail: findPartBySlot(partDetails, MonsterSlot.DETAIL)
         };
         // Calculate the palette ID and assign it.
-        const paletteId: number = parseInt(hash[31], 16);
+        const paletteId: number = parseInt(this.hash[31], 16);
         let palette: MonsterPalette;
-        pgPool.use((client) => {
+        await pgPool.use((client) => {
             client.query(`
                 SELECT darkest, darker, dark, base, light, lighter, lightest FROM monster_palettes
                     WHERE paletteId = ${paletteId};
@@ -118,5 +107,19 @@ export class Monster {
             });
         });
         this.palette = palette;
+    }
+
+    /**
+     * 
+     * Construct a Monster from its hash.
+     * There will be an attempt to get the details from the database,
+     * but the parts can be generated if the hash is a new one.
+     * 
+     * @param hash md5 hash representing the monster
+     * 
+     */
+    constructor(hash: string) {
+        if (!validateHash(hash)) throw new Error('Provided hash is not a valid MD5 hash.');
+        this.hash = hash;
     }
 }
