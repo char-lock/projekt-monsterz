@@ -1,37 +1,40 @@
-import * as path from 'path';
-import { createPool } from 'generic-pool';
-import { Client } from 'ts-postgres';
+import { Pool } from 'pg';
+import { APILogger } from './api.logger';
 
-import * as dotenv from 'dotenv';
-dotenv.config({ 
-    path: path.resolve(__dirname, `..${path.sep}..${path.sep}..${path.sep}.env`) 
-});
-const DB_HOST = (process.env.POSTGRES_HOST ? process.env.POSTGRES_HOST : 'localhost');
-const DB_PORT = parseInt(process.env.POSTGRES_PORT ? process.env.POSTGRES_PORT : '5432');
-const DB_DATABASE = (process.env.POSTGRES_DATABASE ? process.env.POSTGRES_DATABSASE : 'projekt_monsterz');
-const DB_USERNAME = (process.env.POSTGRES_USERNAME ? process.env.POSTGRES_USERNAME : 'postgres');
-const DB_PASSWORD = (process.env.POSTGRES_PASSWORD ? process.env.POSTGRES_PASSWORD : '');
+const pool = new Pool();
+const logger = new APILogger();
 
-const pgPool = createPool({
-    create: async () => {
-        const client = new Client({
-            host: DB_HOST,
-            port: DB_PORT,
-            user: DB_USERNAME,
-            database: DB_DATABASE,
-            password: DB_PASSWORD
-        });
-        return client.connect().then(() => {
-            client.on('error', console.log);
-            return client;
-        });
-    },
-    destroy: async (client: Client) => {
-        return client.end().then(() => { });
-    },
-    validate: (client: Client) => {
-        return Promise.resolve(!client.closed);
-    }
-}, { testOnBorrow: true });
+async function query(text: string, params) {
+    const start = Date.now();
+    const res = await pool.query(text, params);
+    const duration = Date.now() - start;
+    logger.info('Executed a query: ', { text, duration, rows: res.rowCount });
+    return res;
+}
 
-export { pgPool };
+async function getClient() {
+    const client = await pool.connect();
+    const query = client.query;
+    const release = client.release;
+
+    // Set a timeout of 5 seconds before logging the last query.
+    // const timeout = setTimeout(() => {
+    //     logger.error('A client has been checked out for more than 5 seconds.');
+    //     logger.error(`The last executed query on that client was: ${client['lastQuery']}`);
+    // }, 5000);
+
+    // Monkey patch the query method in order to track the last query executed.
+    // client.query = (...args) => {
+    //     client['lastQuery'] = args;
+    //     return query.apply(client, args);
+    // }
+    // client.release = () => {
+    //     clearTimeout(timeout);
+    //     client.query = query;
+    //     client.release = release;
+    //     return release.apply(client);
+    // }
+    return client;
+}
+
+export { query, getClient }
