@@ -1,0 +1,1 @@
+const monsters = require('../monsters/monsters.routes');
