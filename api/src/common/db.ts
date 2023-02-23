@@ -1,40 +1,21 @@
 import { Pool } from 'pg';
-import { APILogger } from './api.logger';
+import ApiLogger from './logger';
 
 const pool = new Pool();
-const logger = new APILogger();
 
-async function query(text: string, params) {
-    const start = Date.now();
-    const res = await pool.query(text, params);
-    const duration = Date.now() - start;
-    logger.info('Executed a query: ', { text, duration, rows: res.rowCount });
-    return res;
-}
+/** Returns the response of a provided query. */
+const query = async (queryText: string) => {
+  const startTime = Date.now();
+  const response = await pool.query(queryText, []);
+  const duration = Date.now() - startTime;
+  ApiLogger.info(`Executed a new query in ${duration}ms`);
+  return response;
+};
 
-async function getClient() {
-    const client = await pool.connect();
-    const query = client.query;
-    const release = client.release;
+/** Returns an available client from the pool. */
+const getClient = async () => {
+  const client = await pool.connect();
+  return client;
+};
 
-    // Set a timeout of 5 seconds before logging the last query.
-    // const timeout = setTimeout(() => {
-    //     logger.error('A client has been checked out for more than 5 seconds.');
-    //     logger.error(`The last executed query on that client was: ${client['lastQuery']}`);
-    // }, 5000);
-
-    // Monkey patch the query method in order to track the last query executed.
-    // client.query = (...args) => {
-    //     client['lastQuery'] = args;
-    //     return query.apply(client, args);
-    // }
-    // client.release = () => {
-    //     clearTimeout(timeout);
-    //     client.query = query;
-    //     client.release = release;
-    //     return release.apply(client);
-    // }
-    return client;
-}
-
-export { query, getClient }
+export { query, getClient };

@@ -1,19 +1,12 @@
-import { getMonsterDetail, getMonsterSummary } from "./monster.util";
+import Router from 'express-promise-router';
+import MonstersController from './monsters.controller';
 
-const Router = require('express-promise-router');
+const router = Router();
 
-const router = new Router();
+// Monster -> Part Summary
+router.get('/summary/:hash', MonstersController.getMonsterSummary);
 
-router.get('/summary/:hash', async (req, res) => {
-    const { hash } = req.params;
-    const monsterSummary = await getMonsterSummary(hash);
-    res.json(monsterSummary);
-});
+// Monster -> Details
+router.get('/:hash', MonstersController.getMonsterDetails);
 
-router.get('/:hash', async (req, res) => {
-    const { hash } = req.params;
-    const monsterDetail = await getMonsterDetail(hash);
-    res.json(monsterDetail);
-})
-
-export { router };
+export default router;
