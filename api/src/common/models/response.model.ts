@@ -42,4 +42,15 @@ export const defaultBadRequest = (details: string): ApiResponse => {
     },
     data: null
   };
-}
+};
+
+export const defaultCreated = (data: null | object, details: string): ApiResponse => {
+  return {
+    status: {
+      code: 201,
+      genericDesc: 'Created',
+      details: details
+    },
+    data: data
+  };
+};

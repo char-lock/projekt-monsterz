@@ -1,5 +1,5 @@
 export enum VerifyMethod {
-  EMAIL = 0,
+  EMAIL = 1,
   EDUCATOR_CODE
 }
 
@@ -9,4 +9,4 @@ export type UserModel = {
   verified: boolean,
   verifyMethod: VerifyMethod,
   verifyValue: string
-}
+};
