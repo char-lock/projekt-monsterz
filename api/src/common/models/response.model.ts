@@ -31,3 +31,15 @@ export const defaultNotExist = (details: string): ApiResponse => {
     data: null
   };
 };
+
+/** Provides a default bad request response.  */
+export const defaultBadRequest = (details: string): ApiResponse => {
+  return {
+    status: {
+      code: 400,
+      genericDesc: 'Bad Request',
+      details: details
+    },
+    data: null
+  };
+}
