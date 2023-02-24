@@ -1,12 +1,15 @@
 import Router from 'express-promise-router';
+import { defaultBadRequest } from '../common/models/response.model';
 import MonstersController from './monsters.controller';
 
 const router = Router();
 
-// Monster -> Part Summary
-router.get('/summary/:hash', MonstersController.getMonsterSummary);
-
 // Monster -> Details
+router.get('/', (req, res) => {
+  res.status(400).send(defaultBadRequest('A hash is required in order to provide a monster\'s details.'));
+});
 router.get('/:hash', MonstersController.getMonsterDetails);
+// Monster -> Part Summary
+router.get('/:hash/parts', MonstersController.getMonsterSummary);
 
 export default router;
