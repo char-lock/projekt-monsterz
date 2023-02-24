@@ -16,4 +16,8 @@ export class LoginScreenComponent {
     console.log("New Content Emitted!" + value);
     this.currentForm = value;
   }
+  seeTarget($event: any) {
+    console.log($event.target);
+    console.log(document.getElementById('app-login'));
+  }
 }

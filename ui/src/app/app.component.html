@@ -1,12 +1,15 @@
 <main class="bg-emergency-dark">
 <app-header 
-(newContentChangeEvent)="changeContent($event)" [ngStyle]="setStyle()"> </app-header>
+(newContentChangeEvent)="changeContent($event)"
+[ngStyle]="setStyle()"> </app-header>
 <app-login-screen
  (newContentChangeEvent)="changeContent($event)" 
  *ngIf="loginClick == true"
- [currentForm]= 'formChosen'>
+ [currentForm]= 'formChosen'
+>
 </app-login-screen>
 <app-welcome-page [ngStyle]="setStyle()" 
-(newContentChangeEvent)="changeContent($event)"></app-welcome-page>
+(newContentChangeEvent)="changeContent($event)"
+></app-welcome-page>
 <app-footer></app-footer>
 </main>
