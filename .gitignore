@@ -1,5 +1,6 @@
 # Secrets, secrets hurt someone.
 .env
+/api/reference
 
 # NodeJS
 node_modules
