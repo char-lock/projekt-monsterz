@@ -19,7 +19,7 @@ export enum MonsterSlot {
   DETAIL
 }
 
-export interface MonsterSlotModel {
+export type MonsterSlotModel = {
   body: MonsterPartModel;
   armLeft: MonsterPartModel;
   armRight: MonsterPartModel;
@@ -30,14 +30,14 @@ export interface MonsterSlotModel {
   detail: MonsterPartModel;
 }
 
-export interface MonsterPartModel {
+export type MonsterPartModel = {
   id: number;
   slot: MonsterSlot;
   dataUrl: string;
   joint: [number, number];
 }
 
-export interface MonsterPaletteModel {
+export type MonsterPaletteModel = {
   id: number;
   darkest: string;
   darker: string;
@@ -48,7 +48,7 @@ export interface MonsterPaletteModel {
   lightest: string;
 }
 
-export interface MonsterSummaryModel {
+export type MonsterSummaryModel = {
   hash: string;
   bodyId: number;
   armLeftId: number;
@@ -60,7 +60,7 @@ export interface MonsterSummaryModel {
   detailId: number;
 }
 
-export interface MonsterDetailModel {
+export type MonsterDetailModel = {
   hash: string;
   parts: MonsterSlotModel;
   palette: MonsterPaletteModel;

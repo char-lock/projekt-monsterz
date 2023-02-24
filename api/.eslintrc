@@ -1,0 +1,30 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    "camelcase": ["error"],
+    "consistent-return": ["error"],
+    "consistent-this": ["error", "that"],
+    "default-case": ["error"],
+    "default-case-last": ["error"],
+    "default-param-last": ["error"],
+    "arrow-spacing": ["error"],
+    "comma-dangle": ["error", "never"],
+    "comma-spacing": ["error"],
+    "comma-style": ["error"],
+    "arrow-parens": ["error"],
+    "eol-last": ["error", "always"],
+    "indent": ["error", 2]
+  },
+  "env": {
+    "browser": true,
+    "es2015": true
+  }
+}

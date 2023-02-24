@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import Router from 'express-promise-router';
 
 import monsters from './monsters/monsters.routes';
@@ -7,6 +6,8 @@ import monsters from './monsters/monsters.routes';
 // import lessons from './lessons/lessons.routes';
 
 const routes = Router();
+
+routes.all('/', (req, res) => { res.status(200).send() });
 
 routes.use('/monsters', monsters);
 // routes.use('/users', users);

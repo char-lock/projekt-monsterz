@@ -8,7 +8,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   let jwtPayload;
   // Validate the token and pull data.
   try {
-    jwtPayload = <any>jwt.verify(jwToken, process.env.JWT_SECRET);
+    jwtPayload = <jwt.JwtPayload>jwt.verify(jwToken, process.env.JWT_SECRET);
     res.locals.jwtPayload = jwtPayload;
   } catch (error) {
     // If token is not valid, respond with 401 (Unauthorized)

@@ -12,7 +12,7 @@ const splitString = (source: string, segmentLength: number) => {
     ApiLogger.warn('Used splitString function with a non-integer value.');
     segmentLength = segmentLength - (segmentLength % 1);
   }
-  let stringSegments: string[] = [];
+  const stringSegments: string[] = [];
   // Iterate through the string from left to right, segmenting it into
   // the requested length until less characters remain.
   for (let i = 0; i < source.length;) {
@@ -32,7 +32,7 @@ const splitString = (source: string, segmentLength: number) => {
 const generatePartIds = (hash: string) => {
   const monsterIdLimit = parseInt(process.env.MONSTER_COUNT);
   const hashSegments = splitString(hash, 5);
-  let partIds: number[] = [];
+  const partIds: number[] = [];
   for (let hashPos = 0; hashPos < hashSegments.length; hashPos++) {
     // Track the current slot separately from the hash position for
     // multiple reasons -- 2 slots each for arms and legs being a major one.
