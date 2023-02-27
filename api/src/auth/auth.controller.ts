@@ -15,32 +15,32 @@ interface IJwtRequest extends Request {
 }
 
 export const login = (req: Request, res: Response) => {
+  ApiLogger.info('Received a new login request - handling ...');
   try {
     const refreshId = `${req.body.userId}${jwtSecret}`;
-    // ApiLogger.info(`refreshId -> ${refreshId}`);
     const salt = crypto.randomBytes(16).toString('base64');
-    // ApiLogger.info(`salt -> ${salt}`);
     const hash = crypto.createHmac('sha512', salt).update(refreshId).digest('base64');
-    // ApiLogger.info(`hash -> ${hash}`);
     req.body.refreshKey = salt;
     const token = jwt.sign(req.body, jwtSecret);
-    // ApiLogger.info(`token -> ${token}`);
     const tokenBuffer = Buffer.from(hash);
     const refreshToken = tokenBuffer.toString('base64');
-    // ApiLogger.info(`refreshToken -> ${refreshToken}`);
-    // ApiLogger.info('Made it through the login processes');
+    ApiLogger.info('Login request successfully handled.');
     return res.status(201).send(defaultSuccess({accessToken: token, refreshToken: refreshToken}));
   } catch (err) {
+    ApiLogger.error(`An error was experienced while handling login request.\n${err}`);
     return res.status(500).send(defaultServerError({ errors: err }, ''));
   }
 };
 
 export const refreshToken = (req: IJwtRequest, res: Response) => {
+  ApiLogger.info('Received a new token refresh request - handling ...');
   try {
     req.body = req.jwt;
     const token = jwt.sign(req.body, jwtSecret);
+    ApiLogger.info('Token refresh request successfully handled.');
     return res.status(200).send(defaultSuccess({ token: token }));
   } catch (err) {
+    ApiLogger.error(`An error was experienced while attempting to refresh an access token.\n${err}`);
     return res.status(500).send(defaultServerError({ errors: err }, ''));
   }
 };

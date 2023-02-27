@@ -59,17 +59,12 @@ export default class UserDataBus {
         return [];
       }
       const returnedUsers: User[] = [];
-      const dataIndex = this.getColumnIndexByName('data', result.fields);
       result.rows.forEach((value) => {
         // ApiLogger.info(JSON.stringify(value));
         // ApiLogger.info(`data indexed at ${dataIndex}; data: ${value.data}`);
         const currentUser = value.data as User;
-        ApiLogger.info(`adding user '${currentUser.username}'`);
         returnedUsers.push(currentUser);
       });
-      if (returnedUsers.length < 1 && result.rowCount > 0) {
-        ApiLogger.info('Rows were found, but no rows in returnedUsers');
-      }
       return returnedUsers;
     });
   }

@@ -28,6 +28,6 @@ export const fetchMonsterParts = async (partIds: number[]): Promise<MonsterPart[
 
 /** Fetches the details for a mosnter's palette. */
 export const fetchMonsterPalette = async (paletteId: number): Promise<MonsterPalette> => {
-  const { rows } = await db.query(`SELECT * FROM monster_palettes WHERE data->id = ${paletteId};`);
+  const { rows } = await db.query(`SELECT * FROM monster_palettes WHERE data @> ${paletteId};`);
   return rows[0];
 };
