@@ -16,33 +16,29 @@
 
 <h3>Register!</h3>
 <label class="grid-col" for="username">Username</label>
-<input class="grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
+<input class="usa-input grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
 <label class="grid-col" for="password">Password</label>
-<input placeholder="enter your password!" class="grid-col" id="password" name="password" type="password">
+<input placeholder="enter your password!" class="usa-input grid-col" id="password" name="password" type="password">
 <label class="grid-col" for="passwordVerify">Verify Your Password</label>
-<input placeholder="enter your password again" class="grid-col" id="passwordVerify" name="passwordVerify" type="password">
+<input placeholder="enter your password again" class="usa-input grid-col" id="passwordVerify" name="passwordVerify" type="password">
 <button class="grid-col" type="submit" class="submit usa-button ">Submit</button>
 </form>
-
-
 
 <form *ngIf="currentForm === 'login'" class="grid-row flex-column text-center border-top border-bottom bg-primary-dark text-base-lightest">
 <h3>Login!</h3>
 <label class="grid-col" for="username">Username</label>
-<input class="grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
+<input class="usa-input grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
 <label class="grid-col" for="password">Password</label>
-<input placeholder="enter your password!" class="grid-col" id="password" name="password" type="password">
+<input placeholder="enter your password!" class="usa-input grid-col" id="password" name="password" type="password">
 <button class="grid-col" type="submit" class="submit usa-button ">Submit</button>
 </form>
-
-
 
 <form *ngIf="currentForm === 'educatorCode'" class="grid-row flex-column text-center border-top border-bottom bg-primary-dark text-base-lightest">
      <h3>Use an Educator Code</h3>
      <label class="grid-col" for="username">Username</label>
-     <input class="grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
+     <input class="usa-input grid-col" id="username" name="username" placeholder="enter a cool username!" type="text">
      <label class="grid-col" for="educatorCode">Password</label>
-     <input placeholder="enter your educator code!" class="grid-col" id="educatorCode" name="educatorCode" type="number">
+     <input placeholder="enter your educator code!" class=" usa-input grid-col" id="educatorCode" name="educatorCode" type="number">
      <button class="grid-col" type="submit" class="submit usa-button ">Submit</button>
 </form>
 
