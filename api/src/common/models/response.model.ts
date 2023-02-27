@@ -1,12 +1,12 @@
 /** Every route should send an API Response. */
-export type ApiResponse = {
+export interface ApiResponse {
   status: {
     code: number,
     genericDesc: string,
     details: string
   },
   data: null | object
-};
+}
 
 /** Provides a default success response. */
 export const defaultSuccess = (data: null | object): ApiResponse => {
@@ -49,6 +49,17 @@ export const defaultCreated = (data: null | object, details: string): ApiRespons
     status: {
       code: 201,
       genericDesc: 'Created',
+      details: details
+    },
+    data: data
+  };
+};
+
+export const defaultServerError = (data: null | object, details: string): ApiResponse => {
+  return {
+    status: {
+      code: 500,
+      genericDesc: 'Internal Server Error',
       details: details
     },
     data: data

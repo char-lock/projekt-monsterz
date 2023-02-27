@@ -8,7 +8,7 @@ import { defaultSuccess } from './common/models/response.model';
 
 const routes = Router();
 
-routes.all('/', (req, res) => { res.status(200).send(defaultSuccess); });
+routes.all('/', (req, res) => { res.status(200).send(defaultSuccess(null)); });
 
 routes.use('/monsters', monsters);
 routes.use('/users', users);

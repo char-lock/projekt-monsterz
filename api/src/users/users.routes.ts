@@ -1,17 +1,22 @@
 import Router from 'express-promise-router';
-import UsersController from './users.controller';
+import UserController from "./users.controller";
+import * as PermissionMiddleware from '../common/middlewares/auth.permission.middleware';
+import * as ValidationMiddleware from '../common/middlewares/auth.validation.middleware';
 
 const router = Router();
 
-// User -> Get User By ID
-router.get('/id/:userId', UsersController.getUserById);
-// User -> Get User By Username
-router.get('/username/:username', UsersController.getUserByUsername);
-// User -> Create User
-router.post('/register', UsersController.createUser);
-// User -> Delete User
-router.delete('/id/:userId', UsersController.deleteUser);
-// User -> Edit User
-router.patch('/id/:userId', UsersController.editUser);
+router.post('/register', [UserController.insert]);
+router.get('/id/:userId', [
+  ValidationMiddleware.requireValidJwt,
+  PermissionMiddleware.allowOnlySameUserOrAdmin,
+  UserController.getById
+]);
+router.get('/username/:username', [
+  ValidationMiddleware.requireValidJwt,
+  PermissionMiddleware.allowOnlySameUserOrAdmin,
+  UserController.getByUsername
+]);
+// router.patch
+// router.delete
 
 export default router;

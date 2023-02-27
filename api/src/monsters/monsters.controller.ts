@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import ApiLogger from '../common/logger';
-import { MonsterSummaryModel } from './monsters.models';
+import { MonsterInfoDigest } from './monsters.models';
 import { fetchMonsterParts, fetchMonsterPalette } from './monsters.data';
 import { defaultNotExist, defaultSuccess } from '../common/models/response.model';
 
@@ -63,21 +63,15 @@ const generatePartIds = (hash: string) => {
 }
 
 /** Returns a monster's summary details generated from a hash-string. */
-const generateMonsterSummary = (hash: string): MonsterSummaryModel => {
+const generateMonsterSummary = (hash: string): MonsterInfoDigest => {
   const partIds: number[] = generatePartIds(hash);
   // We can return the parts separated into order within an object, as
   // they are added into the array in slot order.
   return {
     hash: hash,
-    bodyId: partIds[0],
-    armLeftId: partIds[1],
-    armRightId: partIds[2],
-    legLeftId: partIds[3],
-    legRightId: partIds[4],
-    eyeId: partIds[5],
-    mouthId: partIds[6],
-    detailId: partIds[7]
-  }
+    partIds: partIds,
+    paletteId: parseInt(hash.substring(hash.length - 1))
+  };
 }
 
 class MonstersController {
@@ -128,13 +122,11 @@ class MonstersController {
       hash: hash,
       parts: {
         body: monsterParts[0],
-        armLeft: monsterParts[1],
-        armRight: monsterParts[2],
-        legLeft: monsterParts[3],
-        legRight: monsterParts[4],
-        eye: monsterParts[5],
-        mouth: monsterParts[6],
-        detail: monsterParts[7]
+        arm: monsterParts[1],
+        leg: monsterParts[2],
+        eye: monsterParts[3],
+        mouth: monsterParts[4],
+        detail: monsterParts[5]
       },
       palette: palette
     };

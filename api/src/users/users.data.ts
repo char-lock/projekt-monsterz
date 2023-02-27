@@ -1,54 +1,98 @@
-import { UserModel, VerifyMethod } from './users.models';
+import { FieldDef } from 'pg';
+import cryptoJs from 'crypto-js';
 import * as db from '../common/db';
+import { UserQuery, User, VerificationMethod } from './users.model';
+import ApiLogger from '../common/logger';
 
-/** Fetches a user from the database. */
-export const fetchUserById = async (userId: string): Promise<UserModel> => {
-  const { rows } = await db.query(`SELECT * FROM users WHERE id = '${userId}';`);
-  return rows[0];
-};
-
-/** Fetches a user from the database. */
-export const fetchUserByUsername = async (username: string): Promise<UserModel> => {
-  const { rows } = await db.query(`SELECT * FROM users WHERE username = '${username}';`);
-  return rows[0];
-};
-
-/** Saves a new user to the database. */
-export const saveUser = async (user: UserModel) => {
-  await db.query(`INSERT INTO users VALUES
-    ('${user.id}', '${user.username}',
-      ${user.verified}, ${user.verifyMethod}, '${user.verifyValue}');
-  `)
-  return true;
-};
-
-export const isUniqueUser = async (user: UserModel) => {
-  let queryTxt = '';
-  if (user.verifyMethod == VerifyMethod.EMAIL) {
-    queryTxt = `SELECT * FROM users
-      WHERE id = '${user.id}' OR username = '${user.username}'
-        OR verifyValue = '${user.verifyValue}';`;
-  } else {
-    queryTxt = `SELECT * FROM users
-      WHERE id = '${user.id}' OR username = '${user.username}';`;
+export default class UserDataBus {
+  
+  static find = async (queryData: UserQuery) => {
+    const uQ = `SELECT * FROM users WHERE data @> '${JSON.stringify(queryData)}';`;
+    return db.query(uQ);
   }
-  return db.query(queryTxt).then((res) => { return !(res.rowCount > 0); });
-};
 
-export const dropUserById = async (userId: string) => {
-  await db.query(`DELETE FROM users WHERE id = '${userId}';`);
-  return true;
-};
+  static getColumnIndexByName = (name: string, fields: Array<FieldDef>): number => {
+    let index = -1;
+    fields.forEach((value: FieldDef, currentIndex: number) => {
+      if (index > -1) return;
+      if (value.name === name) {
+        index = currentIndex;
+      }
+    });
+    return index;
+  }
 
-export const patchUserById = async (srcId: string, user: UserModel) => {
-  let queryTxt = 'UPDATE users SET ';
-  if (user.id !== '') queryTxt += `id = '${user.id}', `;
-  if (user.username !== '') queryTxt += `username = '${user.username}', `;
-  if (user.verified) queryTxt += `verified = true, `;
-  if (user.verifyMethod > 0) queryTxt += `verifyMethod = ${user.verifyMethod}, `;
-  if (user.verifyValue !== '') queryTxt += `verifyValue = '${user.verifyValue}', `;
-  queryTxt = queryTxt.substring(0, queryTxt.length - 2);
-  queryTxt += ` WHERE id = '${srcId}';`;
-  await db.query(queryTxt);
-  return true; 
-};
+  static findById = async (userId: string): Promise<User[]> => {
+    return this.find({ id: userId }).then((result) => {
+      if (result.rowCount < 1) return [];
+      const returnedUsers: User[] = [];
+      const dataIndex = this.getColumnIndexByName('data', result.fields);
+      result.rows.forEach((value) => {
+        if (value.length > dataIndex) {
+          const currentUser = JSON.parse(value[dataIndex]) as User;
+          returnedUsers.push(currentUser);
+        }
+      });
+      return returnedUsers;
+    });
+  }
+
+  static findByEmail = async (email: string): Promise<User[]> => {
+    return this.find({ verification: { method: VerificationMethod.EMAIL, value: email } }).then((result) => {
+      if (result.rowCount < 1) return [];
+      const returnedUsers: User[] = [];
+      const dataIndex = this.getColumnIndexByName('data', result.fields);
+      result.rows.forEach((value) => {
+        if (value.length > dataIndex) {
+          const currentUser = JSON.parse(value[dataIndex]) as User;
+          returnedUsers.push(currentUser);
+        }
+      });
+      return returnedUsers;
+    });
+  }
+
+  static findByUsername = async (username: string): Promise<User[]> => {
+    return this.find({ username: username }).then((result) => {
+      if (result.rowCount < 1) {
+        ApiLogger.info(`No rows found with username '${username}'`);
+        return [];
+      }
+      const returnedUsers: User[] = [];
+      const dataIndex = this.getColumnIndexByName('data', result.fields);
+      result.rows.forEach((value) => {
+        // ApiLogger.info(JSON.stringify(value));
+        // ApiLogger.info(`data indexed at ${dataIndex}; data: ${value.data}`);
+        const currentUser = value.data as User;
+        ApiLogger.info(`adding user '${currentUser.username}'`);
+        returnedUsers.push(currentUser);
+      });
+      if (returnedUsers.length < 1 && result.rowCount > 0) {
+        ApiLogger.info('Rows were found, but no rows in returnedUsers');
+      }
+      return returnedUsers;
+    });
+  }
+
+  static generateUserId = (userData: User) => {
+    const rawIdData = `${userData.username}::${userData.verification.value}`;
+    const idHash = cryptoJs.HmacSHA256(rawIdData, userData.authKey);
+    return idHash.toString();
+  }
+
+  static createUser = async (userData: User) => {
+    userData.id = this.generateUserId(userData);
+    const uQ = `INSERT INTO users (data) VALUES ('${JSON.stringify(userData)}');`;
+    return db.query(uQ).then(() => { return userData; });
+  }
+
+  static patchUser = async (userId: string, userData: User) => {
+    return userData;
+    // TODO: Create the method for editing and patching a user.
+  }
+
+  static removeById = async (userId: string) => {
+    return userId === userId;
+    // TODO: Create the method for deleting a user.
+  }
+}
