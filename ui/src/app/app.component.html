@@ -1,4 +1,4 @@
-<main class="bg-emergency-dark">
+<main class="bg-emergency-dark" (click)="clickOutside($event)">
 <app-header 
 (newContentChangeEvent)="changeContent($event)"
 [ngStyle]="setStyle()"> </app-header>
