@@ -1,11 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
-import * as jwt from 'jsonwebtoken';
-import { UserRole } from '../../users/users.model';
+import { NextFunction, Response } from 'express';
+import { IJwtRequest } from '../request';
+import { UserRole } from '../../users/users.models';
 import ApiLogger from '../logger';
+import { createResponse } from '../response';
 
-interface IJwtRequest extends Request {
-  jwt: jwt.JwtPayload;
-}
 
 export const requiresSpecificRole = (allowedRoles: UserRole[]) => {
   return (req: IJwtRequest, res: Response, next: NextFunction) => {
@@ -13,7 +11,7 @@ export const requiresSpecificRole = (allowedRoles: UserRole[]) => {
     if (allowedRoles.indexOf(currentRole) !== -1) {
       return next();
     } else {
-      return res.status(403).send();
+      return res.status(403).send(createResponse(403, '', null));
     }
   };
 };
@@ -36,7 +34,7 @@ export const allowOnlySameUserOrAdmin = (req: IJwtRequest, res: Response, next: 
     return next();
   }
   ApiLogger.warn('Could not verify requestor is same user or an administrator - sending error status ...');
-  return res.status(403).send();
+  return res.status(403).send(createResponse(403, '', null));
 };
 
 export const disallowSameUser = (req: IJwtRequest, res: Response, next: NextFunction) => {
@@ -44,5 +42,5 @@ export const disallowSameUser = (req: IJwtRequest, res: Response, next: NextFunc
   if (req.params.userId !== userId) {
     return next();
   }
-  return res.status(400).send();
+  return res.status(400).send(createResponse(400, '', null));
 };

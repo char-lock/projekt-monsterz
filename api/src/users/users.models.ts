@@ -10,30 +10,30 @@ export enum UserRole {
   ADMIN
 }
 
-export interface UserVerificationData {
+export interface IUserVerificationData {
   verified: boolean;
   method: VerificationMethod;
   value: string;
 }
 
-export interface UserVerificationQuery {
+export interface IUserVerificationQuery {
   verified?: boolean;
   method?: VerificationMethod;
   value?: string;
 }
 
-export interface UserQuery {
+export interface IUserQuery {
   id?: string;
   username?: string;
   authKey?: string;
   role?: UserRole;
-  verification?: UserVerificationQuery;
+  verification?: IUserVerificationQuery;
 }
 
-export interface User {
+export interface IUser {
   id: string;
   username: string;
   authKey: string;
   role: UserRole;
-  verification: UserVerificationData;
+  verification: IUserVerificationData;
 }

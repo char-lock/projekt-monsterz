@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 import { NextFunction, Request, Response } from "express";
 import ApiLogger from '../common/logger';
-import { defaultBadRequest, defaultNotExist } from "../common/models/response.model";
+import { createResponse } from '../common/response';
 import UserDataBus from "../users/users.data";
 
 export const hasAuthValidFields = (req: Request, res: Response, next: NextFunction) => {
@@ -17,13 +17,13 @@ export const hasAuthValidFields = (req: Request, res: Response, next: NextFuncti
       errors.push('Missing authKey field');
     }
     if (errors.length) {
-      return res.status(400).send(defaultBadRequest(errors.join('; ')));
+      return res.status(400).send(createResponse(400, errors.join('; '), null));
     }
     ApiLogger.info('Necessary authorization fields are present. Handing request to next function ...');
     return next();
   }
   ApiLogger.warn('Request body is undefined');
-  return res.status(400).send(defaultBadRequest('Missing username field; Missing authKey field'));
+  return res.status(400).send(createResponse(400, 'Missing username field; Missing authKey field', null));
 };
 
 export const userAndKeyHasMatch = (req: Request, res: Response, next: NextFunction) => {
@@ -31,8 +31,7 @@ export const userAndKeyHasMatch = (req: Request, res: Response, next: NextFuncti
   UserDataBus.findByUsername(req.body.username).then((user) => {
     if (user.length < 1) {
       ApiLogger.warn(`No user was able to be found with username '${req.body.username}'`);
-      return res.status(404).send(defaultNotExist(
-        `Unable to locate user with username '${req.body.username}'`));
+      return res.status(404).send(createResponse(404, `Unable to locate user with username '${req.body.username}', null`));
     }
     const passwordFields = user[0].authKey.split('$');
     const salt = passwordFields[0];
@@ -50,6 +49,6 @@ export const userAndKeyHasMatch = (req: Request, res: Response, next: NextFuncti
       return next();
     }
     ApiLogger.info('Username and/or password does not match records.');
-    return res.status(400).send(defaultBadRequest('Invalid username and/or password'));
+    return res.status(400).send(createResponse(400, 'Invalid username and/or password', null));
   });
 };

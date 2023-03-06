@@ -1,17 +1,14 @@
 import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 import { NextFunction, Request, Response } from 'express';
-import { defaultBadRequest } from '../models/response.model';
 import ApiLogger from '../logger';
+import { IJwtRequest } from '../request';
 
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { createResponse } from '../response';
 dotenv.config({ path: path.resolve(__dirname, `..${path.sep}..${path.sep}..${path.sep}..${path.sep}.env`)});
 const jwtSecret = process.env.JWT_SECRET;
-
-interface IJwtRequest extends Request {
-  jwt?: jwt.JwtPayload;
-}
 
 export const verifyRefreshBodyField = (req: Request, res: Response, next: NextFunction) => {
   ApiLogger.info('Recent request requires refreshToken field in the body - verifying ...');
@@ -20,7 +17,7 @@ export const verifyRefreshBodyField = (req: Request, res: Response, next: NextFu
     return next();
   }
   ApiLogger.warn('Required field is missing - sending error status ...');
-  return res.status(400).send(defaultBadRequest('\'refreshToken\' field required'));
+  return res.status(400).send(createResponse(400, '\'refreshToken\' field required', null));
 };
 
 export const requireValidRefresh = (req: IJwtRequest, res: Response, next: NextFunction) => {
@@ -34,7 +31,7 @@ export const requireValidRefresh = (req: IJwtRequest, res: Response, next: NextF
     return next();
   }
   ApiLogger.warn('Refresh token is invalid - sending error status ...');
-  return res.status(400).send(defaultBadRequest('Invalid refresh token'));
+  return res.status(400).send(createResponse(400, 'Invalid refresh token.', null));
 };
 
 export const requireValidJwt = (req: IJwtRequest, res: Response, next: NextFunction) => {
@@ -45,7 +42,7 @@ export const requireValidJwt = (req: IJwtRequest, res: Response, next: NextFunct
       const authorization = req.headers['authorization'].split(' ');
       if (authorization[0] !== 'Bearer') {
         ApiLogger.warn('Authorization token is either invalid or missing - sending error status ...');
-        return res.status(401).send();
+        return res.status(401).send(createResponse(401, '', null));
       } else {
         ApiLogger.info('Detected proper bearer token in authorization header - verifying JWT validity ...');
         req.jwt = jwt.verify(authorization[1], jwtSecret) as jwt.JwtPayload;
@@ -54,9 +51,9 @@ export const requireValidJwt = (req: IJwtRequest, res: Response, next: NextFunct
       }
     } catch (err) {
       ApiLogger.warn('Encountered an error while attempting to verify JWT - sending error status ...');
-      return res.status(403).send();
+      return res.status(403).send(createResponse(403, '', null));
     }
   }
   ApiLogger.warn('Unable to verify JWT - sending error status ...');
-  return res.status(401).send();
+  return res.status(401).send(createResponse(401, '', null));
 };

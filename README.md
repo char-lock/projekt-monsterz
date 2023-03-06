@@ -1,5 +1,6 @@
 # Projekt Monsterz
 📚 An education platform for school-aged children to learn Computer Science concepts.
+
 *Designed as part of the [Develop Carolina](https://www.developcarolina.org/) program.*
 
 
@@ -27,4 +28,5 @@ If you have a suggestion for improvements, you are free to open a ticket, but pl
 
 ## License
 This project is not meant to be used by anyone else at this current time, and is thus not released under any particular license. All of the rights are currently reserved and belong to the development team, though that is likely to change in the future.
+
 We do, however, believe in open-source as a philosophy, hence the reason this repo is viewable, and why the license is likely to change to be more permissive.

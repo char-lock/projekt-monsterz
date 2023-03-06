@@ -17,35 +17,35 @@ export enum PaletteShade {
   LIGHTEST
 }
 
-export interface MonsterInfoDigest {
+export interface IMonsterInfoDigest {
   hash: string,
   partIds: number[],
   paletteId: number
 }
 
-export interface MonsterPalette {
+export interface IMonsterPalette {
   id: number,
   colours: string[7]
 }
 
-export interface MonsterPart {
+export interface IMonsterPart {
   id: number,
   slot: MonsterSlot,
   imageData: string,
-  palette: MonsterPalette
+  palette: IMonsterPalette
 }
 
-export interface MonsterSlotMap {
-  body: MonsterPart,
-  arm: MonsterPart,
-  leg: MonsterPart,
-  eye: MonsterPart,
-  mouth: MonsterPart,
-  detail: MonsterPart
+export interface IMonsterSlotMap {
+  body: IMonsterPart,
+  arm: IMonsterPart,
+  leg: IMonsterPart,
+  eye: IMonsterPart,
+  mouth: IMonsterPart,
+  detail: IMonsterPart
 }
 
-export interface MonsterInfo {
+export interface IMonsterInfo {
   hash: string,
-  parts: MonsterSlotMap,
-  palette: MonsterPalette
+  parts: IMonsterSlotMap,
+  palette: IMonsterPalette
 }

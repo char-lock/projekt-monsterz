@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import ApiLogger from '../common/logger';
-import { MonsterInfoDigest } from './monsters.models';
-import { fetchMonsterParts, fetchMonsterPalette } from './monsters.data';
-import { defaultNotExist, defaultSuccess } from '../common/models/response.model';
+import { IMonsterInfoDigest } from './monsters.models';
+import MonsterDataBus from './monsters.data';
+import { createResponse } from '../common/response';
 
 /**
  * Returns an array containing the provided string separated into segments
@@ -63,7 +63,7 @@ const generatePartIds = (hash: string) => {
 }
 
 /** Returns a monster's summary details generated from a hash-string. */
-const generateMonsterSummary = (hash: string): MonsterInfoDigest => {
+const generateMonsterSummary = (hash: string): IMonsterInfoDigest => {
   const partIds: number[] = generatePartIds(hash);
   // We can return the parts separated into order within an object, as
   // they are added into the array in slot order.
@@ -74,49 +74,32 @@ const generateMonsterSummary = (hash: string): MonsterInfoDigest => {
   };
 }
 
-class MonstersController {
+export default class MonstersController {
 
   /** Provides the details for the requested monster as part of the response. */
   static getMonsterDetails = async (req: Request, res: Response) => {
     const { hash } = req.params;
     if (!hash || hash === '') {
-      res.status(400).send({
-        status: {
-          code: 400,
-          genericDesc: 'Bad Request',
-          details: 'A hash is required in order to provide a monster\'s details.'
-        },
-        data: null
-      });
-      return;
+      return res.status(400).send(
+        createResponse(400, 'A hash is required in order to provide a monster\'s details.', null));
     }
     if (!validateHash(hash)) {
-      res.status(400).send({
-        status: {
-          code: 400,
-          genericDesc: 'Bad Request',
-          details: 'The provided hash is invalid. Please ensure you have provided a proper MD5 hash.'
-        },
-        data: null
-      });
-      return;
+      return res.status(400).send(
+        createResponse(400, 'The provided hash is invalid. Please ensure you have provided a proper MD5 hash.', null));
     }
     // TODO: Test whether it is faster to generate the summary values on the fly or
     // to retrieve them from the database.
     const partIds = generatePartIds(hash);
-    const monsterParts = await fetchMonsterParts(partIds);
-    const failureResponse = defaultNotExist('Unable to locate details for requested monster.');
+    const monsterParts = await MonsterDataBus.fetchMonsterParts(partIds);
     if (monsterParts.length < partIds.length) {
       ApiLogger.warn(`Unable to locate all of the monster parts for ID ${hash}`);
-      res.status(404).send(failureResponse);
-      return;
+      return res.status(404).send(createResponse(404, '', null));
     }
     const paletteId = parseInt(hash[31], 16);
-    const palette = await fetchMonsterPalette(paletteId);
+    const palette = await MonsterDataBus.fetchMonsterPalette(paletteId);
     if (!palette) {
       ApiLogger.warn(`Unable to locate palette details for ID ${hash}`);
-      res.status(404).send(failureResponse);
-      return;
+      return res.status(404).send(createResponse(404, '', null));
     }
     const resData = {
       hash: hash,
@@ -130,39 +113,23 @@ class MonstersController {
       },
       palette: palette
     };
-    res.status(200).send(defaultSuccess(resData));
-  }
+    return res.status(200).send(createResponse(200, '', resData));
+  };
 
   /** Provides the summary for the requested monster as part of the response.  */
   static getMonsterSummary = (req: Request, res: Response) => {
     const { hash } = req.params;
     if (!hash || hash == '') {
-      res.status(400).send({
-        status: {
-          code: 400,
-          genericDesc: 'Bad Request',
-          details: 'A hash is required in order to provide a monster summary.'
-        },
-        data: null
-      });
-      return;
+      ApiLogger.warn('Hash missing from a recent request for a monster summary.');
+      return res.status(400).send(createResponse(400, 'A hash is required in order to provide a monster summary.', null));
     }
     if (!validateHash(hash)) {
-      res.status(400).send({
-        status: {
-          code: 400,
-          genericDesc: 'Bad Request',
-          details: 'The provided hash is invalid. Please ensure you have provided a proper MD5 hash.'
-        },
-        data: null
-      });
-      return;
+      ApiLogger.warn('Invalid hash from a recent request for a monster summary.');
+      return res.status(400).send(createResponse(400, 'The provided hash is invalid. Please ensure you have provided a proper MD5 hash.', null));
     }
     // TODO: Test whether it is faster to generate the summary values on the fly or
     // to retrieve them from the database.
-    res.status(200).send(defaultSuccess(generateMonsterSummary(hash)));
-  }
+    return res.status(200).send(createResponse(200, '', generateMonsterSummary(hash)));
+  };
 
 }
-
-export default MonstersController;
