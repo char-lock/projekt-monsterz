@@ -9,4 +9,4 @@ export const parseBoolean = (confValue: string) => {
   }
   // This statement is here only to give us the chance to change the default down the line.
   return true; 
-}
+};

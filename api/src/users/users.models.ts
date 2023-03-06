@@ -1,12 +1,39 @@
-export enum VerifyMethod {
-  EMAIL = 0,
+export enum VerificationMethod {
+  EMAIL = 1,
   EDUCATOR_CODE
 }
 
-export type UserModel = {
-  id: string,         // User ID is generated via an MD5 hash of their username and verification method.
-  username: string,
-  verified: boolean,
-  verifyMethod: VerifyMethod,
-  verifyValue: string
+export enum UserRole {
+  INDIVIDUAL = 1,
+  STUDENT,
+  EDUCATOR,
+  ADMIN
+}
+
+export interface IUserVerificationData {
+  verified: boolean;
+  method: VerificationMethod;
+  value: string;
+}
+
+export interface IUserVerificationQuery {
+  verified?: boolean;
+  method?: VerificationMethod;
+  value?: string;
+}
+
+export interface IUserQuery {
+  id?: string;
+  username?: string;
+  authKey?: string;
+  role?: UserRole;
+  verification?: IUserVerificationQuery;
+}
+
+export interface IUser {
+  id: string;
+  username: string;
+  authKey: string;
+  role: UserRole;
+  verification: IUserVerificationData;
 }

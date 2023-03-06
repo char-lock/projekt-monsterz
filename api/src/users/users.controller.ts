@@ -1,47 +1,81 @@
-import { Request, Response } from 'express';
-import md5 from 'crypto-js/md5';
-import ApiLogger from '../common/logger';
-import { UserModel } from './users.models';
-import { fetchUser, saveUser } from './users.data';
+import UserDataBus from "./users.data";
+import * as crypto from 'crypto';
+import { Request, Response } from "express";
+import { IUser, UserRole, IUserQuery } from "./users.models";
+import { createResponse } from "../common/response";
+import ApiLogger from "../common/logger";
 
-/** Returns a generated user ID based upon the provided information. */
-const generateUserId = (username: string, verifyValue: string) => {
-  const checksumString = `${username}::${verifyValue}`;
-  const checksumDigest = md5(`${checksumString}::${checksumString.length}`).toString();
-  const hashDigest = md5(`${checksumString}::${checksumDigest.substring(checksumDigest.length - 4)}`);
-  return hashDigest.toString();
-}
+export default class UsersController {
+  
+  static insert = (req: Request, res: Response) => {
+    ApiLogger.info('Received user create/insert request - handling ...');
+    const salt = crypto.randomBytes(16).toString('base64');
+    const hash = crypto.createHmac('sha512', salt).update(req.body.authKey).digest('base64');
+    req.body.authKey = `${salt}$${hash}`;
+    if (req.body.role === UserRole.ADMIN) {
+      ApiLogger.warn('An attempt to create an Admin-level user was made - changing role as appropriate ...');
+      req.body.role = UserRole.INDIVIDUAL;
+    }
+    UserDataBus.createUser(req.body).then((result) => {
+      ApiLogger.info(`Successfully created user; User ID -> ${result.id}`);
+      res.status(201).send(createResponse(201, 'User was successfully created', { id: result.id }));
+    });
+  };
 
-class UsersController {
+  static getById = (req: Request, res: Response) => {
+    ApiLogger.info(`Received request to fetch user with ID '${req.params.userId}'`);
+    UserDataBus.findById(req.params.userId).then((result) => {
+      ApiLogger.info(`Found matching user; returning data ...`);
+      result[0].authKey = undefined;
+      res.status(200).send(createResponse(200, '', result));
+    });
+  };
 
-  /** Returns a user from the database as a part of the response. */
-  static getUser = async (req: Request, res: Response) => {
+  static getByUsername = (req: Request, res: Response) => {
+    ApiLogger.info(`Received request to fetch user with username '${req.params.username}'`);
+    UserDataBus.findByUsername(req.params.username).then((result) => {
+      ApiLogger.info(`Found matching user; returning data ...`);
+      result[0].authKey = undefined;
+      res.status(200).send(createResponse(200, '', result));
+    });
+  }
+  
+  static patchById = (req: Request, res: Response) => {
+    ApiLogger.info(`Received request to edit/patch user with ID '${req.params.userId}'`);
     const { userId } = req.params;
-    ApiLogger.info(`Received new GET request for user with ID ${userId}`);
-    const user = await fetchUser(userId);
-    res.send(user);
+    const userChanges: IUserQuery = req.body;
+    if (!userId || !userChanges) {
+      ApiLogger.error('Request missing either baseline user ID or any changes -- sending error ...');
+      return res.status(400).send(createResponse(400, 'Missing userId and/or changeable data not provided'));
+    }
+    return UserDataBus.findById(userId).then((rows) => {
+      if (rows.length < 0) {
+        ApiLogger.error('Requested user does not exist -- sending error ...');
+        return res.status(400).send(createResponse(400, 'User does not exist'));
+      }
+      const userBase = rows[0];
+      const userEdit: IUser = {
+        id: userChanges.id ? userChanges.id : userBase.id,
+        username: userChanges.username ? userChanges.username : userBase.username,
+        authKey: userChanges.authKey ? userChanges.authKey : userBase.authKey,
+        role: userChanges.role ? userChanges.role : userBase.role,
+        verification: userChanges.verification ? {
+          verified: userChanges.verification.verified ? userChanges.verification.verified : userBase.verification.verified,
+          method: userChanges.verification.method ? userChanges.verification.method : userBase.verification.method,
+          value: userChanges.verification.value ? userChanges.verification.value : userBase.verification.value
+        } : userBase.verification
+      };
+      return UserDataBus.patchUser(userId, userEdit).then(() => {
+        return res.status(200).send(createResponse(200, 'Successfully patched user', null));
+      });
+    });
   };
 
-  /** Saves a user to the database and returns the user object as part of the response. */
-  static postUser = async (req: Request, res: Response) => {
-    ApiLogger.info(`Received new POST request for a user`);
-    const { username, verifyType, verifyValue } = req.body;
-    // TODO: Verify that the username is unique.
-    // TODO: Verify that the email is unique, if the type is email.
-    // TODO: Verify that the educator code is valid.
-    const userId = generateUserId(username, verifyValue);
-    const newUser: UserModel = {
-      id: userId,
-      username: username,
-      verified: false, // TODO: How we handle this might change in the future.
-      verifyMethod: verifyType,
-      verifyValue: verifyValue
-    };
-    saveUser(newUser).then(() => {
-      res.status(201).send(newUser);
-    })
+  static removeById = (req: Request, res: Response) => {
+    ApiLogger.info(`Received request to remove/delete user with ID '${req.params.userId}'`);
+    const { userId } = req.params;
+    if (!userId) return res.status(400).send(createResponse(400, 'User ID is required.'));
+    return res.status(200).send(createResponse(200, 'Successfully deleted user.', UserDataBus.removeById(userId)));
   };
 
 }
-
-export default UsersController;
