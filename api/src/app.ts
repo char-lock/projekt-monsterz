@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser';    // Provides middleware parsers for
 import helmet from 'helmet';                  // Provides header security middleware for Express.
 import cors from 'cors';                      // Enables cross-origin requests.
 
-import { parseBoolean } from './common/config.parser';
+import { parseBoolean } from './common/config';
 import ApiLogger from './common/logger';
 import routes from './routes';
 
