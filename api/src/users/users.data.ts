@@ -4,6 +4,10 @@ import ApiLogger from '../common/logger';
 
 import * as db from '../common/db';
 import { IUser, IUserQuery, VerificationMethod } from './users.models';
+import DummyDb from '../common/db.dummy';
+
+import { parseBoolean } from '../common/config';
+const testingData = parseBoolean(process.env.API_TESTING_DATA);
 
 
 export default class UserDataBus {
@@ -24,6 +28,10 @@ export default class UserDataBus {
   };
 
   static findById = async (userId: string): Promise<IUser[]> => {
+    if (testingData) {
+      ApiLogger.info('Using dummy data for request ...');
+      return DummyDb.loadUserById(userId);
+    }
     return this.find({ id: userId }).then((result) => {
       if (result.rowCount < 1) {
         ApiLogger.info(`No rows found with user ID '${userId}'`);
@@ -37,6 +45,10 @@ export default class UserDataBus {
   };
 
   static findByEmail = async (email: string): Promise<IUser[]> => {
+    if (testingData) {
+      ApiLogger.info('Using dummy data for request ...');
+      return DummyDb.loadUserByEmail(email);
+    }
     return this.find({ verification: { method: VerificationMethod.EMAIL, value: email } }).then((result) => {
       if (result.rowCount < 1) {
         ApiLogger.info(`No rows found with email '${email}'`);
@@ -50,6 +62,10 @@ export default class UserDataBus {
   };
 
   static findByUsername = async (username: string): Promise<IUser[]> => {
+    if (testingData) {
+      ApiLogger.info('Using dummy data for request ...');
+      return DummyDb.loadUserByUsername(username);
+    }
     return this.find({ username: username }).then((result) => {
       if (result.rowCount < 1) {
         ApiLogger.info(`No rows found with username '${username}'`);
@@ -70,6 +86,11 @@ export default class UserDataBus {
 
   static createUser = async (userData: IUser) => {
     userData.id = this.generateUserId(userData);
+    if (testingData) {
+      ApiLogger.info('Using dummy data for request ...');
+      DummyDb.saveUser(userData);
+      return userData;
+    }
     const uQ = `INSERT INTO users (data) VALUES ('${JSON.stringify(userData)}');`;
     return db.query(uQ).then(() => { return userData; });
   };

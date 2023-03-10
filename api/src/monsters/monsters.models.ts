@@ -25,7 +25,7 @@ export interface IMonsterInfoDigest {
 
 export interface IMonsterPalette {
   id: number,
-  colours: string[7]
+  colours: string[]
 }
 
 export interface IMonsterPart {
