@@ -38,7 +38,7 @@ export default class UsersController {
       result[0].authKey = undefined;
       res.status(200).send(createResponse(200, '', result));
     });
-  }
+  };
   
   static patchById = (req: Request, res: Response) => {
     ApiLogger.info(`Received request to edit/patch user with ID '${req.params.userId}'`);

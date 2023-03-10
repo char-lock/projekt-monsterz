@@ -25,7 +25,6 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.34.0",
-    "mocha": "^10.2.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
@@ -37,6 +36,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run lint && nodemon src/app.ts",
+    "start-no-lint": "nodemon src/app.ts",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts ."
   },
   "repository": {
