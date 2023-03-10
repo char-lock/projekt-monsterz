@@ -1,0 +1,73 @@
+/monsters/generate/{seed}
+{
+  "hash": "{md5_hash}",
+  "parts": {
+    "body": {
+      "id": 1,
+      "slot": "body",
+      "data": "{b64_encoded}",
+      "size": { "height": 500, "width": 500 },
+      "pivot": { "x": 0, "y": 0 }
+    },
+    "arm": { ... },
+    "leg": { ... },
+    "eye": { ... },
+    "detail": { ... },
+  },
+  "palette": {
+    "id": 1,
+    "colors": {
+      "dark": "#cacaca",
+      "medium": "#fafafa",
+      "light": "#ffffff",
+      "outline": "#000000"
+    }
+  }
+}
+
+/monsters/{hash}
+{
+  "hash": "",
+  "parts": {
+    "body": {
+      "id": 1,
+      "slot": "body",
+      "data": "{b64_encoded}",
+      "size": { "height": 500, "width": 500 },
+      "pivot": { "x": 0, "y": 0 }
+    },
+    "arm": { ... },
+    "leg": { ... },
+    "eye": { ... },
+    "detail": { ... },
+  },
+  "palette": {
+    "id": 1,
+    "colors": {
+      "dark": "#cacaca",
+      "medium": "#fafafa",
+      "light": "#ffffff",
+      "outline": "#000000"
+    }
+  }
+}
+
+/monsters/part/{id}
+{
+  "id": 1,
+  "slot": "body",
+  "data": "{b64_encoded}",
+  "size": { "height": 500, "width": 500 },
+  "pivot": { "x": 0, "y": 0 }
+}
+
+/monsters/palette/{id}
+{
+  "id": 1,
+  "colors": {
+    "dark": "#cacaca",
+    "medium": "#fafafa",
+    "light": "#ffffff",
+    "outline": "#000000"
+  }
+}
