@@ -1,11 +1,15 @@
+import { ɵparseCookieValue } from '@angular/common';
 import { Component } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [CookieService]
 })
 export class AppComponent {  
+  
   title ='projekt-monsterz-front'
   loginClick = false;
   clickedOutsideVar = false;
@@ -38,5 +42,6 @@ export class AppComponent {
     return {'filter' : 'blur(2px)'};
 
   }
+
   
 }
