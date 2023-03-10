@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Account } from '../models/account-model';
-import { MakeApiRequest } from '../services/make-register-api-call.service';
+import { AccountService } from '../services/account-service.service';
+import { MakeApiRequest } from '../services/api-request.service';
+import { EmailValidate } from '../services/email-validation.service';
+import { Logger } from '../services/logger.service';
 
 @Component({
   selector: 'app-login-screen',
@@ -8,18 +11,11 @@ import { MakeApiRequest } from '../services/make-register-api-call.service';
   styleUrls: ['./login-screen.component.css']
 })
 export class LoginScreenComponent {
-  constructor(private apiMaker: MakeApiRequest) {}
-  currentUser: Account = {
-    id: '',
-    username: '',
-    authKey: '',
-    role: 0,
-    verify: {
-      verified: false,
-      method: 0,
-      value: ''
-    }
-  }
+  constructor(private checkEmail: EmailValidate,
+    private logger: Logger,
+    private accountService: AccountService,
+    private apiRequester: MakeApiRequest) {}
+
   @Output() newContentChangeEvent = new EventEmitter<string>();
   @Input() currentForm = '';
   getSelectedForm(value: string) {
@@ -31,7 +27,8 @@ export class LoginScreenComponent {
     this.currentForm = value;
   }
   onSubmit() {
-    this.apiMaker.createRaw(this.currentUser);
-    this.apiMaker.makeRequest;
+    this.logger.makeLog("Login Screen", "Made API request");
+    this.apiRequester.makeApiRequest();
+
   }
 }

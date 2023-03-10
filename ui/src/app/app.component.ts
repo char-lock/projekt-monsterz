@@ -18,9 +18,8 @@ export class AppComponent {
     if ($event.target.closest('app-login-screen') == null && this.loginClick == true && $event.srcElement && $event.srcElement.classList.contains('openmenu') == false) {
       this.changeContent('')
     }
- }
+  }
   changeContent(definer: string) {
-    // console.log("Change Content Called!")
     console.log("Changing content Called!")
     if (definer == 'close') {
       this.loginClick = false;
@@ -30,7 +29,6 @@ export class AppComponent {
       this.formChosen = definer;
     } 
     else {
-
       this.loginClick = !this.loginClick;
     }
    }
@@ -40,8 +38,5 @@ export class AppComponent {
       return {'filter' : 'blur(0px)'};
     }
     return {'filter' : 'blur(2px)'};
-
   }
-
-  
 }

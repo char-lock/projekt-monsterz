@@ -8,8 +8,11 @@ import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
-import { Accounts } from './services/accounts.service';
-import { MakeApiRequest } from './services/make-register-api-call.service';
+import { MakeApiRequest } from './services/api-request.service';
+import { Logger } from './services/logger.service';
+import { CookieService } from 'angular2-cookie';
+import { AccountService } from './services/account-service.service';
+import { EmailValidate } from './services/email-validation.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { MakeApiRequest } from './services/make-register-api-call.service';
     BrowserModule
   ],
   providers: [MakeApiRequest,
-         Accounts
+         AccountService,
+         Logger,
+         EmailValidate
   ],
   bootstrap: [AppComponent]
 })

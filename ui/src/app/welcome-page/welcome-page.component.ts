@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Account } from '../models/account-model';
-import { MakeApiRequest } from '../services/make-register-api-call.service';
+import { MakeApiRequest } from '../services/api-request.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -13,8 +13,5 @@ export class WelcomePageComponent {
   sendEmitterForRegisterScreen(value: string) {
     this.newContentChangeEvent.emit(value);
     console.log("New Content Emitted!");
-  }
-  makeApiCall() {
-    console.log("ring ring")
   }
 }

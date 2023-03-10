@@ -3,11 +3,18 @@
      margin: 0;
      
 }
-div:first-of-type {
+div {
      width: 98%;
      margin: 0 auto;
      border: 5px solid white;
+}
+div:first-of-type {
      border-radius: 20px 20px 0 0;
+
+}
+div:not(:first-of-type) {
+     border-radius: 0 0 20px 20px;
+
 }
 form {
      background-color: #236925;
