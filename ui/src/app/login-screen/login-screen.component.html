@@ -4,11 +4,11 @@
 <h3>Register / Login!</h3>
 <input #username class="usa-input grid-col" id="username" name="username" placeholder="Enter a cool username!" type="text">
 
-<input #password1 placeholder="Enter a super secret password!" class="usa-input grid-col" id="password" name="password" type="password">
+<input #password placeholder="Enter a super secret password!" class="usa-input grid-col" id="password" name="password" type="password">
 
 <input #emailOrEducationCode placeholder="Email or Education Code" class="usa-input grid-col" id="emailOrEducationCode" name="emailOrEducationCode" type="text">
 
-<button (click)="onSubmit()" class="grid-col" class="usa-button">Submit</button>
+<button (click)="onSubmit(username.value, password.value, emailOrEducationCode.value)" class="grid-col" class="usa-button">Submit</button>
 </div>
 
 

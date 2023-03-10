@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Logger } from '../services/logger.service';
 
 @Component({
   selector: 'app-header',
@@ -7,11 +8,14 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  constructor(private logger: Logger) {
+    
+  }
   @Output() newContentChangeEvent = new EventEmitter<string>();
 
   sendEmitterToLogin(value: string) {
     this.newContentChangeEvent.emit(value);
-    console.log("New Content Emitted!" + value);
+    this.logger.makeLog("Header Component", "Send Emitter to open login form")
   }
 
 }

@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Account } from '../models/account-model';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { AccountService } from '../services/account-service.service';
-import { MakeApiRequest } from '../services/api-request.service';
 import { EmailValidate } from '../services/email-validation.service';
 import { Logger } from '../services/logger.service';
 
@@ -11,24 +9,19 @@ import { Logger } from '../services/logger.service';
   styleUrls: ['./login-screen.component.css']
 })
 export class LoginScreenComponent {
+  @Output() newContentChangeEvent = new EventEmitter<string>();
+
   constructor(private checkEmail: EmailValidate,
     private logger: Logger,
-    private accountService: AccountService,
-    private apiRequester: MakeApiRequest) {}
+    private accountService: AccountService) {}
 
-  @Output() newContentChangeEvent = new EventEmitter<string>();
-  @Input() currentForm = '';
-  getSelectedForm(value: string) {
-    this.currentForm = value;
-  }
+  
   sendEmitterToExitLoginScreen(value: string) {
     this.newContentChangeEvent.emit(value);
-    console.log("New Content Emitted!" + value);
-    this.currentForm = value;
+    this.logger.makeLog("Login Screen", "Exitted Login Screen")
   }
-  onSubmit() {
-    this.logger.makeLog("Login Screen", "Made API request");
-    this.apiRequester.makeApiRequest();
-
+  onSubmit(username: string, password: string, emailOrEducationCode: string) {
+    this.accountService.createNewAccount(username, password, emailOrEducationCode);
+    this.logger.makeLog("Login Screen", "Sent username, string and email or education code to Account Service: " + username + " " + password + " " + emailOrEducationCode);
   }
 }
