@@ -15,12 +15,12 @@ export class LoginScreenComponent {
     private logger: Logger,
     private accountService: AccountService) {}
 
-  
   sendEmitterToExitLoginScreen(value: string) {
     this.newContentChangeEvent.emit(value);
     this.logger.makeLog("Login Screen", "Exitted Login Screen")
   }
   onSubmit(username: string, password: string, emailOrEducationCode: string) {
+    this.sendEmitterToExitLoginScreen('close');
     this.accountService.createNewAccount(username, password, emailOrEducationCode);
     this.logger.makeLog("Login Screen", "Sent username, string and email or education code to Account Service: " + username + " " + password + " " + emailOrEducationCode);
   }

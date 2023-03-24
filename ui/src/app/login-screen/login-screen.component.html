@@ -1,15 +1,18 @@
-<div class="grid-row flex-column text-center border-top border-bottom bg-primary-dark text-base-lightest">
-<button type="" class="exit usa-button usa-button--secondary" (click)="sendEmitterToExitLoginScreen('exitRegister')">X</button>
 
-<h3>Register / Login!</h3>
-<input #username class="usa-input grid-col" id="username" name="username" placeholder="Enter a cool username!" type="text">
+<div class="formContainer">
+     <button class="exit" type="button" (click)="sendEmitterToExitLoginScreen('exitRegister')">x</button>
+<div class="form">
 
-<input #password placeholder="Enter a super secret password!" class="usa-input grid-col" id="password" name="password" type="password">
+<input #username id="username" name="username" placeholder="Username" type="text">
 
-<input #emailOrEducationCode placeholder="Email or Education Code" class="usa-input grid-col" id="emailOrEducationCode" name="emailOrEducationCode" type="text">
+<input #password placeholder="Password" id="password" name="password" type="password">
 
-<button (click)="onSubmit(username.value, password.value, emailOrEducationCode.value)" class="grid-col" class="usa-button">Submit</button>
+<input #emailOrEducationCode placeholder="Email or Education Code" id="emailOrEducationCode" name="emailOrEducationCode" type="text">
+
+<button class="login"  (click)="onSubmit(username.value, password.value, emailOrEducationCode.value)">Login</button>
 </div>
+</div>
+
 
 
 

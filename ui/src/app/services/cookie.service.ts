@@ -11,11 +11,10 @@ export class CookieController {
 
      setCookie(currentAccount: Account) {
           this.cookieService.set('previous-login', JSON.stringify(currentAccount))
-
-          this.cookieValue = this.cookieService.get('previous-login');
-          this.logger.makeLog("Cookie Service", "Cookie created and set: " + this.cookieValue);
+          this.logger.makeLog("Cookie Service", "Cookie Created and Set ");
      }
-     getCookie() {
+     getCookie(cookieName: string) {
+          this.cookieValue = this.cookieService.get('previous-login');
           this.logger.makeLog("Cookie Service", "Cookie Returned: " + this.cookieValue);
           return this.cookieValue;
      }

@@ -2,12 +2,16 @@ import { Injectable} from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { Account } from "../models/account-model";
 import { CookieController } from "./cookie.service";
+import { Logger } from "./logger.service";
+import { LogInService } from "./login-user-service.service";
 
 
 @Injectable()
 export class CreateUserService {
-  constructor (private cookieService: CookieService,
-    private cookieController: CookieController) {}
+  constructor (
+    private cookieController: CookieController,
+    private logger: Logger,
+    private login: LogInService) {}
 
   MakeNewAccountAttempt(account: Account) {
   var myHeaders = new Headers();
@@ -23,11 +27,9 @@ fetch("http://localhost:8080/users/register", requestOptions)
 .then(response => response.text())
 .then(result => {
   console.log(result);
-  this.cookieService.set("currentUser", JSON.stringify(account))
   this.cookieController.setCookie(account);
-  this.cookieController.getCookie();
-  console.log("poop"  + this.cookieService.check("currentUser"));
-  this.cookieService.set
+  this.logger.makeLog("Create User Service", "Cookie Created for: " + account);
+  this.login.checkForExistingLoginSession();
 })
 .catch(error => console.log('error', error));
 }

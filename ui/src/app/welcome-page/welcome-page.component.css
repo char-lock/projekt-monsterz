@@ -1,77 +1,85 @@
 * {
-     margin: 8px;
-     padding: 8px;
      z-index: 3;
 }
-button {
-     margin: 20px auto;
-     padding: 20px 35px;
-     border-radius: 20px;
-     border: 2px dotted black;
-     display: block;
+a {
+     text-decoration: underline;
+     margin-top: 10px;
 }
-div:first-of-type {
-     background-color: transparent;
-     color: white;
+.intro-text {
+     padding-top: 20px;
 }
-.background-image {
-     background-image: url(../../assets/backgrounds/vecteezy_beautiful-green-hills-with-big-tree-and-mountains-row-on-the_5949107.jpg);
-     background-repeat: no-repeat;
-     background-position: 25% ;
-     background-size: cover;
-     width: auto;
-     height: auto;
-}
-div {
-     border-radius: 10px;
-}
-a:hover{
-     cursor: pointer;
-     color: black;
-     
-}
-.welcomeScreenMonster1 {
+main {
+     background-color: #090323;
+     color: #bfc1c4;
      text-align: center;
-     margin: 0 auto;
+     height: 96.58%;
+     width: 100%;
      display: flex;
      flex-direction: column;
-     height: 200px;
+     justify-content: space-between;
+}
+button {
+     padding: 11px 35px 11px 35px;
+     background-color: #850038;
+     color: white;
+     border: transparent;
+     margin: 0 auto;
+     border-radius: 20px;
+     
+}
+footer {
+     background-color: #3b082d;
+     width: 100%;
+     color: #f8f8f8;
+}
+.characterSheet {
+     position: fixed;
+     left: 8%;
+}
+.button-group {
+     justify-content: center;
+     display: flex;
+     flex-direction: column;
 }
 
-.welcomeScreenMonster1Decor {
-     position: relative;
+.welcomeScreenMonster {
+     display: flex;
+     flex-direction: column;
      max-width: 120px;
-     top: -14px;
+}
+.welcomeScreenBodyParts {
+     position: relative;
+
+}
+.welcomeScreenMonsterDecor {
+     position: relative;
+     top: -94px;
      right: 9px;
      z-index: 1;
 }
-.welcomeScreenMonster1Eyes {
+.welcomeScreenMonsterEyes {
      
     position: relative;
-    top: -43px;
+    top: -94px;
     width: 68px;
     right: -15px;
 
 }
-.characterSheet {
-     display: flex;
-     flex-wrap: wrap;
-     
-}
-.welcomeScreenMonster1Mouth {
+
+.welcomeScreenMonsterMouth {
      position: relative;
-     top: -78px;
+     top: -94px;
      width: 100px;
 }
-.welcomeScreenMonster1Body {
+.welcomeScreenMonsterBody {
      position: relative;
      top: -173px;
      z-index: 1;
      max-width: 100px;
 }
-.welcomeScreenMonster1LeftArm {
+.welcomeScreenMonsterLeftArm {
      position: relative;
-     top: -268px;
+     top: -256px;
      transform: scaleX(-1);
      right: 23px;
      height: 49px;
@@ -82,12 +90,12 @@ a:hover{
      position: relative;
     animation: handWave 2s 3s 24 alternate-reverse forwards;
     z-index: 0;
-    top: -335px;
+    top: -302px;
     right: -70px;
     height: 49px;
     width: 52px;
 }
-.welcomeScreenMonster1RightArm {
+.welcomeScreenMonsterRightArm {
      position: relative;
     animation: handWave 4s 1s 24 alternate-reverse forwards;
     z-index: 0;
@@ -96,24 +104,23 @@ a:hover{
     height: 49px;
     width: 52px;
 }
-.welcomeScreenMonster1LeftLeg {
+.welcomeScreenMonsterLeftLeg {
      position: relative;
-     top: -351px;
+     top: -307px;
      height: 51px;
      width: 34px;
      z-index: 0;
      right: -52px;
 
 }
-.welcomeScreenMonster1RightLeg {
+.welcomeScreenMonsterRightLeg {
      position: relative;
-     top: -418px;
+     top: -357px;
      right: -16px;
      height: 51px;
      width: 34px;
      transform: scaleX(-1);
      z-index: 0;
-
 }
 
 @keyframes handWave {
@@ -133,10 +140,8 @@ a:hover{
           transform: rotate(0deg);
      }
 }
+.caret-down {
+     transform: rotate(180deg);
+}
 
-@media screen and (max-width: 655px) {
-     .characterSheet div:first-of-type {
-          display: none;
-          
-     }
-   }
+

@@ -1,17 +1,11 @@
-* {
-     margin: 0 auto;
+main {
+     height: 100vh;
 }
 app-login-screen {
-     position: sticky;
-     top: 0;
-     z-index: 2;  
-     width: 95%;
+     position: fixed;
+     left: 50%;
+     transform: translateX(-50%);
+     z-index: 2;
+     width: 100%;
 }
- app-header, app-welcome-page {
-     position: relative;
-     z-index: 1;
-}
-
-
-
 

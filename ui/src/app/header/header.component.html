@@ -1,18 +1,12 @@
-<div class="usa-overlay"></div>
-<header class="usa-header usa-header--basic">
-     <div class="usa-nav-container">
-    <div class="usa-navbar">
-      <div class="usa-logo" id="-logo">
-        <em class="usa-logo__text "><a href="#" title="Home">ProjektMonsterz</a></em>
-      </div>
-      <button (click)="sendEmitterToLogin('login')" type="button" class="usa-menu-btn openmenu">Login / Register</button>
-    </div>
-    <nav aria-label="Primary navigation" class="usa-nav">
-      <ul class="usa-nav__primary usa-accordion">
-        <li class="usa-nav__primary-item ">
-          <a class="usa-nav-link"><span class="openmenu" (click)="sendEmitterToLogin('login')">Login / Register</span></a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+<header *ngIf="currentLogIn==false">
+    <nav>
+      <a>ProjektMonsterz</a>
+      <a (click)="sendEmitterToLogin('login')" class="openmenu" >Login</a>
+      </nav>
 </header>
+<header *ngIf="currentLogIn==true">
+  <nav>
+    <a>ProjektMonsterz</a>
+    <a class="openmenu">Dashboard</a>
+    </nav>
+</header >

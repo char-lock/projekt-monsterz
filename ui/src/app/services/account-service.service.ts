@@ -4,6 +4,7 @@ import { Account } from "../models/account-model";
 import { EmailValidate } from "./email-validation.service";
 import { Logger } from "./logger.service";
 import { CreateUserService } from "./create-user-service.service";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 export class AccountService {
@@ -11,7 +12,8 @@ export class AccountService {
           private emailValidate: EmailValidate,
           private cookieService: CookieService,
           private logger: Logger){}
-          isEmail: boolean = false;
+
+     isEmail: boolean = false;
      currentAccount: Account = {
           id: "",
           username: "",
@@ -23,7 +25,13 @@ export class AccountService {
                value: ""
           }
      }
+     private currentAccountObservable = new BehaviorSubject(this.currentAccount);
+     currentAccountObserve = this.currentAccountObservable.asObservable();
+
+     
      createNewAccount(username: string, password: string, emailOrEducationCode: string) {  
+          if (!(username == '' || password == ''))
+          {
           this.currentAccount.username = username;
           this.currentAccount.authKey = password; 
           this.currentAccount.verification.value = emailOrEducationCode;
@@ -41,7 +49,8 @@ export class AccountService {
           }
           this.createUserService.MakeNewAccountAttempt(this.currentAccount);
      }
+     }
      checkForExistingAccount(accountUsername: string) {
-
+          return this.currentAccount;
      }
 }
