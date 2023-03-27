@@ -1,14 +1,13 @@
-a, span {
+header {
+     background-color: #090222;
      color: white;
 }
-header {
-     background-color: #4D3F5C;
-}
-button {
-     background-color: #38A83B;
-}
-a:hover{
-     cursor: pointer;
-     color: black;
-     
+nav {
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+     height: 3.4vh;
+     width: 98%;
+     margin: 0 auto;
 }

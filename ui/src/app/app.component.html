@@ -1,15 +1,22 @@
-<main class="bg-emergency-dark" (click)="clickOutside($event)">
+<main (click)="clickOutside($event)" >
+
 <app-header 
-(newContentChangeEvent)="changeContent($event)"
+(newContentChangeEvent)="changeContent()"
 [ngStyle]="setStyle()"> </app-header>
 <app-login-screen
- (newContentChangeEvent)="changeContent($event)" 
- *ngIf="loginClick == true"
- [currentForm]= 'formChosen'
+*ngIf="loginClick==true"
+(newContentChangeEvent)="changeContent()" 
 >
+
 </app-login-screen>
-<app-welcome-page [ngStyle]="setStyle()" 
-(newContentChangeEvent)="changeContent($event)"
+<app-welcome-page 
+*ngIf="loggedIn==false" 
+[ngStyle]="setStyle()" 
+(newContentChangeEvent)="changeContent()"
 ></app-welcome-page>
-<app-footer></app-footer>
+<app-dashboard *ngIf="loggedIn==true">
+     
+</app-dashboard>
+
 </main>
+

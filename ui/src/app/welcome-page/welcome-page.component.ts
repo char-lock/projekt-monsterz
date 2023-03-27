@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-welcome-page',
@@ -9,6 +9,5 @@ export class WelcomePageComponent {
   @Output() newContentChangeEvent = new EventEmitter<string>();
   sendEmitterForRegisterScreen(value: string) {
     this.newContentChangeEvent.emit(value);
-    console.log("New Content Emitted!");
   }
 }

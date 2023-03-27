@@ -1,4 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { AccountService } from '../services/account-service.service';
+import { EmailValidate } from '../services/email-validation.service';
+import { Logger } from '../services/logger.service';
 
 @Component({
   selector: 'app-login-screen',
@@ -7,13 +10,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class LoginScreenComponent {
   @Output() newContentChangeEvent = new EventEmitter<string>();
-  @Input() currentForm = '';
-  getSelectedForm(value: string) {
-    this.currentForm = value;
-  }
+
+  constructor(private checkEmail: EmailValidate,
+    private logger: Logger,
+    private accountService: AccountService) {}
+
   sendEmitterToExitLoginScreen(value: string) {
     this.newContentChangeEvent.emit(value);
-    console.log("New Content Emitted!" + value);
-    this.currentForm = value;
+    this.logger.makeLog("Login Screen", "Exitted Login Screen")
+  }
+  onSubmit(username: string, password: string, emailOrEducationCode: string) {
+    this.sendEmitterToExitLoginScreen('close');
+    this.accountService.createNewAccount(username, password, emailOrEducationCode);
+    this.logger.makeLog("Login Screen", "Sent username, string and email or education code to Account Service: " + username + " " + password + " " + emailOrEducationCode);
   }
 }
