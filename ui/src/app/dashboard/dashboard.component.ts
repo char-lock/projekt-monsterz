@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit {
     private moduleService: ModuleService){}
   ngOnInit() {
     this.accountService.currentAccountObserve.subscribe((value) => {
-      this.username = value.username;
     });  }
     moduleArray: DashBoardModuleModel[] = this.moduleService.getModules();
     

@@ -15,20 +15,25 @@
      </div>
 </div>
 <div class="scoreSheet">
+     <div class="scoreSheetText">
+          <h6>Good Work!</h6>
+          <p>Your score is:</p>
+          <h6>{{ score }}</h6>
+     </div>
      <div id="myProgress">
-     <div id="myBar">       
+     <div id="myBar">   
+          <h6 class="percentageOfCourseCompletion">100%</h6>
      </div>
      </div>
-     <h6>Good Work!</h6>
-     <p>Your score is:</p>
-     <h6>{{ score }}</h6>
+     
 </div>
 </div>
 <div class="column-container">
      <app-dashboard-module 
      class="module"
      *ngFor="let module of moduleArray; let i = index"
-     [currentModule]="module"></app-dashboard-module>
+     [currentModule]="module">
+</app-dashboard-module>
 </div>
 </main>
      
