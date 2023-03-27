@@ -6,6 +6,7 @@ main {
      padding: 10px;
 }
 
+
 .intro-content {
      background-color: white;
      border-radius: 20px;
@@ -37,14 +38,13 @@ button {
      padding: 15px 0 0 15px;
 
      margin: 0 auto;
-     width: 70px;
-     height: 70px;
-     background: linear-gradient(90deg, green 50%, black 50%);
+     width: 100px;
+     height: 100px;
     }
     #myBar {
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 70px;
+      height: 70px;
       background-color: white;
       text-align: center;
 
@@ -61,6 +61,32 @@ button {
  }
  .percentageOfCourseCompletion {
      padding-top: 10px;
+ }
+ :host /deep/ table,  :host /deep/ tr {
+     border: .2px dotted black;
+
+ }
+ :host /deep/ table {
+     width: 100%;
+ }
+ :host /deep/ tr {
+     width: 100%;
+     display: flex;
+     justify-content: space-around;
+}
+:host /deep/ button {
+     margin: 10px 10px 10px 0px;
+     padding: 11px 35px 11px 35px;
+     background-color: #850038;
+     color: white;
+     border: transparent;
+     border-radius: 20px;
+ }
+ .blocker {
+     height: 60px;
+     width: 165px;
+     margin: -52px 0 0 0;
+     background-color: white;
  }
 
 
@@ -86,11 +112,9 @@ button {
      .column-container {
           display: grid;
           gap: 40px;
-          grid-template-columns: 1fr 1fr 1fr;
-          grid-template-columns: minmax(max-content);
      }
      .intro-content {
-         
+          
           grid-template-columns: 3fr 1fr;
           
      }

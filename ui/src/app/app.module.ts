@@ -15,6 +15,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogInService } from './services/login-user-service.service';
 import { DashboardModuleComponent } from './dashboard-module/dashboard-module.component';
 import { ModuleService } from './services/module-service';
+import { AlertComponent } from './alert/alert.component';
 @NgModule({
   declarations: [
     
@@ -24,7 +25,8 @@ import { ModuleService } from './services/module-service';
     WelcomePageComponent,
     DashboardComponent,
     DashboardModuleComponent,
-    DashboardComponent
+    DashboardComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,

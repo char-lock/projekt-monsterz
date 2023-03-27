@@ -20,13 +20,16 @@
           <p>Your score is:</p>
           <h6>{{ score }}</h6>
      </div>
-     <div id="myProgress">
+     <div 
+     id="myProgress"
+     [ngStyle]="setProgressBar()">
      <div id="myBar">   
-          <h6 class="percentageOfCourseCompletion">100%</h6>
+          <h6 class="percentageOfCourseCompletion">{{ progress }}%</h6>
      </div>
      </div>
      
 </div>
+<div class="blocker"></div>
 </div>
 <div class="column-container">
      <app-dashboard-module 
