@@ -23,7 +23,7 @@ export class AppComponent implements OnInit{
   }
   
   title ='projekt-monsterz-front'
-  alertTriggered: boolean = true;
+  alertTriggered: boolean = false;
   loginClick: boolean = false;
   loggedIn: boolean =  false;
   clickedOutsideVar = false;

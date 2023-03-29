@@ -5,7 +5,7 @@
 <app-alert *ngIf="alertTriggered==true"
 (newContentChangeEvent)="alertTriggeredExit()"></app-alert>
 <app-login-screen
-*ngIf="loginClick==true"
+*ngIf="loginClick==true && loggedIn == false"
 (newContentChangeEvent)="changeContent($event)" 
 >
 

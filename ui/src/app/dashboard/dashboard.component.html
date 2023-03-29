@@ -1,42 +1,96 @@
-<main>
-<header>
-     <h3>Hello {{username}}, Let's get to work</h3>
-</header>
-<div class="intro-content">
-<div >
-     <h5>
-          Hi, {{username}}
-     </h5>
-     <p>Welcome to the new learning platform offered by Charlie and Friends inc.
-     </p>
-     <div>
-          <button>Continue Learning</button>
-          <button>Browse Other Tutorials</button>
-     </div>
-</div>
-<div class="scoreSheet">
-     <div class="scoreSheetText">
-          <h6>Good Work!</h6>
-          <p>Your score is:</p>
-          <h6>{{ score }}</h6>
-     </div>
-     <div 
-     id="myProgress"
-     [ngStyle]="setProgressBar()">
-     <div id="myBar">   
-          <h6 class="percentageOfCourseCompletion">{{ progress }}%</h6>
-     </div>
+<main class="grid-area">
+
+     <div class="scoreSheet">
+          <div class="scoreSheetText">
+          </div>
+          <div id="myProgress" [ngStyle]="setProgressBar()">
+               <div id="myBar">
+                    <h6 class="percentageOfCourseCompletion">{{ progress }}%</h6>
+               </div>
+          </div>
+          <div class="blocker">
+               <h1>Unit Progress</h1>
+               <h2>{{ CurrentLesson }}</h2>
+          </div>
      </div>
      
-</div>
-<div class="blocker"></div>
-</div>
-<div class="column-container">
-     <app-dashboard-module 
-     class="module"
-     *ngFor="let module of moduleArray; let i = index"
-     [currentModule]="module">
-</app-dashboard-module>
-</div>
+
+     <div class="main-selection">
+          <div class="main-selection-text">
+               <h1>Continue?</h1>
+               <h1>Yes</h1>
+          </div>
+          <div class="main-selection-footer">
+               <h4>Explore Other Units</h4>
+          </div>
+     </div>
+
+
+     <div class="leaderboard">
+          <h1>Top Monsterz</h1>
+          <table *ngIf="globalLeaderBoardSelected==true">
+               <tr *ngFor="let leaders of globalLeaderBoard">
+                    <td class="circle-color"></td>
+                    <td class="username">{{ leaders[0] }}</td>
+                    <td class="points">{{ leaders[1] }}</td>
+               </tr>
+               <tr>
+                    <td class="circle-color"></td>
+                    <td class="username">You</td>
+                    <td class="points">{{ score }}</td>
+               </tr>
+          </table>
+          <table *ngIf="globalLeaderBoardSelected==false">
+               <tr *ngFor="let leaders of friendsOrClassLeaderBoard">
+                    <td class="circle-color"></td>
+                    <td class="username">{{ leaders[0] }}</td>
+                    <td class="points">{{ leaders[1] }}</td>
+               </tr>
+               <tr>
+                    <td class="circle-color"></td>
+                    <td class="username">You</td>
+                    <td class="points">{{ score }}</td>
+               </tr>
+          </table>
+     </div>
+
+     <div class="leaderboardToggle">
+          <img class="globeIcon" src="../../../assets/icons/globe.svg">
+          <label class="switch">
+               <input type="checkbox" (click)="onToggleButtonClick()">
+               <span class="slider round"></span>
+          </label>
+          <img class="friendsIcon" src="../../../assets/icons/friends.svg">
+     </div>
+     <div class="monstercage">
+     <div class="characterSheet">
+               <!-- image container below: -->
+               <div class="welcomeScreenMonster">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterDecor"
+                         alt="Welcome Screen Monster's Head Decor"
+                         src="../../assets/welcome-screen-monsters/monster0_detail.png">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterEyes"
+                         alt="Welcome Screen Monster's Eyes"
+                         src="../../assets/welcome-screen-monsters/monster0_eye.png">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterMouth"
+                         alt="Welcome Screen Monster's Body"
+                         src="../../assets/welcome-screen-monsters/monster0_mouth.png">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterBody"
+                         alt="Welcome Screen Monster's Body"
+                         src="../../assets/welcome-screen-monsters/monster0_body.png">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterLeftArm"
+                         alt="Welcome Screen Monster's Left Arm"
+                         src="../../assets/welcome-screen-monsters/monster0_arm.png">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonster2RightArm"
+                         alt="Welcome Screen Monster's Right Arm"
+                         src="../../assets/welcome-screen-monsters/monster0_arm.png">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterLeftLeg"
+                         alt="Welcome Screen Monster's Left Leg"
+                         src="../../assets/welcome-screen-monsters/monster0_leg.png">
+                    <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterRightLeg"
+                         alt="Welcome Screen Monster's Rigth Leg"
+                         src="../../assets/welcome-screen-monsters/monster0_leg.png">
+               </div>
+          </div>
+     </div>
 </main>
-     

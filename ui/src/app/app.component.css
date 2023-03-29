@@ -1,5 +1,6 @@
 main {
      height: 100vh;
+     overflow: hidden;
 }
 app-login-screen {
      position: fixed;
