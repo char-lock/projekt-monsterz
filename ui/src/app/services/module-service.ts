@@ -31,7 +31,7 @@ export class ModuleService {
           new DashBoardModuleModel ("<h5>Lorem Ipsum 3</h5>", '', "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus maximus lectus sit amet lectus fermentum, ac blandit orci convallis. Donec a venenatis nisl, ut dictum nulla. Sed tincidunt tortor nise.</p>"),
      ];
      getModules() {
-          return this.module;
+        return this.module;
      }
      
 }

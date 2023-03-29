@@ -1,0 +1,33 @@
+<main>
+  <header>
+    <h3>Hello {{getUsername()}}, Let's get to work</h3>
+  </header>
+  <div class="intro-content">
+    <div>
+      <h5>Hi, {{getUsername()}}</h5>
+      <div>
+        <button>Continue Learning</button>
+        <button>Browse Other Tutorials</button>
+      </div>
+    </div>
+    <div class="scoreSheet">
+      <div class="scoreSheetText">
+        <h6>Good Work!</h6>
+        <p>Your score is:</p>
+        <h6>{{getScore()}}</h6>
+      </div>
+      <div id="myProgress">
+        <div id="myBar">   
+          <h6 class="percentageOfCourseCompletion">100%</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column-container">
+    <app-dashboard-module 
+      class="module"
+      *ngFor="let module of moduleArray; let i = index"
+      [currentModule]="module"
+    ></app-dashboard-module>
+  </div>
+</main>

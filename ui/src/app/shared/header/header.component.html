@@ -1,0 +1,9 @@
+<header>
+  <nav>
+    <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Projekt Monsterz</a>
+    <a (click)="OpenLoginModal()" class="openmenu" *ngIf="!IsLoggedIn()">Login</a>
+    <a class="openmenu" routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="IsLoggedIn()">Dashboard</a>
+    <a (click)="Logout()" class="openmenu" *ngIf="IsLoggedIn()">Logout</a>
+  </nav>
+</header>
+<app-login-screen *ngIf="IsLoginModalOpen()"></app-login-screen>

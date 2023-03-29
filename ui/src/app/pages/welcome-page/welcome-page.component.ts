@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ApplicationStateService } from 'src/app/services/application-state.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -6,8 +7,11 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./welcome-page.component.css']
 })
 export class WelcomePageComponent {
-  @Output() newContentChangeEvent = new EventEmitter<string>();
-  sendEmitterForRegisterScreen(value: string) {
-    this.newContentChangeEvent.emit(value);
+  constructor(
+    private appState: ApplicationStateService
+  ) {}
+
+  OpenRegistrationModal() {
+    this.appState.SetLoginModalState(2);
   }
 }

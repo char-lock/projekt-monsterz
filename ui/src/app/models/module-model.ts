@@ -1,6 +1,10 @@
-
 export class DashBoardModuleModel {
-     constructor(public title: string, public optionalAssetURI: string, public content: string){
-     }
-     
+  title: string;
+  optionalAssetURI: string;
+  content: string;
+  constructor(title: string, optionalAssetUri: string, content: string) {
+    this.title = title;
+    this.optionalAssetURI = optionalAssetUri;
+    this.content = content;
+  }
 }
