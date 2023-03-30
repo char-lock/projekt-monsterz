@@ -32,7 +32,7 @@ export class LoginScreenComponent implements OnInit {
         if(
           $event.target.closest(".login-modal-container") === null
           && this.IsOpen()
-          && !$event.target.classList.contains("openmenu")
+          && !$event.target.classList.contains("login-btn")
         ) {
           this.Close();
         }

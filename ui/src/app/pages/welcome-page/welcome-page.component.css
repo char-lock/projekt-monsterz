@@ -1,147 +1,48 @@
-* {
-     z-index: 3;
-}
-a {
-     text-decoration: underline;
-     margin-top: 10px;
-}
-.intro-text {
-     padding-top: 20px;
-}
-main {
-     background-color: #090323;
-     color: #bfc1c4;
-     text-align: center;
-     height: 96.58%;
-     width: 100%;
-     display: flex;
-     flex-direction: column;
-     justify-content: space-between;
-}
-button {
-     padding: 11px 35px 11px 35px;
-     background-color: #850038;
-     color: white;
-     border: transparent;
-     margin: 0 auto;
-     border-radius: 20px;
-     
-}
-footer {
-     background-color: #3b082d;
-     width: 100%;
-     color: #f8f8f8;
-}
-.characterSheet {
-     position: fixed;
-     left: 8%;
-}
-.button-group {
-     justify-content: center;
-     display: flex;
-     flex-direction: column;
-}
-
-.welcomeScreenMonster {
-     display: flex;
-     flex-direction: column;
-     max-width: 120px;
-}
-.welcomeScreenBodyParts {
-     position: relative;
-
-}
-.welcomeScreenMonsterDecor {
-     position: relative;
-     top: -94px;
-     right: 9px;
-     z-index: 1;
-}
-.welcomeScreenMonsterEyes {
-     
-    position: relative;
-    top: -94px;
-    width: 68px;
-    right: -15px;
+main.home {
+  background-color: #fe1a55;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 
 }
 
-.welcomeScreenMonsterMouth {
-     position: relative;
-     top: -94px;
-     width: 100px;
-}
-.welcomeScreenMonsterBody {
-     position: relative;
-     top: -173px;
-     z-index: 1;
-     max-width: 100px;
-}
-.welcomeScreenMonsterLeftArm {
-     position: relative;
-     top: -256px;
-     transform: scaleX(-1);
-     right: 23px;
-     height: 49px;
-    width: 52px;
-     z-index: 0;
-}
-.welcomeScreenMonster2RightArm {
-     position: relative;
-    animation: handWave 2s 3s 24 alternate-reverse forwards;
-    z-index: 0;
-    top: -302px;
-    right: -70px;
-    height: 49px;
-    width: 52px;
-}
-.welcomeScreenMonsterRightArm {
-     position: relative;
-    animation: handWave 4s 1s 24 alternate-reverse forwards;
-    z-index: 0;
-    top: -335px;
-    right: -70px;
-    height: 49px;
-    width: 52px;
-}
-.welcomeScreenMonsterLeftLeg {
-     position: relative;
-     top: -307px;
-     height: 51px;
-     width: 34px;
-     z-index: 0;
-     right: -52px;
-
-}
-.welcomeScreenMonsterRightLeg {
-     position: relative;
-     top: -357px;
-     right: -16px;
-     height: 51px;
-     width: 34px;
-     transform: scaleX(-1);
-     z-index: 0;
+section.left {
+  height: 100%;
+  width: 60%;
 }
 
-@keyframes handWave {
-     from {
-          transform: rotate(0deg);
-     }
-     10% {
-          transform: rotate(-35deg);
-     }
-     20% {
-          transform: rotate(0deg);
-     }
-     30% {
-          transform: rotate(-35deg);
-     }
-     40% {
-          transform: rotate(0deg);
-     }
-}
-.caret-down {
-     transform: rotate(180deg);
+section.right {
+  height: 100%;
+  width: 39%;
 }
 
+.view-screen {
+  height: 72.76vh;
+  width: 58.33vw;
+  background-color: #c0f6ff;
+  border-radius: 45px;
+  margin-left: 1em;
+  margin-top: 1em;
+  border-top-color: #7dd3e1;
+  border-top-width: 1em;
+  border-top-style: solid;
+}
 
+.frequency-indicator {
+  width: 58.33vw;
+  height: 8.70vh;
+  background-color: #c0f6ff;
+  border-radius: 15px;
+  margin-left: 1em;
+  margin-top: 2em;
+}
+
+.frequency-indicator .needle {
+  background-color: #cc0448;
+  height: 90%;
+  width: 1%;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  margin-left: 67%;
+  margin-top: 1%;
+}
