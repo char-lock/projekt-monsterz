@@ -29,17 +29,24 @@ export class DashboardComponent implements OnInit {
     this.accountService.currentAccountObserve.subscribe((value) => {
     });  
   }
+  leaderBoard: (string | number)[][] = this.friendsOrClassLeaderBoard;
+
     
     setProgressBar() {
       let styles = {
         // 'background': 'linear-gradient(90deg, green 15%, black 85%)',
         'background': 
-        'linear-gradient(90deg, darkgreen ' + 0 + '% ' + (this.progress) + '%, black ' + (this.progress) + '% 100%)'        
+        'linear-gradient(90deg, #4dd700 ' + 0 + '% ' + (this.progress) + '%, #86a9b0 ' + (this.progress) + '% 100%)'        
       }
         return styles;
     }
     onToggleButtonClick() {
       this.globalLeaderBoardSelected = !this.globalLeaderBoardSelected;
-      console.log("This Works!")
+      if (this.globalLeaderBoardSelected) {
+        this.leaderBoard = this.globalLeaderBoard;
+      }
+      else {
+      this.leaderBoard = this.friendsOrClassLeaderBoard;
+      }
     }
   }

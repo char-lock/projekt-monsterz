@@ -14,6 +14,7 @@ import { CookieController } from './services/cookie.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogInService } from './services/login-user-service.service';
 import { AlertComponent } from './alert/alert.component';
+import { appBackground } from './directives/monster-cage-background-directive';
 @NgModule({
   declarations: [
     
@@ -23,6 +24,7 @@ import { AlertComponent } from './alert/alert.component';
     WelcomePageComponent,
     DashboardComponent,
     AlertComponent,
+    appBackground,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,7 @@ import { AlertComponent } from './alert/alert.component';
          EmailValidate,
          CookieController,
          LogInService,
+         
   ],
   bootstrap: [AppComponent]
 })

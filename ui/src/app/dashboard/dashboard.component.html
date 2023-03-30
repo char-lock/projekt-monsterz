@@ -9,11 +9,11 @@
                </div>
           </div>
           <div class="blocker">
-               <h1>Unit Progress</h1>
-               <h2>{{ CurrentLesson }}</h2>
+               <h1>Unit Progress <hr> {{ CurrentLesson }}</h1>
           </div>
      </div>
      
+    
 
      <div class="main-selection">
           <div class="main-selection-text">
@@ -28,42 +28,46 @@
 
      <div class="leaderboard">
           <h1>Top Monsterz</h1>
-          <table *ngIf="globalLeaderBoardSelected==true">
-               <tr *ngFor="let leaders of globalLeaderBoard">
-                    <td class="circle-color"></td>
+          <table>
+               <tr *ngFor="let leaders of leaderBoard">
+                    <td>
+                         <div class="circle-color"></div>
+                    </td>
                     <td class="username">{{ leaders[0] }}</td>
                     <td class="points">{{ leaders[1] }}</td>
                </tr>
                <tr>
-                    <td class="circle-color"></td>
+                    <td >
+                         <div class="circle-color"></div>
+                    </td>
                     <td class="username">You</td>
                     <td class="points">{{ score }}</td>
                </tr>
           </table>
-          <table *ngIf="globalLeaderBoardSelected==false">
-               <tr *ngFor="let leaders of friendsOrClassLeaderBoard">
-                    <td class="circle-color"></td>
-                    <td class="username">{{ leaders[0] }}</td>
-                    <td class="points">{{ leaders[1] }}</td>
-               </tr>
-               <tr>
-                    <td class="circle-color"></td>
-                    <td class="username">You</td>
-                    <td class="points">{{ score }}</td>
-               </tr>
-          </table>
+
      </div>
 
      <div class="leaderboardToggle">
-          <img class="globeIcon" src="../../../assets/icons/globe.svg">
+          <div class="icon-container"> 
+          <img class="icon" src="../../../assets/icons/globe.svg">
+          <div class="circle"></div>
+          </div>
           <label class="switch">
                <input type="checkbox" (click)="onToggleButtonClick()">
                <span class="slider round"></span>
           </label>
-          <img class="friendsIcon" src="../../../assets/icons/friends.svg">
+          <div class="icon-container">
+          <img class="icon" src="../../../assets/icons/friends.svg">
+          <div class="circle"></div>
+          </div>
+
      </div>
-     <div class="monstercage">
-     <div class="characterSheet">
+     <div appBackground class="monstercage">
+
+
+
+             
+     <div  class="characterSheet">
                <!-- image container below: -->
                <div class="welcomeScreenMonster">
                     <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterDecor"
@@ -93,4 +97,9 @@
                </div>
           </div>
      </div>
+     
 </main>
+<footer>
+     <h2>MONSTER-O-VISION</h2>
+</footer>
+
