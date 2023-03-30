@@ -1,44 +1,38 @@
-footer {
-     text-align: center;
-     grid-area: footer;
-     background-color: #bf2855;
-     width: 100%;
-     margin: 0 auto;
-     padding-top: 14px;
-     padding-bottom: 14px;
-
-     letter-spacing: 2px;
-     font-size: 1.5rem;
-     color: white;
-}
 .grid-area {
      background-color: #f4254c;
      height: 90%;
+     width: 100%;
      display: grid;
      grid-gap: 40px;
-     grid-template-areas: 
-     "leaderboard mainselection scoresheet"
-     "leaderboard mainselection scoresheet"
-     "leaderboard mainselection monstercage"
-     "leaderboardtoggle mainselection monstercage"
-     "footer footer footer";
+     grid-template-areas:
+          "leaderboard mainselection scoresheet"
+          "leaderboard mainselection scoresheet"
+          "leaderboard mainselection monstercage"
+          "leaderboardtoggle mainselection monstercage";
      grid-template-columns: 1fr 2.8fr 1fr;
-     grid-template-rows: 1fr 1fr 1fr 1fr .1fr;
+     grid-template-rows: 1fr 1fr 1fr 1fr;
      align-items: center;
+     align-self: center;
+     align-content: center;
      overflow: hidden;
      padding: 20px;
+     align-items: center;
+     justify-items: center;
 }
+
 .icon-container {
      display: flex;
      flex-direction: column;
      align-items: center;
 }
+
 .icon {
      padding: 5px;
      width: 40px;
      height: 30px;
      color: white;
 }
+
 .circle {
      border-radius: 100%;
      width: 10px;
@@ -48,19 +42,33 @@ footer {
 
 .scoreSheet {
      background-color: #c2f5ff;
-     padding: 80px 30px 30px 30px;
      grid-area: scoresheet;
      align-self: center;
      border-radius: 20px;
      height: 100%;
      width: 100%;
-     text-align: center; 
-     box-shadow: -1.2px -1.2px green;
+     text-align: center;
+
      border-bottom: transparent;
      border-right: transparent;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     box-shadow: 0px -10px 0px 0px #83d1e1;
+}
+
+.scoreSheet h1 {
+     padding-top: 10px;
+}
+
+.main-selection h1 {
+     font-size: 5rem;
 }
 
 .main-selection {
+     box-shadow: 0px -10px 0px 0px #83d1e1;
+
+
      background-color: #c2f5ff;
 
      grid-area: mainselection;
@@ -69,9 +77,10 @@ footer {
      border-radius: 20px;
      padding: 0 50px 0 50px;
 
-     
+
 
 }
+
 .main-selection-text {
      text-align: center;
      display: flex;
@@ -81,6 +90,9 @@ footer {
 }
 
 .leaderboard {
+     box-shadow: 0px -10px 0px 0px #83d1e1;
+
+
      background-color: #c2f5ff;
 
      grid-area: leaderboard;
@@ -94,26 +106,53 @@ footer {
      padding: 20px;
 }
 
-.leaderboard table{
+.leaderboard table {
      text-transform: uppercase;
      text-align: left;
      vertical-align: bottom;
-     text-align: left;  
+     text-align: left;
      letter-spacing: 2px;
-     height: 100%;
      width: 100%;
+     height: 100%;
 }
 
-tr:nth-child(odd){
+tr:nth-child(odd) {
      background-color: #4C8BF5;
      color: #fff;
 }
-tr:last-of-type{
-     background-color: black;
-     text-decoration: dotted;
+
+td {
+     border-style: none solid solid none;
+     padding: 10px;
 }
 
+tr:first-child td:first-child {
+     border-top-left-radius: 10px;
+}
+
+tr:first-child td:last-child {
+     border-top-right-radius: 10px;
+}
+
+tr:last-child td:first-child {
+     border-bottom-left-radius: 10px;
+}
+
+tr:last-child td:last-child {
+     border-bottom-right-radius: 10px;
+}
+
+tr:first-child td {
+     border-top-style: solid;
+}
+
+tr td:first-child {
+     border-left-style: solid;
+}
+
+
 .circle-color {
+     margin-left: 1px;
      width: 30px;
      height: 30px;
      border-radius: 100%;
@@ -121,6 +160,9 @@ tr:last-of-type{
 }
 
 .leaderboardToggle {
+     box-shadow: 0px -10px 0px 0px #83d1e1;
+
+
      grid-area: leaderboardtoggle;
      background-color: #c2f5ff;
      height: 100%;
@@ -143,7 +185,6 @@ tr:last-of-type{
      align-self: center;
      border-radius: 20px;
      overflow: hidden;
-
 }
 
 #myProgress {
@@ -153,49 +194,53 @@ tr:last-of-type{
      margin: 0 auto;
      width: 100px;
      height: 100px;
-    }
-    #myBar {
-      border-radius: 50%;
-      width: 70px;
-      height: 70px;
-      text-align: center;
-      background-color: #c2f5ff;
+}
 
-
- }
-
-
- .blocker {
-     height: 60px;
-     width: 100%;
-     margin: -70px 0 0 0;
+#myBar {
+     border-radius: 50%;
+     width: 70px;
+     height: 70px;
+     text-align: center;
      background-color: #c2f5ff;
- }
-.percentageOfCourseCompletion {
-     padding-top:15px ;
 }
 
 
- .switch {
+.blocker {
+     height: 80px;
+     width: 100%;
+     margin: -50px 0 0 0;
+     background-color: #c2f5ff;
+}
+
+.percentageOfCourseCompletion {
+     padding-top: 15px;
+}
+
+
+.switch {
      position: relative;
      display: inline-block;
      width: 60px;
      height: 34px;
-   }
-   
-   .switch input { 
+}
+
+.switch input {
      opacity: 0;
      width: 0;
      height: 0;
-   }
-   iframe {
+}
+
+iframe {
      z-index: 6;
-   }
-   svg {
-     color: white;
-   }
-   
-   .slider {
+}
+
+svg {
+     fill: white;
+     stroke: white;
+}
+     
+
+.slider {
      position: absolute;
      cursor: pointer;
      top: 0;
@@ -205,9 +250,9 @@ tr:last-of-type{
      background-color: #ccc;
      -webkit-transition: .4s;
      transition: .4s;
-   }
-   
-   .slider:before {
+}
+
+.slider:before {
      position: absolute;
      content: "";
      height: 26px;
@@ -217,33 +262,35 @@ tr:last-of-type{
      background-color: white;
      -webkit-transition: .4s;
      transition: .4s;
-   }
-   
-   input:checked + .slider {
+}
+
+input:checked+.slider {
      background-color: #f4224c;
-   }
-   
-   input:focus + .slider {
+}
+
+input:focus+.slider {
      box-shadow: 0 0 1px #2196F3;
-   }
-   
-   input:checked + .slider:before {
+}
+
+input:checked+.slider:before {
      -webkit-transform: translateX(26px);
      -ms-transform: translateX(26px);
      transform: translateX(26px);
-   }
-   
-   /* Rounded sliders */
-   .slider.round {
-     border-radius: 34px;
-   }
-   
-   .slider.round:before {
-     border-radius: 50%;
-   }
-.characterSheet {
-     align-self: center;
 }
+
+/* Rounded sliders */
+.slider.round {
+     border-radius: 34px;
+}
+
+.slider.round:before {
+     border-radius: 50%;
+}
+
+.characterSheet {
+     
+}
+
 .button-group {
      justify-content: center;
      display: flex;
@@ -255,9 +302,6 @@ tr:last-of-type{
      flex-direction: column;
      justify-content: center;
      margin: 0 auto;
- 
-     width: 100%;
-
 }
 
 
@@ -267,8 +311,8 @@ tr:last-of-type{
      z-index: 1;
      top: 0px;
      margin: 0 auto;
-
 }
+
 .welcomeScreenMonsterEyes {
      position: relative;
      margin: 0 auto;
@@ -284,6 +328,7 @@ tr:last-of-type{
      top: 0;
      z-index: 2;
 }
+
 .welcomeScreenMonsterBody {
      position: relative;
      z-index: 1;
@@ -293,6 +338,7 @@ tr:last-of-type{
      margin: 0 auto;
 
 }
+
 .welcomeScreenMonsterLeftArm {
      position: relative;
      transform: scaleX(-1);
@@ -304,6 +350,7 @@ tr:last-of-type{
      top: -288px;
 
 }
+
 .welcomeScreenMonster2RightArm {
      position: relative;
      animation: handWave 2s 3s 24 alternate-reverse forwards;
@@ -315,16 +362,18 @@ tr:last-of-type{
      top: -365px;
 
 }
+
 .welcomeScreenMonsterRightArm {
-    position: relative;
-    animation: handWave 4s 1s 24 alternate-reverse forwards;
-    z-index: 0;
-    right: -70px;
-    height: 49px;
-    width: 52px;
-    margin: 0 auto;
+     position: relative;
+     animation: handWave 4s 1s 24 alternate-reverse forwards;
+     z-index: 0;
+     right: -70px;
+     height: 49px;
+     width: 52px;
+     margin: 0 auto;
 
 }
+
 .welcomeScreenMonsterLeftLeg {
      position: relative;
      height: 51px;
@@ -334,14 +383,28 @@ tr:last-of-type{
      margin: 0 auto;
      top: -218px
 }
+
 .welcomeScreenMonsterRightLeg {
      position: relative;
-    height: 51px;
-    width: 34px;
-    transform: scaleX(-1);
-    z-index: 0;
-    margin: 0 auto;
-    top: -261px;
-    right: -24px;
+     height: 51px;
+     width: 34px;
+     transform: scaleX(-1);
+     z-index: 0;
+     margin: 0 auto;
+     top: -261px;
+     right: -24px;
 }
 
+
+footer {
+     text-align: center;
+     grid-area: footer;
+     background-color: #bf2855;
+     width: 100%;
+     height: 10%;
+     margin: 0 auto;
+     padding-bottom: 14px;
+     letter-spacing: 1px;
+     font-size: 1.5rem;
+     color: white;
+}

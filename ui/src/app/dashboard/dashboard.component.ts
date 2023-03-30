@@ -20,14 +20,17 @@ export class DashboardComponent implements OnInit {
     ["PixieTawk", 5000],
     ["Sleepy", 6000]
    ];
-  username: string = 'Poop Head';
   progress: number = 15;
   score: number = 200;
   CurrentLesson: string = "Lesson 1-8";
-  constructor(private accountService: AccountService){}
+  constructor(private accountService: AccountService
+    // private leaderBoardService: LeaderBoardService
+    ){}
   ngOnInit() {
-    this.accountService.currentAccountObserve.subscribe((value) => {
-    });  
+    // this.globalLeaderBoard = leaderBoardService.getGlobalLeaderboard();
+    // this.friendsOrClassLeaderBoard = leaderBoardService.getFriendLeaderboard();
+    this.globalLeaderBoard =this.globalLeaderBoard.sort(this.sortArrayByScore);
+    this.friendsOrClassLeaderBoard =this.friendsOrClassLeaderBoard.sort(this.sortArrayByScore);
   }
   leaderBoard: (string | number)[][] = this.friendsOrClassLeaderBoard;
 
@@ -48,5 +51,18 @@ export class DashboardComponent implements OnInit {
       else {
       this.leaderBoard = this.friendsOrClassLeaderBoard;
       }
+    }
+    sortArrayByScore(a: (string|number)[], b: (string|number)[]) {
+        if (a[1] === b[1]) {
+          return 0;
+        }
+        else {
+          if (a[1] < b[1]) {
+            return 1;
+          }
+          else {
+            return -1;
+          }
+        }
     }
   }
