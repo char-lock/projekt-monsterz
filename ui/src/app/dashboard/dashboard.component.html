@@ -8,11 +8,13 @@
                </div>
           </div>
           <div class="blocker">
-               <h1>Unit Progress <hr> {{ CurrentLesson }}</h1>
+               <h1>Unit Progress
+                    <hr> {{ CurrentLesson }}
+               </h1>
           </div>
      </div>
-     
-    
+
+
 
      <div class="main-selection">
           <div class="main-selection-text">
@@ -36,7 +38,7 @@
                     <td class="points">{{ leaders[1] }}</td>
                </tr>
                <tr>
-                    <td >
+                    <td>
                          <div class="circle-color"></div>
                     </td>
                     <td class="username">You</td>
@@ -47,22 +49,22 @@
      </div>
 
      <div class="leaderboardToggle">
-          <div class="icon-container"> 
-
-          <svg class="icon" > 
-               <use href="../../../assets/icons/globe.svg"></use>
-          </svg>
-          <div class="circle"></div>
+          <div class="icon-container">
+               <img class="icon" src="../../../assets/icons/globe.svg">
+               <div class="circle"
+               [ngStyle]="{'background-color': globalLeaderBoardSelected  ? 'lightgreen' : 'green'}">
+          </div>
           </div>
           <label class="switch">
                <input type="checkbox" (click)="onToggleButtonClick()">
                <span class="slider round"></span>
           </label>
-          <div class="icon-container">
-               <svg class="icon" width="100" height="100"> 
-                    <use href="../../../assets/icons/friends.svg"></use>
-               </svg>
-          <div class="circle"></div>
+          <div class="icon-container"
+               >
+
+               <img class="icon" src="../../../assets/icons/friends.svg">
+               <div class="circle"
+                [ngStyle]="{'background-color': globalLeaderBoardSelected  ? 'green' : 'lightgreen'}"></div>
           </div>
 
      </div>
@@ -70,8 +72,8 @@
 
 
 
-             
-     <div  class="characterSheet">
+
+          <div class="characterSheet">
                <!-- image container below: -->
                <div class="welcomeScreenMonster">
                     <img class="welcomeScreenMonsterBodyPart welcomeScreenMonsterDecor"
@@ -101,9 +103,7 @@
                </div>
           </div>
      </div>
-     
 </main>
 <footer>
      <h2>MONSTER-O-VISION</h2>
 </footer>
-
