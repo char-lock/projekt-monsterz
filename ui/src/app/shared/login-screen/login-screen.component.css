@@ -1,0 +1,88 @@
+.login-modal {
+  display: flex;
+  position: fixed;
+  z-index: 120;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.login-modal-container {
+  background-color: #9A103F;
+  margin: 10vh auto;
+  width: 60vw;
+  height: 30vw;
+  border-radius: 20px;
+  z-index: 121;
+  position: relative;
+}
+
+.login-modal-container .form {
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+.login-modal-container .btn-exit {
+  position: relative;
+  color: white;
+  padding: 0;
+  cursor: pointer;
+  margin-left: 92%;
+}
+
+.login-modal-container input, #emailOrEducationCode {
+  font-size: 18pt;
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  padding-left: 2em;
+  width: 60%;
+  background-color: #c0f6ff;
+  border-top: #7dd3e1 0.25em solid;
+  border-radius: 45px;
+  text-align: left;
+  border-left: transparent;
+  color: #240101;
+}
+
+.login-modal-container input:active, .login-modal-container input:focus-visible {
+  outline: none;
+}
+
+.login-modal-container span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+}
+
+.login-modal-container .btn-login {
+  margin: 10px;
+  background-color: #fe1a55;
+  font-size: 18pt;
+  border-radius: 1.5em;
+  min-height: 3em;
+  min-width: 12em;
+  border-color: transparent;
+  font-weight: 700;
+  color: white;
+}
+
+.login-modal-container .btn-exit {
+  display: flex;
+  align-self: flex-start;
+  position: absolute;
+  top: -1em;
+  right: 0.5em;
+  color: #f2f4e7;
+  font-size: 48pt;
+  background-color: transparent;
+  border: none;
+  margin-top: 1em;
+}

@@ -1,0 +1,37 @@
+nav.primary {
+  background-color: #481557;
+  color: #f2f4e7;
+  font-size: 1.75em;
+  font-weight: 700;
+  width: 100vw;
+  max-height: 6vh;
+  min-height: 64px;
+  user-select: none;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+nav.primary a {
+  color: #f2f4e7;
+  text-decoration: none;
+}
+
+section.left {
+  min-width: 50%;
+  text-align: left;
+  margin-top: 0.5em;
+}
+
+section.right {
+  min-width: 49%;
+  text-align: right;
+  margin-top: 0.5em;
+}
+
+.nav-item {
+  cursor: pointer;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
