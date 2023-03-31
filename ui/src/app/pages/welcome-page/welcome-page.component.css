@@ -4,7 +4,6 @@ main.home {
   width: 100%;
   display: flex;
   flex-direction: row;
-
 }
 
 section.left {
@@ -21,6 +20,11 @@ section.right {
   height: 72.76vh;
   width: 58.33vw;
   background-color: #c0f6ff;
+  background-image: url('../../../assets/img/explosion.png');
+  background-size: 80%;
+  background-repeat: repeat-x;
+  background-position-x: -25vh;
+  background-position-y: 5vh;
   border-radius: 45px;
   margin-left: 1em;
   margin-top: 1em;
@@ -30,9 +34,10 @@ section.right {
 }
 
 .frequency-indicator {
-  width: 58.33vw;
+  display: inline-block;
+  min-width: 58.33vw;
   height: 8.70vh;
-  background-color: #c0f6ff;
+  background-color: #bcd2d6;
   border-radius: 15px;
   margin-left: 1em;
   margin-top: 2em;
@@ -41,8 +46,143 @@ section.right {
 .frequency-indicator .needle {
   background-color: #cc0448;
   height: 90%;
-  width: 1%;
+  width: 0.75%;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  margin-left: 67%;
+  margin-left: 66%;
   margin-top: 1%;
+  z-index: 99;
+  position: relative;
 }
+
+div.buttons {
+  display: inline-block;
+}
+
+.arcade-btn {
+  display: inline-block;
+  height: 18.5vh;
+  width: 18.5vh;
+  background-image: url('../../../assets/img/arcade-btn-default.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  mix-blend-mode: luminosity;
+  filter: brightness(1.3);
+  cursor: pointer;
+  color:#f2f4e7;
+  font-size: 1.33em;
+  font-weight: 600;
+  letter-spacing: 2pt;
+}
+
+.arcade-btn:active {
+  background-image: url('../../../assets/img/arcade-btn-pressed.png');
+  filter: brightness(1.5);
+  color: #a9ac9e;
+}
+
+.btn-color {
+  mask: url('../../../assets/img/arcade-btn-default.png');
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  height: 18.5vh;
+  width: 18.5vh;
+  display: inline-block;
+  margin-left: 7.5vw;
+  margin-right: 1vh;
+}
+
+#btn-green {
+  background-color: #95f74a;
+}
+
+#btn-yellow {
+  background-color: #fdd15f;
+  filter: brightness(1.1);
+}
+
+.speaker-container {
+  height: 72.56vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.speaker-dialogue {
+  display: block;
+  width: 27.92vw;
+  min-height: 11vw;
+  background-color: hsla(70, 33%, 96%, 1);
+  border-radius: 2.6vw;
+  color: #240101;
+  font-size: 22pt;
+  line-height: 1.5em;
+  font-weight: 600;
+  padding: 1.5em;
+  text-align: justify;
+  text-justify: newspaper;
+  text-align-last: center;
+  margin-top: 14pt;
+  margin-left: 8vw;
+}
+
+.dialogue-tail {
+  background-color: hsla(70, 33%, 96%, 1);
+  mask: url('../../../assets/img/dialogue-tail.png');
+  margin-left: 19.5vw;
+  margin-top: -1vh;
+  width: 8vw;
+  height: 8vw;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.speaker {
+  background-image: url('../../../assets/img/speaker.png');
+  width: 32vw;
+  height: 24vw;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-left: 4vw;
+  margin-top: -4vw;
+  margin-bottom: 2vw;
+}
+
+.frequency-markers {
+  background-image: url('../../../assets/img/frequency-markers.png');
+  height: 50%;
+  margin-top: -4vh;
+  z-index: 1;
+  filter: opacity(.75)
+}
+
+.monster-waving {
+  background-image: url('../../../assets/img/monster-scared-anim.gif');
+  height: 70vh;
+  width: 70vh;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  mix-blend-mode: luminosity;
+  filter: brightness(1.2);
+}
+
+.monster-color {
+  mask: url('../../../assets/img/monster-scared-anim.gif');
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  height: 70vh;
+  width: 70vh;
+  margin: 0 auto;
+  margin-top: 15vh;
+  background-color: #fa3993;
+}
+

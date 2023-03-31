@@ -6,9 +6,9 @@
       <input #password id="password" name="password" placeholder="Password" type="password" />
       <span *ngIf="IsRegistrationMode()">
         <input #emailOrEducationCode id="emailOrEducationCode" name="emailOrEducationCode" placeholder="Email Address/Education Code" type="text" />
-        <button class="btn-login" id="register-btn" (click)="Register(username.value, password.value, emailOrEducationCode.value)">Register</button>
+        <button class="btn-login" id="register-btn" (click)="Register(username.value, password.value, emailOrEducationCode.value)">REGISTER</button>
       </span>
-      <button class="btn-login" id="login-btn" (click)="Login(username.value, password.value)" *ngIf="IsLoginMode()">Login</button>
+      <button class="btn-login" id="login-btn" (click)="Login(username.value, password.value)" *ngIf="IsLoginMode()">LOGIN</button>
     </div>
   </div>
 </div>

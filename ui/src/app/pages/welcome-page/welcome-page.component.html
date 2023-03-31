@@ -43,17 +43,29 @@
 
 <main class="home">
   <section class="left">
-    <div class="view-screen"></div>
+    <div class="view-screen">
+      <div class="monster-color">
+        <div class="monster-waving"></div>
+      </div>
+    </div>
     <div class="frequency-indicator">
       <div class="needle"></div>
+      <div class="frequency-markers"></div>
     </div>
   </section>
   <section class="right">
-    <div class="speaker-dialogue"></div>
-    <div class="speaker"></div>
+    <div class="speaker-container">
+      <div class="speaker-dialogue">Planet Monsterz is under attack! We need your help to fight the robot menace!</div>
+      <div class="dialogue-tail"></div>
+      <div class="speaker"></div>
+    </div>
     <div class="buttons">
-      <div class="register-btn"></div>
-      <div class="learn-more-btn"></div>
+      <div class="btn-color" id="btn-green">
+        <button class="arcade-btn" id="register-btn" type="button" (click)="OpenRegistrationModal()">REGISTER</button>
+      </div>
+      <div class="btn-color" id="btn-yellow">
+        <button class="arcade-btn" id="learn-more-btn" type="button">LEARN<br />MORE</button>
+      </div>
     </div>
   </section>
 </main>
