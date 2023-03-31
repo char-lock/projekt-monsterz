@@ -26,8 +26,8 @@ import { ApplicationStateService } from './services/application-state.service';
     HeaderComponent,
     WelcomePageComponent,
     DashboardComponent,
-    DashboardModuleComponent,
-    DashboardComponent
+    AlertComponent,
+    appBackground,
   ],
   imports: [
     BrowserModule,

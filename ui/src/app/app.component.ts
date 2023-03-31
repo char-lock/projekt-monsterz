@@ -15,6 +15,7 @@ export class AppComponent implements OnInit{
 
     
   title ='projekt-monsterz-front'
+  alertTriggered: boolean = false;
   loginClick: boolean = false;
   clickedOutsideVar = false;
 

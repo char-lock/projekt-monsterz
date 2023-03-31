@@ -1,5 +1,6 @@
 main {
      height: 100vh;
+     overflow: hidden;
 }
 app-login-screen {
      position: fixed;
@@ -8,4 +9,10 @@ app-login-screen {
      z-index: 2;
      width: 100%;
 }
-
+app-alert {
+     position: fixed;
+     left: 50%;
+     z-index: 2;
+     width: 100%;
+     transform: translateX(-50%);
+}
