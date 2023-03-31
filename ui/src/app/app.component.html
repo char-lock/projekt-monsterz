@@ -1,18 +1,19 @@
 <main (click)="clickOutside($event)" >
-
 <app-header 
-(newContentChangeEvent)="changeContent()"
-[ngStyle]="setStyle()"> </app-header>
+(newContentChangeEvent)="changeContent($event)"
+[ngStyle]="setStyle()"></app-header>
+<app-alert *ngIf="alertTriggered==true"
+(newContentChangeEvent)="alertTriggeredExit()"></app-alert>
 <app-login-screen
-*ngIf="loginClick==true"
-(newContentChangeEvent)="changeContent()" 
+*ngIf="loginClick==true && loggedIn == false"
+(newContentChangeEvent)="changeContent($event)" 
 >
 
 </app-login-screen>
 <app-welcome-page 
 *ngIf="loggedIn==false" 
 [ngStyle]="setStyle()" 
-(newContentChangeEvent)="changeContent()"
+(newContentChangeEvent)="changeContent($event)"
 ></app-welcome-page>
 <app-dashboard *ngIf="loggedIn==true">
      

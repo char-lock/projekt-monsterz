@@ -5,9 +5,12 @@ header {
 nav {
      display: flex;
      flex-direction: row;
-     justify-content: space-between;
+     justify-content: space-around;
      align-items: center;
-     height: 3.4vh;
+     height: 4.4vh;
      width: 98%;
      margin: 0 auto;
+}
+nav a {
+     margin-right: 20px;
 }

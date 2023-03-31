@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+* {
+     font-family: 'Kanit', sans-serif;
+}
 app-root {
      display: block;
 }
@@ -12,5 +14,4 @@ app-dashboard {
      display: block;
      height: 100%;
      background-color: #850038;
-
 }

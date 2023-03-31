@@ -22,4 +22,8 @@ export class LogInService {
                this.loggedIn.next(false);
           }
      }
+     logOut() {
+          this.logger.makeLog("Login Service", "Logging Out");
+          this.loggedIn.next(false);
+     }
 }

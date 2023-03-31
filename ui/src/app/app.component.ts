@@ -19,10 +19,11 @@ export class AppComponent implements OnInit{
     private loginService: LogInService) {} 
   ngOnInit(): void {
     this.loginService.checkForExistingLoginSession();
-    this.loginService.currentLoginStatus.subscribe(value => this.loggedIn = value)
+    this.loginService.currentLoginStatus.subscribe(value => this.loggedIn = value);
   }
   
   title ='projekt-monsterz-front'
+  alertTriggered: boolean = false;
   loginClick: boolean = false;
   loggedIn: boolean =  false;
   clickedOutsideVar = false;
@@ -31,7 +32,26 @@ export class AppComponent implements OnInit{
       this.loginClick = !this.loginClick;
     }
  }
-  changeContent() {
+//  loginOrThrow(username: string, password: string) {
+//   if (!200 error) {
+
+//   }
+ 
+  changeContent($event: any) {
+      switch ($event.value) {
+        case 'login':
+          this.loginClick = !this.loginClick;
+          break;
+        case 'logout':
+          this.loginService.logOut();
+          this.cookieService.deleteAll();
+          this.accountService.currentAccount;
+          break;
+        default:
+          this.loginClick = false;
+
+          break;
+      }
       this.loginClick = !this.loginClick;
       this.logger.makeLog("App component", "Login Click Value Switched To: " + this.loginClick.valueOf())
    }
@@ -41,8 +61,8 @@ export class AppComponent implements OnInit{
       return {'filter' : 'blur(0px)'};
     }
     return {'filter' : 'blur(2px)'};
-
   }
-
-  
+  alertTriggeredExit() {
+    this.alertTriggered = false;
+  }
 }
