@@ -32,6 +32,10 @@ export class UserSessionService {
     return this.currentUser.lesson_current ? this.currentUser.lesson_current : 0;
   }
 
+  GetClassCode() {
+    return this.currentUser.verification_value ? this.currentUser.verification_value : "null";
+  }
+
   GetSessionData() {
     const sessionData: UserSession = {
       currentUser: this.currentUser,

@@ -134,7 +134,35 @@ export class ApiService {
       .catch((registerFailReason) => {
         console.log(`Failed to register user: ${registerFailReason}`);
         return undefined;
+      });
+  }
+
+  GetLeaderboardGlobal(callback: Function) {
+    return this.GetGeneric("/leaderboard/global")
+      .then((leaderboardResponse) => {
+        if (typeof leaderboardResponse.data === "undefined") return callback([]);
+        if (leaderboardResponse.data.length < 1) return callback([]);
+        const leaderboard: (number | string)[][] = leaderboardResponse.data;
+        callback(leaderboard);
       })
+      .catch((leaderboardFailReason) => {
+        console.log(`Failed to retrieve global leaderboard: ${leaderboardFailReason}`);
+        return callback([]);
+      });
+  }
+
+  GetLeaderboardClass(classCode: string, callback: Function) {
+    return this.GetGeneric(`/leaderboard/class/${classCode}`)
+      .then((leaderboardResponse) => {
+        if (typeof leaderboardResponse.data === "undefined") return callback([]);
+        if (leaderboardResponse.data.length < 1) return callback([]);
+        const leaderboard: (number | string)[][] = leaderboardResponse.data;
+        callback(leaderboard);
+      })
+      .catch((leaderboardFailReason) => {
+        console.log(`Failed to retrieve global leaderboard: ${leaderboardFailReason}`);
+        return callback([]);
+      });
   }
 
 }

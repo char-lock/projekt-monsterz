@@ -1,33 +1,60 @@
-<main>
-  <header>
-    <h3>Hello {{getUsername()}}, Let's get to work</h3>
-  </header>
-  <div class="intro-content">
-    <div>
-      <h5>Hi, {{getUsername()}}</h5>
-      <div>
-        <button>Continue Learning</button>
-        <button>Browse Other Tutorials</button>
-      </div>
-    </div>
+<main class="dashboard">
+  <div class="grid-area">
     <div class="scoreSheet">
-      <div class="scoreSheetText">
-        <h6>Good Work!</h6>
-        <p>Your score is:</p>
-        <h6>{{getScore()}}</h6>
-      </div>
-      <div id="myProgress">
-        <div id="myBar">   
-          <h6 class="percentageOfCourseCompletion">100%</h6>
-        </div>
+      <div class="scoreSheetText"></div>
+      <div class="progress"><canvas id="progressArc" width="280" height="280"></canvas></div>
+      <div class="progress-percent">{{ progress * 100 }}%</div>
+      <div class="blocker">
+        <h1>
+          Unit Progress
+          <hr />
+          {{ currentLesson }}
+        </h1>
       </div>
     </div>
-  </div>
-  <div class="column-container">
-    <app-dashboard-module 
-      class="module"
-      *ngFor="let module of moduleArray; let i = index"
-      [currentModule]="module"
-    ></app-dashboard-module>
+    <div class="main-selection">
+      <div class="main-selection-text">
+          CONTINUE?
+          <a href="">YES</a>
+      </div>
+      <div class="main-selection-footer">Explore Other Units ></div>
+    </div>
+    <div class="leaderboard">
+      <h1>Top Monsterz</h1>
+      <table>
+        <tr class="score-other" *ngFor="let leaders of Leaderboard()">
+          <td><div class="circle-color"></div></td>
+          <td class="username">{{ leaders[0] }}</td>
+          <td class="points">{{ leaders[1] }}</td>
+        </tr>
+        <tr class="score-you">
+          <td>
+            <div class="circle-color"></div>
+          </td>
+          <td class="username">You</td>
+          <td class="points">{{ score }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="leaderboardToggle">
+      <div class="icon-container">
+        <img class="icon" src="../../../assets/icons/globe.svg">
+        <div class="circle" [ngStyle]="{'background-color': globalLeaderboardSelected  ? 'lightgreen' : 'green'}"></div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" (click)="onToggleButtonClick()">
+        <span class="slider round"></span>
+      </label>
+      <div class="icon-container">
+        <img class="icon" src="../../../assets/icons/friends.svg">
+        <div class="circle" [ngStyle]="{'background-color': globalLeaderboardSelected  ? 'green' : 'lightgreen'}"></div>
+      </div>
+    </div>
+    <div cageBackground class="monstercage">
+      <div class="characterSheet"></div>
+    </div>
   </div>
 </main>
+<footer>
+     MONSTER-O-VISION
+</footer>
