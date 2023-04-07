@@ -8,6 +8,7 @@ import { LoggerService } from '../../services/logger.service';
 
 import { User } from 'src/app/types/User';
 import { ApplicationStateService } from 'src/app/services/application-state.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login-screen',
@@ -15,15 +16,16 @@ import { ApplicationStateService } from 'src/app/services/application-state.serv
   styleUrls: ['./login-screen.component.css']
 })
 export class LoginScreenComponent implements OnInit {
-  @Output() newContentChangeEvent = new EventEmitter<string>();
 
+  @Output() newContentChangeEvent = new EventEmitter<string>();
   constructor(
     private emailValidationService: EmailValidationService,
     private logger: LoggerService,
     private userRegistration: UserRegistrationService,
     private appState: ApplicationStateService,
     private userSession: UserSessionService,
-    private router: Router
+    private router: Router,
+    private loginService: LoginService
   ) {}
 
   ngOnInit() {
@@ -100,7 +102,7 @@ export class LoginScreenComponent implements OnInit {
   }
 
   Login(username: string, password: string) {
-    this.userSession.LoginAs(username, password, (success: boolean) => {
+    this.loginService.LoginAs(username, password, (success: boolean) => {
       if (success) {
         this.Close();
         this.router.navigate(["../dashboard"]);

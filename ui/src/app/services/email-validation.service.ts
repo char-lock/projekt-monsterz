@@ -4,21 +4,27 @@ import { LoggerService } from "./logger.service";
 
 @Injectable()
 export class EmailValidationService {
-    
-  constructor(private logger: LoggerService) {}
 
-  expression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  constructor(private logger: LoggerService) { }
+
+  emailExpression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  passwordExpression: RegExp = /\S{6}/i;
 
   ValidateEmail(inputText: string) {
-    const result: boolean = this.expression.test(inputText); 
-    this.logger.makeLog('Email Validate' , (result ? 'Email Passed Is An Email.' : 'Email Passed Is Not An Email.'));
+    const result: boolean = this.emailExpression.test(inputText);
+    this.logger.makeLog('Email Validate', (result ? 'Email Passed Is An Email.' : 'Email Passed Is Not An Email.'));
     return result;
   }
-
+  ValidatePassword(inputText: string) {
+    const result: boolean = this.passwordExpression.test(inputText);
+    this.logger.makeLog('Password Validate', (result ? 'Password Passed Is A Valid Password.' : 'Password Passed Is Not A Valid Password'));
+    return result;
+  }
+  //Need to move half of the logic to api service.
   IsUniqueEmail(inputText: string) {
     const fetchOptions: RequestInit = {
       method: "GET",
-      headers: new Headers({"Content-Type": "application/json"}),
+      headers: new Headers({ "Content-Type": "application/json" }),
       body: "",
       redirect: "follow"
     };
@@ -34,7 +40,7 @@ export class EmailValidationService {
             }
             return true;
           })
-          .catch((textFailReason) => { 
+          .catch((textFailReason) => {
             console.log(textFailReason);
             return false;
           });
@@ -44,5 +50,4 @@ export class EmailValidationService {
         return true;
       });
   }
-
 }

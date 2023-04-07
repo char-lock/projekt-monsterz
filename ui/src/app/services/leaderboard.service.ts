@@ -1,31 +1,7 @@
-// import { Injectable, OnInit } from "@angular/core";
-
-// @Injectable()
-// export class LeaderBoardService implements OnInit {
-//      constructor(private apiService: APIService){}
-//      globalLeaderBoard: [] = [];
-//      friendLeaderBoard: [] = [];
-//      getGlobalLeaderboard() {
-//           return this.globalLeaderBoard;
-//      }
-//      getFriendLeaderboard() {
-//           return this.friendLeaderBoard;
-//      }
-//      ngOnInit(): void {
-//           this.globalLeaderBoard = this.setGlobalLeaderBoard;
-//           this.friendLeaderBoard = this.setFriendLeaderBoard
-//      }
-//      setGlobalLeaderBoard() {
-//           this.apiService.getGlobalLeaderboard()
-//      }
-//      setFriendLeaderBoard() {
-//           this.spiService.getFriendLeaderboard();
-//      }
-// } 
-
 import { Injectable, OnInit } from "@angular/core";
 import { ApiService } from "./api.service";
 import { UserSessionService } from "./user-session.service";
+import { UserService } from "./user.service";
 
 @Injectable()
 export class LeaderboardService {
@@ -35,7 +11,8 @@ export class LeaderboardService {
 
   constructor(
     private apiService: ApiService,
-    private userSession: UserSessionService
+    private userSession: UserSessionService,
+    private userService: UserService
   ) {}
 
   GetGlobalLeaderboard() {
@@ -60,7 +37,7 @@ export class LeaderboardService {
         console.log("failed to get global leaderboard");
       } else {
         this.leaderboardGlobal = resultGlobal;
-        this.apiService.GetLeaderboardClass(this.userSession.GetClassCode(), (resultClass: (string | number)[][]) => {
+        this.apiService.GetLeaderboardClass(this.userService.GetClassCode(), (resultClass: (string | number)[][]) => {
           if (resultClass.length === 0) {
             console.log("Failed to get class leaderboard");
             // Handle failure to retrieve
@@ -71,6 +48,5 @@ export class LeaderboardService {
       }
     });
   }
-
 }
 

@@ -2,6 +2,7 @@ import { Component,  OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LeaderboardService } from 'src/app/services/leaderboard.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +20,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private leaderboardService: LeaderboardService,
     private userSession: UserSessionService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -27,10 +29,10 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(["../"]);
       return;
     }
-    this.score = this.userSession.GetCurrentScore();
+    this.score = this.userService.GetCurrentScore();
     this.DrawProgressBar();
 
-    const lesson = this.userSession.GetCurrentScore();
+    const lesson = this.userService.GetCurrentScore();
     this.currentLesson = `Lesson ${lesson}`;
   }
 

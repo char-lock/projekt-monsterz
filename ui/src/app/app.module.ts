@@ -19,6 +19,8 @@ import { ApplicationStateService } from './services/application-state.service';
 import { LeaderboardService } from './services/leaderboard.service';
 
 import { MonsterCageBackgroundDirective } from './directives/monster-cage-background.directive';
+import { LoginService } from './services/login.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { MonsterCageBackgroundDirective } from './directives/monster-cage-backgr
     CookieController,
     ApiService,
     ApplicationStateService,
-    LeaderboardService
+    LeaderboardService,
+    LoginService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

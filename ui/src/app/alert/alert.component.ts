@@ -8,7 +8,7 @@ import { Logger } from '../services/logger.service';
 })
 export class AlertComponent {
   constructor(private logger: Logger){}
-  content: string = "Sample Alert!"
+  content: string = "Sample Alert!";
   @Output() newContentChangeEvent = new EventEmitter<string>();
 
   sendEmitterToExitLoginScreen(value: string) {

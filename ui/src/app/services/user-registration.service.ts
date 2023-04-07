@@ -5,13 +5,13 @@ import { CookieController } from "./cookie.service";
 import { UserSessionService } from "./user-session.service";
 
 import { User } from "../types/User";
+import { LoginService } from "./login.service";
 
 @Injectable()
 export class UserRegistrationService {
   constructor (
-    private cookieController: CookieController,
-    private sessionService: UserSessionService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private loginService: LoginService
   ) {}
 
   AttemptRegistration(user: User, callback: Function) {
@@ -24,7 +24,7 @@ export class UserRegistrationService {
           return;
         }
         if (user.auth_key && user.username) {
-          this.sessionService.LoginAs(user.username, user.auth_key, callback);
+          this.loginService.LoginAs(user.username, user.auth_key, callback);
         } else {
           callback(false);
         }
@@ -34,5 +34,4 @@ export class UserRegistrationService {
         callback(false);
       });
   }
-
 }
