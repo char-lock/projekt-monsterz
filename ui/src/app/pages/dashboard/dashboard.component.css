@@ -143,8 +143,8 @@ main.dashboard {
 }
 
 tr:nth-child(odd) {
-  background-color: #4C8BF5;
-  color: #fff;
+  background-color: #a5c1f0;
+  color: #000;
 }
 
 tr td {
