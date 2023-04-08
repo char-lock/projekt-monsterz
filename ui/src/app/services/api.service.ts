@@ -11,7 +11,7 @@ export class ApiService {
 
   static API_ENDPOINT = "http://localhost:8080";
 
-  constructor() {}
+  constructor() { }
 
   PostGeneric(endpoint: string, body?: string, headers?: AxiosHeaders) {
     if (!headers) headers = new AxiosHeaders();

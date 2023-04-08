@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from "@angular/router";
 import { ApplicationStateService } from 'src/app/services/application-state.service';
 
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { CookieController } from '../../services/cookie.service';
 import { LoggerService } from '../../services/logger.service';
+import { AppController } from 'src/app/services/app.controller';
 
 @Component({
   selector: 'app-header',
@@ -12,34 +13,33 @@ import { LoggerService } from '../../services/logger.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  
-  @Output() newContentChangeEvent = new EventEmitter<string>();
   currentLogin: boolean = false;
-  
+  modalState = 0;
   constructor(
     private logger: LoggerService,
     private userSession: UserSessionService,
     private appState: ApplicationStateService,
-    private router: Router
-  ) {}
-  
-  ngOnInit() {}
-
-  IsLoginModalOpen() {
-    return this.appState.GetLoginModalState() > 0 && !this.userSession.IsAuthenticated();
+    private router: Router,
+    private appController: AppController
+  ) {
+    this.appState.getModalState().subscribe((modalStateValue) => {
+      this.modalState = modalStateValue;
+    });
   }
 
+  ngOnInit() { }
+
+  IsLoginModalOpen() {
+    return this.modalState > 0 && !this.userSession.IsAuthenticated();
+  }
   IsLoggedIn() {
     return this.userSession.IsAuthenticated();
   }
-  
   OpenLoginModal() {
-    return this.appState.SetLoginModalState(1);
+    return this.appController.setModalState(1);
   }
-
   Logout() {
+    this.appController.logOut()
     this.logger.makeLog("header.component", "logged user out");
-    this.userSession.RevokeSession();
-    this.router.navigate([".."]);
   }
 }

@@ -14,8 +14,8 @@
     </div>
     <div class="main-selection">
       <div class="main-selection-text">
-          CONTINUE?
-          <a href="">YES</a>
+        CONTINUE?
+        <a href="">YES</a>
       </div>
       <div class="main-selection-footer">Explore Other Units ></div>
     </div>
@@ -23,7 +23,9 @@
       <h1>Top Monsterz</h1>
       <table>
         <tr class="score-other" *ngFor="let leaders of Leaderboard()">
-          <td><div class="circle-color"></div></td>
+          <td>
+            <div class="circle-color"></div>
+          </td>
           <td class="username">{{ leaders[0] }}</td>
           <td class="points">{{ leaders[1] }}</td>
         </tr>
@@ -56,5 +58,5 @@
   </div>
 </main>
 <footer>
-     MONSTER-O-VISION
+  MONSTER-O-VISION
 </footer>

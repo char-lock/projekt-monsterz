@@ -5,7 +5,8 @@
     </section>
     <section class="right">
       <a (click)="OpenLoginModal()" class="nav-item login-btn" *ngIf="!IsLoggedIn()">LOGIN</a>
-      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page" *ngIf="IsLoggedIn()">DASHBOARD</a>
+      <a class="nav-item" routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page"
+        *ngIf="IsLoggedIn()">DASHBOARD</a>
       <a (click)="Logout()" class="nav-item login-btn" *ngIf="IsLoggedIn()">LOGOUT</a>
     </section>
   </nav>

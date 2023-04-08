@@ -31,7 +31,7 @@ export class LoginService {
                                    return;
                               }
                               this.userService.setUser(userResponse);
-                              
+
                               callback(true);
                               return;
                          })
