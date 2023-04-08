@@ -87,10 +87,6 @@ export class DashboardComponent implements OnInit {
     return (this.globalLeaderboardSelected) ? this.leaderboardService.GetGlobalLeaderboard() : this.leaderboardService.GetClassLeaderboard();
   }
 
-  sortArrayByScore(a: (string | number)[], b: (string | number)[]) {
-    if (a[1] === b[1]) return 0;
-    if (a[1] < b[1]) return 1;
-    return -1;
-  }
+
 
 }
