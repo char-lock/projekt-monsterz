@@ -5,11 +5,11 @@ import { WelcomePageComponent } from "./pages/welcome-page/welcome-page.componen
 
 const routes: Routes = [
   { path: "", component: WelcomePageComponent },
-  { path: "dashboard", component: DashboardComponent}
+  { path: "dashboard", component: DashboardComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

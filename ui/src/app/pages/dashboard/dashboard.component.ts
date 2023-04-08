@@ -1,4 +1,4 @@
-import { Component,  OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LeaderboardService } from 'src/app/services/leaderboard.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
@@ -22,17 +22,17 @@ export class DashboardComponent implements OnInit {
     private userSession: UserSessionService,
     private router: Router,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (!this.userSession.IsAuthenticated()) {
       this.router.navigate(["../"]);
       return;
     }
-    this.score = this.userService.GetCurrentScore();
+    this.score = this.userService.getCurrentScore();
     this.DrawProgressBar();
 
-    const lesson = this.userService.GetCurrentScore();
+    const lesson = this.userService.getCurrentScore();
     this.currentLesson = `Lesson ${lesson}`;
   }
 
@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
     if (progressAngle > 360) progressAngle -= 360;
     if (progressAngle < 0) progressAngle += 360;
     progressAngle *= Math.PI / 180;
-    
+
     const arcX = canvas.width / 2;
     const arcY = canvas.height / 2;
     const radius = arcX / 2;
@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
     const endAngleBg = 0 * Math.PI / 180;
 
     const counterClockwise = false;
-    
+
     ctx.beginPath();
     ctx.lineWidth = 32;
     ctx.strokeStyle = "rgb(175, 175, 175)";
@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
     }
     return styles;
   }
-  
+
   onToggleButtonClick() {
     this.globalLeaderboardSelected = !this.globalLeaderboardSelected;
   }
@@ -86,11 +86,4 @@ export class DashboardComponent implements OnInit {
   Leaderboard() {
     return (this.globalLeaderboardSelected) ? this.leaderboardService.GetGlobalLeaderboard() : this.leaderboardService.GetClassLeaderboard();
   }
-
-  sortArrayByScore(a: (string | number)[], b: (string | number)[]) {
-    if (a[1] === b[1]) return 0;
-    if (a[1] < b[1]) return 1;
-    return -1;
-  }
-
 }

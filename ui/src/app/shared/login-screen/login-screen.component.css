@@ -36,7 +36,8 @@
   margin-left: 92%;
 }
 
-.login-modal-container input, #emailOrEducationCode {
+.login-modal-container input,
+#emailOrEducationCode {
   font-size: 18pt;
   margin: 0.5em;
   padding: 0.5em 1em;
@@ -50,7 +51,8 @@
   color: #240101;
 }
 
-.login-modal-container input:active, .login-modal-container input:focus-visible {
+.login-modal-container input:active,
+.login-modal-container input:focus-visible {
   outline: none;
 }
 

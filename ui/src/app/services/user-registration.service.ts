@@ -1,4 +1,4 @@
-import { Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
 
 import { ApiService } from "./api.service";
 import { CookieController } from "./cookie.service";
@@ -9,10 +9,10 @@ import { LoginService } from "./login.service";
 
 @Injectable()
 export class UserRegistrationService {
-  constructor (
+  constructor(
     private apiService: ApiService,
     private loginService: LoginService
-  ) {}
+  ) { }
 
   AttemptRegistration(user: User, callback: Function) {
     user.username = user.username?.toLowerCase();

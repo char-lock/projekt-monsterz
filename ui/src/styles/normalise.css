@@ -50,12 +50,15 @@ abbr[title] {
   text-decoration: underline dotted;
 }
 
-b, strong {
+b,
+strong {
   /* Add the correct font weight in Chrome, Edge, and Safari. */
   font-weight: bolder;
 }
 
-code, kbd, samp {
+code,
+kbd,
+samp {
   /* Correct the inheritance and scaling of font size in all browsers. */
   font-family: monospace, monospace;
   /* Correct the odd `em` font sizing in all browsers. */
@@ -67,7 +70,8 @@ small {
   font-size: 80%;
 }
 
-sub, sup {
+sub,
+sup {
   /* Prevent `sub` and `sup` elements from affecting the line height in all browsers. */
   font-size: 75%;
   line-height: 0;
@@ -88,7 +92,11 @@ img {
   border-style: none;
 }
 
-button, input, optgroup, select, textarea {
+button,
+input,
+optgroup,
+select,
+textarea {
   /* Change the font style in all browsers. */
   font-family: inherit;
   font-size: 100%;
@@ -97,17 +105,22 @@ button, input, optgroup, select, textarea {
   margin: 0;
 }
 
-button, input {
+button,
+input {
   /* Show the overflow in Edge. */
   overflow: visible;
 }
 
-button, select {
+button,
+select {
   /* Remove the inheritance of text transform in Firefox. */
   text-transform: none;
 }
 
-button, [type="button"], [type="reset"], [type="submit"] {
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
   /* Correct the inability to style clickable types in iOS and Safari. */
   -webkit-appearance: button;
 }
@@ -157,7 +170,7 @@ textarea {
 }
 
 [type="checkbox"],
-[type="radio"]{
+[type="radio"] {
   /* Add the correct box sizing in IE 10 */
   box-sizing: border-box;
   /* Remove the padding in IE 10 */

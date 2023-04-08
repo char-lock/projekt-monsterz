@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger.service";
 
 @Injectable()
-export class EmailValidationService {
+export class ValidationService {
 
   constructor(private logger: LoggerService) { }
 

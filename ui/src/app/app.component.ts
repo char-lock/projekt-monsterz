@@ -11,20 +11,14 @@ import { UserSession } from './types/UserSession';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
-
-    
-  title ='projekt-monsterz-front'
-  alertTriggered: boolean = false;
-  loginClick: boolean = false;
-  clickedOutsideVar = false;
-
+export class AppComponent implements OnInit {
+  title = 'projekt-monsterz-front'
   constructor(
     private logger: LoggerService,
     private cookieService: CookieService,
     private userSession: UserSessionService,
     private appState: ApplicationStateService
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.cookieService.get("projekt-monsterz.session") !== "") {
@@ -33,5 +27,4 @@ export class AppComponent implements OnInit{
       this.logger.makeLog("app.component", "loaded user session from cookie");
     }
   }
-
 }

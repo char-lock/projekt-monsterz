@@ -13,7 +13,7 @@ export class LeaderboardService {
     private apiService: ApiService,
     private userSession: UserSessionService,
     private userService: UserService
-  ) {}
+  ) { }
 
   GetGlobalLeaderboard() {
     if (this.lastUpdated + (900 * 1000) < Date.now()) {
@@ -28,7 +28,7 @@ export class LeaderboardService {
       this.lastUpdated = Date.now();
       this.UpdateLeaderboard();
     }
-    return this.leaderboardClass;
+    return this.leaderboardClass.sort(this.sortArrayByScore);
   }
 
   UpdateLeaderboard() {
@@ -37,7 +37,7 @@ export class LeaderboardService {
         console.log("failed to get global leaderboard");
       } else {
         this.leaderboardGlobal = resultGlobal;
-        this.apiService.GetLeaderboardClass(this.userService.GetClassCode(), (resultClass: (string | number)[][]) => {
+        this.apiService.GetLeaderboardClass(this.userService.getClassCode(), (resultClass: (string | number)[][]) => {
           if (resultClass.length === 0) {
             console.log("Failed to get class leaderboard");
             // Handle failure to retrieve
@@ -48,5 +48,11 @@ export class LeaderboardService {
       }
     });
   }
+  sortArrayByScore(a: (string | number)[], b: (string | number)[]) {
+    if (a[1] === b[1]) return 0;
+    if (a[1] < b[1]) return 1;
+    return -1;
+  }
+
 }
 

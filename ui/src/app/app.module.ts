@@ -6,7 +6,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { LoggerService } from "./services/logger.service";
 import { UserSessionService } from "./services/user-session.service";
 import { CookieController } from "./services/cookie.service";
-import { EmailValidationService } from './services/email-validation.service';
+import { ValidationService } from './services/validation.service';
 import { UserRegistrationService } from './services/user-registration.service';
 
 import { AppComponent } from './app.component';
@@ -21,6 +21,7 @@ import { LeaderboardService } from './services/leaderboard.service';
 import { MonsterCageBackgroundDirective } from './directives/monster-cage-background.directive';
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
+import { AppController } from './services/app.controller';
 
 @NgModule({
   declarations: [
@@ -40,14 +41,15 @@ import { UserService } from './services/user.service';
     UserRegistrationService,
     UserSessionService,
     LoggerService,
-    EmailValidationService,
+    ValidationService,
     CookieController,
     ApiService,
     ApplicationStateService,
     LeaderboardService,
     LoginService,
-    UserService
+    UserService,
+    AppController
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
