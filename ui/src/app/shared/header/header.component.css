@@ -1,6 +1,6 @@
 nav.primary {
-  background-color: #481557;
-  color: #f2f4e7;
+  background-color: var(--header-background-color);
+  color: var(--header-text-color);
   font-size: 1.75em;
   font-weight: 700;
   width: 100vw;
@@ -14,7 +14,7 @@ nav.primary {
 }
 
 nav.primary a {
-  color: #f2f4e7;
+  color: var(--header-text-color);
   text-decoration: none;
 }
 

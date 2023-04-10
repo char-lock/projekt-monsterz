@@ -7,11 +7,12 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--modal-background-color);
 }
 
 .login-modal-container {
-  background-color: #9A103F;
+  background-color: var(--login-modal-background-color);
+
   margin: 10vh auto;
   width: 60vw;
   height: 30vw;
@@ -30,7 +31,7 @@
 
 .login-modal-container .btn-exit {
   position: relative;
-  color: white;
+  color: var(--login-modal-text-color);
   padding: 0;
   cursor: pointer;
   margin-left: 92%;
@@ -43,12 +44,12 @@
   padding: 0.5em 1em;
   padding-left: 2em;
   width: 60%;
-  background-color: #c0f6ff;
-  border-top: #7dd3e1 0.25em solid;
+  background-color: var(--text-input-background-color);
+  border-top: 0.25em solid var(--login-modal-border-color);
   border-radius: 45px;
   text-align: left;
   border-left: transparent;
-  color: #240101;
+  color: var(--text-input-color);
 }
 
 .login-modal-container input:active,
@@ -66,14 +67,14 @@
 
 .login-modal-container .btn-login {
   margin: 10px;
-  background-color: #fe1a55;
+  background-color: var(--login-button-background-color);
   font-size: 18pt;
   border-radius: 1.5em;
   min-height: 3em;
   min-width: 12em;
   border-color: transparent;
   font-weight: 700;
-  color: white;
+  color: var(--login-button-text-color);
 }
 
 .login-modal-container .btn-exit {
@@ -82,7 +83,7 @@
   position: absolute;
   top: -1em;
   right: 0.5em;
-  color: #f2f4e7;
+  color: var(--login-exit-button-color);
   font-size: 48pt;
   background-color: transparent;
   border: none;

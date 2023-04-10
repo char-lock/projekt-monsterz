@@ -1,7 +1,7 @@
 main.dashboard {
   height: 100%;
   width: 100%;
-  background-color: #f4254c;
+  background-color: var(--dashboard-background);
   font-family: "Kanit", san-serif;
 }
 
@@ -39,7 +39,7 @@ main.dashboard {
   margin: 1vw;
   width: 3vw;
   height: 3vw;
-  color: white;
+  color: var(--icon-color);
 }
 
 .circle {
@@ -47,11 +47,11 @@ main.dashboard {
   width: 1vw;
   height: 1vw;
   margin-top: 0.5vw;
-  background-color: green;
+  background-color: var(--leaderboard-indication-light);
 }
 
 .scoreSheet {
-  background-color: #c2f5ff;
+  background-color: var(--module-background-color);
   grid-area: scoresheet;
   align-self: center;
   border-radius: 20px;
@@ -63,7 +63,7 @@ main.dashboard {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px -10px 0px 0px #83d1e1;
+  box-shadow: 0px -10px 0px 0px var(--module-box-shadow);
 }
 
 .scoreSheet h1 {
@@ -75,8 +75,8 @@ main.dashboard {
 }
 
 .main-selection {
-  box-shadow: 0px -10px 0px 0px #83d1e1;
-  background-color: #c2f5ff;
+  box-shadow: 0px -10px 0px 0px var(--module-box-shadow);
+  background-color: var(--module-background-color);
   grid-area: mainselection;
   height: 100%;
   width: 100%;
@@ -117,8 +117,8 @@ main.dashboard {
 }
 
 .leaderboard {
-  box-shadow: 0px -10px 0px 0px #83d1e1;
-  background-color: #c2f5ff;
+  box-shadow: 0px -10px 0px 0px var(--module-box-shadow);
+  background-color: var(--module-background-color);
   grid-area: leaderboard;
   height: 100%;
   width: 100%;
@@ -143,8 +143,8 @@ main.dashboard {
 }
 
 tr:nth-child(odd) {
-  background-color: #4C8BF5;
-  color: #fff;
+  background-color: var(--leaderboard-odd-background-color);
+  color: #000;
 }
 
 tr td {
@@ -178,7 +178,7 @@ tr.score-other:first-of-type {
   width: 30px;
   height: 30px;
   border-radius: 100%;
-  background-color: blue;
+  background-color: var(--leaderboard-circle-color);
 }
 
 .leaderboardToggle {
@@ -253,10 +253,6 @@ tr.score-other:first-of-type {
 
 iframe {
   z-index: 6;
-}
-
-svg {
-  color: white;
 }
 
 .slider {
