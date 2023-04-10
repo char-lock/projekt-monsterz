@@ -1,0 +1,21 @@
+.question-and-answer-container {
+     width: 80vw;
+     height: 80vh;
+     margin: 0 auto;
+     text-align: center;
+}
+
+button {
+     margin: 10px;
+     background-color: var(--login-button-background-color);
+     font-size: 18pt;
+     border-radius: 1.5em;
+     border-color: transparent;
+     font-weight: 700;
+     color: var(--login-button-text-color);
+}
+.btn-group {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     grid-template-rows: 1fr 1fr;
+}

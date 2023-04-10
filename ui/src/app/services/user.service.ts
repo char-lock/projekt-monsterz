@@ -39,4 +39,17 @@ export class UserService {
           }
           return newUser;
      }
+     updateLessonCurrent (score: number) {
+     //Progress for lessons completed.
+     if (this.currentUser.lesson_current)
+     {
+     this.currentUser.lesson_current += score;
+     }
+     }
+     updateLessonCurrentProgress (score: number) {
+          if (this.currentUser.lesson_current_progress)
+          {
+          this.currentUser.lesson_current_progress += score;
+          }     
+     }
 }

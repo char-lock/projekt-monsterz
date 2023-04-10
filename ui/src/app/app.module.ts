@@ -22,6 +22,8 @@ import { MonsterCageBackgroundDirective } from './directives/monster-cage-backgr
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
 import { AppController } from './services/app.controller';
+import { LessonModuleComponent } from './pages/lesson-module/lesson-module.component';
+import { QuestionService } from './services/question.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { AppController } from './services/app.controller';
     HeaderComponent,
     WelcomePageComponent,
     DashboardComponent,
-    MonsterCageBackgroundDirective
+    MonsterCageBackgroundDirective,
+    LessonModuleComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import { AppController } from './services/app.controller';
     LeaderboardService,
     LoginService,
     UserService,
-    AppController
+    AppController,
+    QuestionService
   ],
   bootstrap: [AppComponent]
 })

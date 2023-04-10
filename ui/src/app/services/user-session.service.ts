@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { ApiService } from "./api.service";
 import { User } from "../types/User";
 import { UserSession } from "../types/UserSession";
@@ -14,7 +14,7 @@ export class UserSessionService {
   private authToken = "";
   private startedAt: number = -1;
   private lastRefresh: number = -1;
-
+  private currentSubscription;
   constructor(
     private apiService: ApiService,
     private cookieService: CookieController,
@@ -22,12 +22,13 @@ export class UserSessionService {
     private logger: LoggerService,
     private loginService: LoginService
   ) {
-    this.loginService.getAuthToken().subscribe((value: string) => {
+    this.currentSubscription = this.loginService.getAuthToken().subscribe((value: string) => {
       this.authToken = value;
       this.setSessionDate();
       this.SaveSession();
     })
   }
+
 
   IsAuthenticated() {
     if (Date.now() > this.lastRefresh + (900 * 1000) && this.authToken !== "" && this.lastRefresh !== -1) {

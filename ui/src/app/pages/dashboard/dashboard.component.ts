@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppController } from 'src/app/services/app.controller';
 import { LeaderboardService } from 'src/app/services/leaderboard.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { UserService } from 'src/app/services/user.service';
@@ -19,16 +20,12 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private leaderboardService: LeaderboardService,
-    private userSession: UserSessionService,
-    private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private appController: AppController
   ) { }
 
   ngOnInit() {
-    if (!this.userSession.IsAuthenticated()) {
-      this.router.navigate(["../"]);
-      return;
-    }
+    this.appController.checkForAuthentication();
     this.score = this.userService.getCurrentScore();
     this.DrawProgressBar();
 
@@ -86,7 +83,4 @@ export class DashboardComponent implements OnInit {
   Leaderboard() {
     return (this.globalLeaderboardSelected) ? this.leaderboardService.GetGlobalLeaderboard() : this.leaderboardService.GetClassLeaderboard();
   }
-
-
-
 }

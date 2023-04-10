@@ -12,6 +12,8 @@ import { UserService } from "./user.service";
 import { Router } from "@angular/router";
 import { User } from "../types/User";
 import { BehaviorSubject } from "rxjs";
+import { QuestionService } from "./question.service";
+import { Question } from "../types/Question";
 
 @Injectable()
 export class AppController {
@@ -27,6 +29,7 @@ export class AppController {
           private userSessionService: UserSessionService,
           private userService: UserService,
           private router: Router,
+          private questionService: QuestionService,
      ) {
      }
      setModalState(number: number) {
@@ -44,7 +47,6 @@ export class AppController {
           });
           this.loggerService.makeLog("component.login-screen", "Requested a registration attempt.");
      }
-
      Login(username: string, password: string) {
           this.loginService.LoginAs(username, password, (success: boolean) => {
                if (success) {
@@ -58,5 +60,20 @@ export class AppController {
      logOut() {
           this.userSessionService.RevokeSession();
           this.router.navigate([".."]);
+     }
+     checkForRightAnswer(value: string) {
+          if (this.questionService.checkForCorrectAnswer(value)) {
+               this.questionService.nextQuestion();
+          }
+          else {
+               console.log("incorrect");
+               //Display error!
+          }
+     }
+     checkForAuthentication() {
+          if (!this.userSessionService.IsAuthenticated()) {
+               this.router.navigate(["../"]);
+               return;
+          }
      }
 }
