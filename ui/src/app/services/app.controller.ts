@@ -12,8 +12,7 @@ import { UserService } from "./user.service";
 import { Router } from "@angular/router";
 import { User } from "../types/User";
 import { BehaviorSubject } from "rxjs";
-import { QuestionService } from "./question.service";
-import { Question } from "../types/Question";
+import { ContentService } from "./content.service";
 
 @Injectable()
 export class AppController {
@@ -29,7 +28,7 @@ export class AppController {
           private userSessionService: UserSessionService,
           private userService: UserService,
           private router: Router,
-          private questionService: QuestionService,
+          private contentService: ContentService,
      ) {
      }
      setModalState(number: number) {
@@ -52,6 +51,7 @@ export class AppController {
                if (success) {
                     this.applicationStateService.SetLoginModalState(0);
                     this.router.navigate(["../dashboard"]);
+                    this.loggerService.makeLog("App Controller", "Should've navigated to Dashboard!")
                } else {
                     // TODO: Handle login failure
                }
@@ -62,8 +62,9 @@ export class AppController {
           this.router.navigate([".."]);
      }
      checkForRightAnswer(value: string) {
-          if (this.questionService.checkForCorrectAnswer(value)) {
-               this.questionService.nextQuestion();
+          if (this.contentService.checkForCorrectAnswer(value)) {
+               this.contentService.nextActivity();
+               
           }
           else {
                console.log("incorrect");

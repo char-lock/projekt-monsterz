@@ -23,7 +23,7 @@ import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
 import { AppController } from './services/app.controller';
 import { LessonModuleComponent } from './pages/lesson-module/lesson-module.component';
-import { QuestionService } from './services/question.service';
+import { ContentService } from './services/content.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import { QuestionService } from './services/question.service';
     LoginService,
     UserService,
     AppController,
-    QuestionService
+    ContentService
   ],
   bootstrap: [AppComponent]
 })

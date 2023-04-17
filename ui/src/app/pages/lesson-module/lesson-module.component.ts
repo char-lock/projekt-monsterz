@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AppController } from 'src/app/services/app.controller';
-import { QuestionService } from 'src/app/services/question.service';
+import { ContentService } from 'src/app/services/content.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
-import { Question } from 'src/app/types/Question';
+import { LessonContent } from 'src/app/types/Content';
 
 @Component({
   selector: 'app-lesson-module',
@@ -12,20 +12,18 @@ import { Question } from 'src/app/types/Question';
   styleUrls: ['./lesson-module.component.css']
 })
 export class LessonModuleComponent implements OnInit {
-  currentQuestions: Question = this.questionService.getQuestions();
+  currentQuestions: LessonContent = this.contentService.getCurrentQuestion();
   constructor(private userSession: UserSessionService,
     private router: Router,
-    private questionService: QuestionService,
-    private appController: AppController) {
-      this.questionService.returnQuestion().subscribe((value) => {
-        this.currentQuestions = value;
-      })
+    private appController: AppController,
+    private contentService: ContentService) {
     }
   ngOnInit(): void {
     this.appController.checkForAuthentication()
   }
   checkForRightAnswer(value: string) {
     this.appController.checkForRightAnswer(value);
+    this.currentQuestions = this.contentService.getCurrentQuestion();
   }
 
 }

@@ -5,6 +5,7 @@ import { AxiosHeaders } from "axios";
 
 import { ApiResponse } from "../types/ApiResponse";
 import { User } from "../types/User";
+import { LessonContent } from "../types/Content";
 
 @Injectable()
 export class ApiService {
@@ -163,6 +164,39 @@ export class ApiService {
         console.log(`Failed to retrieve global leaderboard: ${leaderboardFailReason}`);
         return callback([]);
       });
+  }
+  GetOneLessonContent() {
+    let lesson: LessonContent =  {
+      contentType: 0,
+      contentText: "What is your name?",
+      correctAnswer: "10",
+      genericAnswers: ["10", "20", "30", "40"]
+    }
+    return lesson;
+  }
+  GetWholeLessonContent() {
+
+    let lessonArray: LessonContent[] = [
+      {
+        contentType: 0,
+        contentText: "What is your name?",
+        correctAnswer: "10",
+        genericAnswers: ["10", "20", "30", "40"]
+      },
+      {
+      contentType: 0,
+      contentText: "What is your Hometown?",
+      correctAnswer: "10",
+      genericAnswers: ["10", "20", "30", "40"]
+      },
+      {
+      contentType: 0,
+      contentText: "What is your Age?",
+      correctAnswer: "10",
+      genericAnswers: ["10", "20", "30", "40"]
+      }
+    ]
+    return lessonArray;
   }
 
 }

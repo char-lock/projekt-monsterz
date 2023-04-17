@@ -33,8 +33,9 @@ export class UserService {
                user_type: 1,
                verification_method: 1,
                verification_value: emailOrEducationCode,
-               lesson_current: 0,
-               lesson_current_progress: 0,
+               lesson_current: 0, //The count of lesson (if 10 lesson), 
+               lesson_current_progress: 0, //Percentage of the progress. ^ 10 things in the lesson, be which.
+               //Check local. Autosave on some questions. Save on logout and save on session on (move through)
                verified: false
           }
           return newUser;
@@ -43,7 +44,7 @@ export class UserService {
      //Progress for lessons completed.
      if (this.currentUser.lesson_current)
      {
-     this.currentUser.lesson_current += score;
+          this.currentUser.lesson_current += score;
      }
      }
      updateLessonCurrentProgress (score: number) {
