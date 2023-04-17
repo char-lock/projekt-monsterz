@@ -10,8 +10,8 @@ import { ValidationService } from './services/validation.service';
 import { UserRegistrationService } from './services/user-registration.service';
 
 import { AppComponent } from './app.component';
-import { LoginScreenComponent } from './shared/login-screen/login-screen.component';
-import { HeaderComponent } from './shared/header/header.component';
+import { LoginScreenComponent } from './components/login-screen/login-screen.component';
+import { HeaderComponent } from './components/header/header.component';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ApiService } from './services/api.service';
