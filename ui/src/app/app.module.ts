@@ -22,7 +22,7 @@ import { MonsterCageBackgroundDirective } from './directives/monster-cage-backgr
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
 import { AppController } from './services/app.controller';
-import { LessonModuleComponent } from './pages/lesson-module/lesson-module.component';
+import { LessonModuleComponent } from './pages/lesson-modules/lesson-module.component';
 import { ContentService } from './services/content.service';
 
 @NgModule({

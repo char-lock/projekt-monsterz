@@ -8,28 +8,37 @@ export class ContentService {
      getAllQuestions = true;
      questionList: LessonContent[] = [];
      index = 0;
-     
-     
+     private currentQuestionObserve = new BehaviorSubject<LessonContent>(this.questionList[this.index]);
+
      constructor(private apiService: ApiService) {
           if (this.getAllQuestions) {
-               this.questionList = this.apiService.GetWholeLessonContent();
+               this.questionList = this.getQuestionsForEntireLesson();
           }
           else {
-               this.questionList.push(this.apiService.GetOneLessonContent());
+               this.questionList.push(this.getOneLessonContent());
           }
-          
-     }
-
-
-     getQuestionsForEntireLesson() {
-          this.questionList = this.apiService.GetWholeLessonContent();
+          this.currentQuestionObserve.next(this.questionList[this.index]);
+          this.returnQuestion();
      }
      
+     getQuestionsForEntireLesson() {
+          return this.apiService.GetWholeLessonContent();
+     }
+     getOneLessonContent() {
+          return this.apiService.GetOneLessonContent();
+     }
      getCurrentQuestion() {
           return this.questionList[this.index];
      }
      nextActivity() {
+          
           this.incrementIndex();
+          if (this.index == this.questionList.length) {
+               console.log("All Done!")
+          }
+          else {
+          this.currentQuestionObserve.next(this.questionList[this.index]);
+          }
      }
      incrementIndex() {
           this.index++;
@@ -38,6 +47,6 @@ export class ContentService {
                return this.questionList[this.index].correctAnswer == value;          
      }
      returnQuestion() {
-          return this.questionList[this.index];
+          return this.currentQuestionObserve;
      }
 }

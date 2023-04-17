@@ -63,8 +63,8 @@ export class AppController {
      }
      checkForRightAnswer(value: string) {
           if (this.contentService.checkForCorrectAnswer(value)) {
+               this.userService.updateLessonCurrentProgress(10);
                this.contentService.nextActivity();
-               
           }
           else {
                console.log("incorrect");
@@ -75,6 +75,9 @@ export class AppController {
           if (!this.userSessionService.IsAuthenticated()) {
                this.router.navigate(["../"]);
                return;
+          }
+          else {
+               console.log("WHY HERE!?")
           }
      }
 }
