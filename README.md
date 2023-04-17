@@ -10,15 +10,9 @@ Currently, Projekt Monsterz requires the API and UI to be launched seperately. T
 ### Setting up the Environment
 First, it is recommended that you look at the `.env.example` file located in the root of the project. In order for the project to run, you will need a `.env` file in this same location with all of the same variables defined.
 
-### Starting the API
-1. Navigate to the `api` folder.
-2. Run the command `npm install`.
-3. Run the command `npm start`.
-
 ### Starting the UI
-1. Navigate to the `ui` folder.
-2. Run the command `npm install`.
-3. Run the command `ng serve`.
+1. Run the command `npm install`.
+2. Run the command `ng serve`.
 
 
 ## Contributing
