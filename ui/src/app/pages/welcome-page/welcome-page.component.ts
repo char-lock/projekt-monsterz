@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AppController } from 'src/app/services/app.controller';
 import { ApplicationStateService } from 'src/app/services/application-state.service';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -8,10 +10,12 @@ import { ApplicationStateService } from 'src/app/services/application-state.serv
 })
 export class WelcomePageComponent {
   constructor(
-    private appState: ApplicationStateService
-  ) {}
+    private appController: AppController,
+    private logger: LoggerService
+  ) { }
 
   OpenRegistrationModal() {
-    this.appState.SetLoginModalState(2);
+    this.appController.setModalState(2);
+    this.logger.makeLog("Welcome Page Component | Open Registration Modal Function", "Clicked to Set Modal State within App Controller")
   }
 }

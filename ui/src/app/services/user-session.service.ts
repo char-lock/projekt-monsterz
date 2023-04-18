@@ -1,44 +1,47 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { ApiService } from "./api.service";
 import { User } from "../types/User";
 import { UserSession } from "../types/UserSession";
 import { CookieController } from "./cookie.service";
+import { BehaviorSubject, Subject } from "rxjs";
+import { Observable } from "rxjs-compat";
+import { UserService } from "./user.service";
+import { LoggerService } from "./logger.service";
+import { LoginService } from "./login.service";
 
 @Injectable()
 export class UserSessionService {
-
-  private currentUser: User = {};
-  private authToken: string = "";
+  private authToken = "";
   private startedAt: number = -1;
   private lastRefresh: number = -1;
-
+  private currentSubscription;
   constructor(
     private apiService: ApiService,
-    private cookieService: CookieController
-  ) {}
+    private cookieService: CookieController,
+    private userService: UserService,
+    private logger: LoggerService,
+    private loginService: LoginService
+  ) {
+    this.currentSubscription = this.loginService.getAuthToken().subscribe((value: string) => {
+      this.authToken = value;
+      this.setSessionDate();
+      this.SaveSession();
+    })
+  }
+
 
   IsAuthenticated() {
     if (Date.now() > this.lastRefresh + (900 * 1000) && this.authToken !== "" && this.lastRefresh !== -1) {
+
+      this.logger.makeLog("User Session Service", "Is authenticated call was a success!");
       return this.RefreshAuth().then((result) => { return result; });
     }
-    return this.authToken !== "" && typeof this.currentUser.username !== "undefined";
+    this.logger.makeLog("User Session Service", "Is authenticated call was a failure!");
+    return this.authToken !== ""
   }
-
-  GetCurrentUsername() {
-    return typeof this.currentUser.username !== "undefined" ? this.currentUser.username : "";
-  }
-
-  GetCurrentScore() {
-    return this.currentUser.lesson_current ? this.currentUser.lesson_current : 0;
-  }
-
-  GetClassCode() {
-    return this.currentUser.verification_value ? this.currentUser.verification_value : "null";
-  }
-
   GetSessionData() {
     const sessionData: UserSession = {
-      currentUser: this.currentUser,
+      currentUser: this.userService.getUser(),
       currentToken: this.authToken
     };
     return sessionData;
@@ -49,44 +52,8 @@ export class UserSessionService {
   }
 
   LoadSession(sessionData: UserSession) {
-    this.currentUser = sessionData.currentUser;
+    this.userService.setUser(sessionData.currentUser);
     this.authToken = sessionData.currentToken;
-  }
-
-  LoginAs(username: string, password: string, callback: Function) {
-    this.apiService.GetAuthToken(username, password)
-      .then((tokenResponse) => {
-        if (tokenResponse === "") {
-          console.log(`Failed to login: Unknown reason`);
-          callback(false);
-          return;
-        }
-        this.authToken = tokenResponse;
-        this.apiService.GetUserByUsername(username)
-          .then((userResponse) => {
-            if (!userResponse) {
-              console.log(`Failed to retrieve user: Unknown reason`);
-              callback(false);
-              return;
-            }
-            this.currentUser = userResponse;
-            this.startedAt = Date.now();
-            this.lastRefresh = Date.now();
-            this.SaveSession();
-            callback(true);
-            return;
-          })
-          .catch((userFailReason) => {
-            console.log(`Failed to retrieve user: ${userFailReason}`);
-            callback(false);
-            return;
-          });
-      })
-      .catch((tokenFailReason) => {
-        console.log(`Failed to login: ${tokenFailReason}`);
-        callback(false);
-        return;
-      });
   }
 
   RefreshAuth() {
@@ -107,13 +74,16 @@ export class UserSessionService {
         return false;
       });
   }
-
   RevokeSession() {
     this.authToken = "";
-    this.currentUser = {};
     this.startedAt = -1;
     this.lastRefresh = -1;
     this.cookieService.RevokeCookie();
   }
 
+  setSessionDate() {
+    this.startedAt = Date.now();
+    this.lastRefresh = Date.now();
+    this.logger.makeLog("User Session Service, Set Session Date", this.lastRefresh.toString())
+  }
 }

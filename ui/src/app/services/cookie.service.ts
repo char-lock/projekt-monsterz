@@ -10,7 +10,7 @@ export class CookieController {
   constructor(
     private cookieService: CookieService,
     private logger: LoggerService
-  ) {}
+  ) { }
 
   SaveSessionAsCookie(session: UserSession) {
     this.cookieService.set('projekt-monsterz.session', JSON.stringify(session));

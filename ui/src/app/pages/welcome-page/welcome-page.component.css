@@ -71,7 +71,7 @@ div.buttons {
   mix-blend-mode: luminosity;
   filter: brightness(1.3);
   cursor: pointer;
-  color:#f2f4e7;
+  color: #f2f4e7;
   font-size: 1.33em;
   font-weight: 600;
   letter-spacing: 2pt;
@@ -185,4 +185,3 @@ div.buttons {
   margin-top: 15vh;
   background-color: #fa3993;
 }
-
