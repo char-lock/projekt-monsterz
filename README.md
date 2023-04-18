@@ -1,18 +1,19 @@
 # Projekt Monsterz
+
 📚 An education platform for school-aged children to learn Computer Science concepts.
 
 *Designed as part of the [Develop Carolina](https://www.developcarolina.org/) program.*
 
 
 ## Instructions
-Currently, Projekt Monsterz requires the API and UI to be launched seperately. This will not be the case for much longer, but it's the case now.
 
 ### Setting up the Environment
 First, it is recommended that you look at the `.env.example` file located in the root of the project. In order for the project to run, you will need a `.env` file in this same location with all of the same variables defined.
 
-### Starting the UI
+### Starting the Application
 1. Run the command `npm install`.
-2. Run the command `ng serve`.
+2. Run the command `npx prisma migrate dev --name init`.
+3. Run the command `ng serve`.
 
 
 ## Contributing
