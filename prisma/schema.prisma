@@ -52,5 +52,4 @@ model CourseContent {
   header          String
   detail          String
   correct_answer  String
-  answers         String[]
 }

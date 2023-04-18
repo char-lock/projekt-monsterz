@@ -2,7 +2,8 @@
 .env
 *.pem
 *.db
-/api/reference
+*.db-journal
+/prisma/migrations
 
 # NodeJS
 node_modules
@@ -33,6 +34,7 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+*.code-workspace
 
 # Miscellaneous
 .angular/
