@@ -67,6 +67,32 @@ export class DataBusService implements OnDestroy {
     return foundUser;
   }
 
+  getUsernamesByValidationValue(value: string) {
+    let foundUser: string[] = [];
+    let finished = false;
+    this.prisma.user.findMany({ where: { validation_value: value } })
+      .then((result) => {
+        result.forEach((user) => {
+          foundUser.push(user.username);
+        });
+        finished = true;
+      })
+      .catch((reject) => {
+        console.log("debug: failed to get user by id - data.service.ts");
+        console.log(reject);
+        finished = true;
+      });
+    // Blocking return until the results are available or timeout
+    const startTime = Date.now();
+    while (!finished) {
+      if (Date.now() - startTime >= 30000) {
+        console.log("get user by username timed out");
+        finished = true;
+      }
+    }
+    return foundUser;
+  }
+
   authenticate(username: string, password: string) {
     username = username.toLowerCase();
     const currentUser = this.getUserByUsername(username);
