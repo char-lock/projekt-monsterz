@@ -1,4 +1,4 @@
-<main>
+<!-- <main>
      <div class="question-and-answer-container">
           <div class="userScore"> {{ currentProgress }}</div>
      <div class="question">
@@ -17,4 +17,32 @@
           </button>
      </div>
 </div>
+</main> -->
+<main>
+     <div class="question-and-answer-container">
+          <div class="userScore"> {{ currentProgress }}</div>
+     <div class="question">
+          <h2>
+          {{ currentQuestion.contentText }}
+          </h2>
+     </div>
+     <div id="answerbox"
+     (drop)="onDrop($event)"
+     (dragover)="allowDrop($event)"
+     >Enter the Right Answer Here!
+</div>
+     <div class="btn-group">
+          <div 
+          class="answer-drag"
+          draggable="true"
+          (dragstart)="drag($event)"
+          *ngFor="let answer of currentQuestion.genericAnswers">
+          <p>
+               {{ answer }}
+          </p>
+          </div>
+     </div>
+     <button (click)="checkForRightAnswerDrag()">Submit</button>
+</div>
+     
 </main>

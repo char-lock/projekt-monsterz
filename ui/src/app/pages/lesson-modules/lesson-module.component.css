@@ -5,6 +5,16 @@
      text-align: center;
 }
 
+.answer-drag {
+     margin: 10px;
+     font-size: 18pt;
+     border-color: transparent;
+     font-weight: 700;
+     color: var(--login-button-text-color);
+     background-color: blue;
+     border: 2px solid green;
+}
+
 button {
      margin: 10px;
      background-color: var(--login-button-background-color);

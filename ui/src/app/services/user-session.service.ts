@@ -36,7 +36,6 @@ export class UserSessionService {
       this.logger.makeLog("User Session Service", "Is authenticated call was a success!");
       return this.RefreshAuth().then((result) => { return result; });
     }
-    this.logger.makeLog("User Session Service", "Is authenticated call was a failure!");
     return this.authToken !== ""
   }
   GetSessionData() {
