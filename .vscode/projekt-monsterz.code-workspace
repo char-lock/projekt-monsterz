@@ -1,12 +1,9 @@
 {
   "folders": [
-	{
-		"path": ".."
-	},
-	{
-		"path": "../../projekt-monsterz-api"
-	}
-],
+    {
+      "path": ".."
+    }
+  ],
   "settings": {
     "files.associations": {
       "stdbool.h": "c",
