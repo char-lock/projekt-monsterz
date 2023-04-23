@@ -3,8 +3,14 @@ import * as helmet from "helmet";
 import * as bodyParser from "body-parser";
 import * as express from "express";
 
+import { ApiResponse } from "./shared/api.response";
+import { config } from "./shared/config";
+import ApiLogger from "./shared/logger";
+
 import UsersRouter from "./users/users.routes";
 import AuthRouter from './auth/auth.routes';
+
+const fileLogger = new ApiLogger("index");
 
 const app = express.default();
 
@@ -12,13 +18,20 @@ app.use(cors.default());
 app.use(helmet.default());
 app.use(bodyParser.json());
 
-app.get("/", (_, res: express.Response) => {
-  res.status(200).json({ data: "ok" });
+app.get("/", (_, rawRes: express.Response) => {
+  fileLogger.debug("received request at /");
+  const res = new ApiResponse(rawRes);
+  res.send("welcome to projekt monsterz");
 });
 
 app.use("/users/", UsersRouter);
 app.use("/auth/", AuthRouter);
 
-app.listen(9696, () => {
-  console.log("server started on 9696");
-});
+if (config.enableHttp) {
+  fileLogger.debug("starting http server ...");
+  app.listen(config.httpPort, () => {
+    fileLogger.debug(`started http server on port ${config.httpPort}`);
+  });
+} else {
+  fileLogger.debug("http disabled - skipped");
+}

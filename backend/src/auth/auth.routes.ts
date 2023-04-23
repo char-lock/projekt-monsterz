@@ -5,9 +5,9 @@ import AuthController from "./auth.controller";
 const router = Router();
 
 // Authorize user and generate token
-router.post("/auth/login", AuthController.getAuthToken);
+router.post("/login", AuthController.getAuthToken);
 
 // Refresh auth token
-router.get("/auth/refresh", AuthController.refreshAuth);
+router.get("/refresh", AuthController.refreshAuth);
 
 export default router;

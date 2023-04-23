@@ -7,7 +7,14 @@ export default class ApiLogger {
     defaultMeta: { sourceFile: "", sourceFunction: "" },
     format: winston.format.combine(
       winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss.SSS" }),
-      winston.format.prettyPrint({ colorize: true })
+      winston.format.prettyPrint({ colorize: true }),
+      winston.format.printf(({ level, message, sourceFile, sourceFunction, timestamp }) => {
+        let msg = winston.format.colorize().colorize(level, `[${timestamp} | ${level}]: `);
+        msg += `(${sourceFile}`;
+        if (sourceFunction !== "") msg += `::${sourceFunction}`
+        msg += `) ${message}`
+        return msg;
+      })
     ),
     level: config.debugMode ? "debug" : "warning",
     transports: new winston.transports.Console()

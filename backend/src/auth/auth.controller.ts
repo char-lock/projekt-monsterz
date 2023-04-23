@@ -110,9 +110,12 @@ export default class AuthController {
       return res.status(400).describe("malformed authorization header").send("");
     }
     try {
-      const value = jwt.verify(prevAuth[1], config.jwtSecret);
+      const value = <jwt.JwtPayload>jwt.verify(prevAuth[1], config.jwtSecret);
       logger.debug("valid jwt in header -- issuing new one");
-      return res.send(jwt.sign(value, config.jwtSecret, { expiresIn: "30m" }));
+      logger.debug(JSON.stringify(value));
+      value.iat = Math.floor(Date.now() / 1000);
+      value.exp = value.iat + (60 * 30);
+      return res.send(jwt.sign(value, config.jwtSecret));
     } catch (err) {
       logger.debug(err);
       return res.status(400).describe("invalid authorization header").send("");

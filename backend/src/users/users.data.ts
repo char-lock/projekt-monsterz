@@ -28,15 +28,15 @@ export default class UsersData {
 
   static getUserByUsername(username: string) {
     const logger = UsersData.fileLogger.createFunctionLogger("getUserByUsername");
-    logger.info(`getting user with username ${username} from database ...`);
+    logger.debug(`getting user with username ${username} from database ...`);
     return UsersData.prisma.user.findFirstOrThrow({ where: { username: username } })
       .then((result) => {
-        logger.info(`found user with username ${username} - id = ${result.id}`);
+        logger.debug(`found user with username ${username} - id = ${result.id}`);
         return result;
       })
       .catch((reject) => {
         if (reject.code === "P2025") {
-          logger.info(`user with username ${username} not found`);
+          logger.debug(`user with username ${username} not found`);
           return undefined;
         }
         logger.error("unhandled error occurred");
@@ -64,7 +64,12 @@ export default class UsersData {
         return result;
       })
       .catch((reject) => {
-        logger.error(reject);
+        if (reject.code === "P2002" && reject.meta.target.includes("username")) {
+          logger.debug("user already exists -- throwing ...");
+        } else {
+          logger.error("unhandled error occurred");
+          logger.error(JSON.stringify(reject));
+        }
         throw(reject);
       });
   }
