@@ -17,7 +17,10 @@ export default class CourseController {
       .then((result) => {
         if (result === undefined) {
           console.debug(`unit ${unitId} does not exist`);
-          res.status(404).describe(`unit with id ${unitId} does not exist`);
+          return res
+            .status(404)
+            .describe(`unit with id ${unitId} does not exist`)
+            .send();
         }
         res.send(result);
       })
@@ -108,7 +111,8 @@ export default class CourseController {
               logger.debug(`no content found for lesson ${lessonPosition} unit ${unitId}`);
               return res
                 .status(404)
-                .describe(`content for lesson ${lessonPosition} unit ${unitId} does not exist`);
+                .describe(`content for lesson ${lessonPosition} unit ${unitId} does not exist`)
+                .send();
             }
             logger.debug(`sending ${content.length} content items for lesson ${lessonPosition} unit ${unitId}}`);
             res.send(content);
@@ -134,6 +138,62 @@ export default class CourseController {
     const lessonPosition = parseInt(req.params.lessonPosition);
     const contentPosition = parseInt(req.params.contentPosition);
     logger.debug(`received request: get content #${contentPosition} for unit ${unitId}, lesson #${lessonPosition}`);
+    CourseData.getLessonByPosition(unitId, lessonPosition)
+      .then((lesson) => {
+        if (lesson === undefined) {
+          logger.debug(`no lesson found in position ${lessonPosition} for unit ${unitId}`);
+          return res
+            .status(404)
+            .describe(`lesson ${lessonPosition} does not exist in unit ${unitId}`)
+            .send();
+        }
+        CourseData.getContentByPosition(lesson.id, contentPosition)
+          .then((content) => {
+            if (content === undefined) {
+              logger.debug(`no content found in position ${contentPosition} for lesson ${lessonPosition} unit ${unitId}`);
+              return res
+                .status(404)
+                .describe(`no content found in position ${contentPosition} for lesson ${lessonPosition} unit ${unitId}`)
+                .send();
+            }
+            return res.send(content);
+          })
+          .catch((contentReject) => {
+            logger.error("unhandled exception occurred while getting content");
+            logger.error(contentReject);
+            res.status(500).describe("unknown server error occurred").send();
+          });
+      })
+      .catch((lessonReject) => {
+        logger.error("unhandled exception occurred while getting lesson");
+        logger.error(lessonReject);
+        res.status(500).describe("unknown server error occurred").send();
+      })
+  }
+
+  static getLessonMetadataByPosition(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("getLessonMetadataByPosition");
+    const unitId = parseInt(req.params.unitId);
+    const lessonPosition = parseInt(req.params.lessonPosition);
+    logger.debug(`received request: get metadata for lesson ${lessonPosition} in unit ${unitId}`);
+    CourseData.getLessonByPosition(unitId, lessonPosition)
+      .then((lesson) => {
+        if (lesson === undefined) {
+          logger.debug(`no lesson found in position ${lessonPosition} for unit ${unitId}`);
+          return res
+            .status(404)
+            .describe(`no lesson found in position ${lessonPosition} unit ${unitId}`)
+            .send();
+        }
+        return res.send(lesson);
+      })
+      .catch((reject) => {
+        logger.error("unhandled exception occurred");
+        logger.error(reject);
+        res.status(500).describe("unknown server error occurred").send();
+      })
   }
 
 }

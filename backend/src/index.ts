@@ -8,7 +8,8 @@ import { config } from "./shared/config";
 import ApiLogger from "./shared/logger";
 
 import UsersRouter from "./users/users.routes";
-import AuthRouter from './auth/auth.routes';
+import AuthRouter from "./auth/auth.routes";
+import CourseRouter from "./course/course.routes";
 
 const fileLogger = new ApiLogger("index");
 
@@ -26,6 +27,7 @@ app.get("/", (_, rawRes: express.Response) => {
 
 app.use("/users/", UsersRouter);
 app.use("/auth/", AuthRouter);
+app.use("/course/", CourseRouter);
 
 if (config.enableHttp) {
   fileLogger.debug("starting http server ...");

@@ -5,19 +5,19 @@ import CourseController from "./course.controller";
 const router = Router();
 
 // GET unit metadata
-router.get("metadata/unit/:unitId/", CourseController.getUnitMetadataById);
+router.get("/units/:unitId", CourseController.getUnitMetadataById);
 
 // GET all lesson IDs in unit
 router.get("units/:unitId/lessons", CourseController.getLessonIdsInUnit);
 
 // GET lesson metadata
 // By ID
-router.get("metadata/lesson/:lessonId", CourseController.getLessonMetadataById);
+router.get("lessons/:lessonId", CourseController.getLessonMetadataById);
 // By Unit # and Lesson #
-// router.get(
-//   "metadata/unit/:unitId/lesson/:lessonPosition",
-//   CourseController.getLessonMetadataByUnitPosition
-// );
+router.get(
+  "units/:unitId/lessons/:lessonPosition",
+  CourseController.getLessonMetadataByPosition
+);
 
 // GET content
 // By content ID
