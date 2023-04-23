@@ -22,12 +22,12 @@
     <div class="leaderboard">
       <h1>Top Monsterz</h1>
       <table>
-        <tr class="score-other" *ngFor="let leaders of Leaderboard()">
+        <tr class="score-other" *ngFor="let entry of getLeaderboard()">
           <td>
             <div class="circle-color"></div>
           </td>
-          <td class="username">{{ leaders[0] }}</td>
-          <td class="points">{{ leaders[1] }}</td>
+          <td class="username">{{ entry.username }}</td>
+          <td class="points">{{ entry.score }}</td>
         </tr>
         <tr class="score-you">
           <td>

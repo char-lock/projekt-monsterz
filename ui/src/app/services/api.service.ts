@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 import { AxiosHeaders } from "axios";
 import { createHash } from "crypto";
 
-import { ApiResponse, NewUser, User } from "../types/api.types";
+import { ApiResponse, CourseContent, CourseLesson, CourseUnit, NewUser, User } from "../types/api.types";
 import { LessonContent } from "../types/Content";
 import { LoggerService } from "./logger.service";
 
@@ -120,6 +120,43 @@ export class ApiService {
       });
   }
 
+  /**
+   * Returns a list of User objects organised by position in the course content.
+   */
+  getUsersByScore(count: number) {
+    return this.getApiRequest(`/leaderboard/${count}`)
+      .then((users) => {
+        if (users.data === undefined) {
+          this.logger.makeLog("api.service::getUsersByScore", JSON.stringify(users));
+          return <User[]>[];
+        }
+        return <User[]>users.data;
+      })
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUsersByScore", reject);
+        return <User[]>[];
+      });
+  }
+
+  /**
+   * Returns a list of User objects organised by position in the course content
+   * and filtered by validation value.
+   */
+  getClassUsersByScore(educationCode: string, count: number) {
+    return this.getApiRequest(`/leaderboard/class/${educationCode}/${count}`)
+      .then((users) => {
+        if (users.data === undefined) {
+          this.logger.makeLog("api.service::getClassUsersByScore", JSON.stringify(users));
+          return <User[]>[];
+        }
+        return <User[]>users.data;
+      })
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getClassUsersByScore", reject);
+        return <User[]>[];
+      });
+  }
+
   /** 
    * Registers a user with the provided information, and returns the
    * created user if the request is successful.
@@ -181,6 +218,51 @@ export class ApiService {
           `failed to refresh token - reason ${fail}`
         );
         return "";
+      });
+  }
+
+  /** Returns the metadata related to the provided unit ID */
+  getUnitMeta(unitId: number) {
+    return this.getApiRequest(`/course/units/${unitId}/metadata`)
+      .then((result) => {
+        if (result.data === undefined) {
+          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
+        }
+        return <CourseUnit>result.data;
+      })
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
+        return undefined;
+      });
+  }
+
+  /** Returns the metadata related to the provided lesson ID */
+  getLessonMeta(lessonId: number) {
+    return this.getApiRequest(`/course/lessons/${lessonId}/metadata`)
+      .then((result) => {
+        if (result.data === undefined) {
+          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
+        }
+        return <CourseLesson>result.data;
+      })
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
+        return undefined;
+      });
+  }
+
+  /** Returns the content metadata related to the provided content ID */
+  getContentMeta(contentId: number) {
+    return this.getApiRequest(`/course/content/${contentId}`)
+      .then((result) => {
+        if (result.data === undefined) {
+          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
+        }
+        return <CourseContent>result.data;
+      })
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
+        return undefined;
       });
   }
 
