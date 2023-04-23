@@ -4,6 +4,7 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 
 import UsersRouter from "./users/users.routes";
+import AuthRouter from './auth/auth.routes';
 
 const app = express.default();
 
@@ -16,6 +17,7 @@ app.get("/", (_, res: express.Response) => {
 });
 
 app.use("/users/", UsersRouter);
+app.use("/auth/", AuthRouter);
 
 app.listen(9696, () => {
   console.log("server started on 9696");

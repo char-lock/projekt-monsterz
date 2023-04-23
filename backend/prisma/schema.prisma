@@ -14,9 +14,9 @@ model User {
   id                  Int     @id @default(autoincrement())
   username            String  @unique
   user_type           Int
-  created_on          Int
+  created_on          String
   validated           Boolean
-  validated_on        Int
+  validated_on        String
   validation_method   Int
   validation_value    String
   progress_lesson     Int
@@ -26,5 +26,5 @@ model User {
 model UserAuth {
   user_id       Int     @id
   auth_key      String
-  changed_on    Int
+  changed_on    String
 }

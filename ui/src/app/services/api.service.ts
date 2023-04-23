@@ -1,170 +1,184 @@
 import { Injectable } from "@angular/core";
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { AxiosHeaders } from "axios";
+import { createHash } from "crypto";
 
-import { ApiResponse } from "../types/ApiResponse";
-import { User } from "../types/User";
+import { ApiResponse, NewUser, User } from "../types/api.types";
 import { LessonContent } from "../types/Content";
+import { LoggerService } from "./logger.service";
 
 @Injectable()
 export class ApiService {
 
-  static API_ENDPOINT = "http://localhost:8080";
+  static API_ENDPOINT = "http://localhost:9696";
 
-  constructor() { }
+  constructor(private logger: LoggerService) {}
 
-  PostGeneric(endpoint: string, body?: string, headers?: AxiosHeaders) {
+  /** Posts a request to the API server and returns the response. */
+  postApiRequest(endpoint: string, body?: string, headers?: AxiosHeaders) {
     if (!headers) headers = new AxiosHeaders();
-    headers?.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
-    headers?.set("Content-Type", "application/json");
+    headers.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
+    headers.set("Content-Type", "application/json");
     return axios.post(
       `${ApiService.API_ENDPOINT}${endpoint}`,
       body,
       { headers: headers }
     )
-      .then((postResponse) => {
-        const response: ApiResponse = postResponse.data;
-        return response;
+      .then((rawResponse: AxiosResponse) => {
+        return <ApiResponse>rawResponse.data;
       })
-      .catch((postFailReason) => {
-        const response: ApiResponse = { statusCode: 500, details: postFailReason, data: [] };
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::postApiRequest", 
+          `request failed to resolve - reason: ${fail}`
+        );
+        const response: ApiResponse = {
+          statusCode: 500,
+          statusShortDesc: "Internal Server Failure",
+          statusLongDesc: ""
+        };
         return response;
       });
   }
 
-  GetGeneric(endpoint: string, headers?: AxiosHeaders) {
+  /** Sends a get request to the API server and returns the response. */
+  getApiRequest(endpoint: string, headers?: AxiosHeaders) {
     if (!headers) headers = new AxiosHeaders();
-    headers?.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
     return axios.get(
       `${ApiService.API_ENDPOINT}${endpoint}`,
       { headers: headers }
     )
-      .then((getResponse) => {
-        const response: ApiResponse = getResponse.data;
-        return response;
+      .then((rawResponse) => {
+        return <ApiResponse>rawResponse.data;
       })
-      .catch((getFailReason) => {
-        const response: ApiResponse = { statusCode: 500, details: getFailReason, data: [] };
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getApiRequest",
+          `request failed to resolve - reason: ${fail}`
+        );
+        const response: ApiResponse = {
+          statusCode: 500,
+          statusShortDesc: "Internal Server Failure",
+          statusLongDesc: ""
+        };
         return response;
       });
   }
 
-  GetAuthToken(username: string, password: string) {
-    return this.PostGeneric("/auth/login", `{ "username": "${username}", "password": "${password}" }`)
-      .then((authResponse) => {
-        if (typeof authResponse.data === "undefined") {
-          return "";
-        }
-        if (authResponse.data.length < 1) {
-          return "";
-        }
-        const token: string = authResponse.data[0].token;
-        return token;
+  /** 
+   * Returns a User object if a user exists with the provided userId,
+   * otherwise returns undefined.
+   */
+  getUserById(userId: number) {
+    return this.getApiRequest(`/users/id/${userId}`)
+      .then((response) => {
+        return <User>response.data;
       })
-      .catch((authFailReason) => {
-        console.log(`Failed to retrieve auth token: ${authFailReason}`);
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getUserById",
+          `request failed to resolve - reason: ${fail}`
+        );
+        return undefined;
+      });
+  }
+
+  /** 
+   * Returns a User object if a user exists with the provided username,
+   * otherwise returns undefined.
+   */
+  getUserByUsername(username: string) {
+    return this.getApiRequest(`/users/username/${username}`)
+      .then((response) => {
+        return <User>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getUserByUsernames",
+          `request failed to resolve - reason: ${fail}`
+        );
+        return undefined;
+      });
+  }
+
+  /** 
+   * Returns a User object if a user exists with the provided validation
+   * value, otherwise returns undefined.
+   */
+  getUsersByValidationValue(value: string) {
+    return this.getApiRequest(`/users/validation/${value}`)
+      .then((response) => {
+        return <User[]>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getUserByValidationValue",
+          `request failed to resolve - reason: ${fail}`
+        );
+        return [];
+      });
+  }
+
+  /** 
+   * Registers a user with the provided information, and returns the
+   * created user if the request is successful.
+   */
+  registerUser(user: NewUser) {
+    user.password = createHash("sha512").digest().toString("hex");
+    return this.postApiRequest("/users/", JSON.stringify(user))
+      .then((response) => {
+        return <User>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::registerUser", 
+          `request failed to resolve - reson: ${fail}`
+        );
+        return undefined;
+      });
+  }
+
+  getAuthToken(username: string, password: string) {
+    password = createHash("sha512").digest().toString("hex");
+    return this.postApiRequest(
+      "/auth/login",
+      `{
+        "username": "${username}",
+        "password": "${password}"
+      }`
+    )
+      .then((response) => {
+        if (response.data === undefined) return ""
+        return <string>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getAuihToken", 
+          `request failed to resolve - reason: ${fail}`
+        );
         return "";
       });
   }
 
-  GetUserById(userId: number) {
-    return this.GetGeneric(`/user/id/${userId}`)
-      .then((userResponse) => {
-        if (typeof userResponse.data === "undefined") return undefined;
-        if (userResponse.data.length < 1) return undefined;
-        const user: User = userResponse.data[0];
-        return user;
+  refreshAuthToken(currentToken: string) {
+    return this.getApiRequest(
+      "/auth/refresh", 
+      new AxiosHeaders({ "Authorization": `Bearer ${currentToken}` })
+    )
+      .then((response) => {
+        if (response.data === undefined) return "";
+        return <string>response.data;
       })
-      .catch((userFailReason) => {
-        console.log(`Failed to get user from id: ${userFailReason}`);
-        return undefined;
-      });
-  }
-
-  GetUserByUsername(username: string) {
-    return this.GetGeneric(`/user/username/${username}`)
-      .then((userResponse) => {
-        if (typeof userResponse.data === "undefined") return undefined;
-        if (userResponse.data.length < 1) return undefined;
-        const user: User = userResponse.data[0];
-        return user;
-      })
-      .catch((userFailReason) => {
-        console.log(`Failed to get user from username: ${userFailReason}`);
-        return undefined;
-      });
-  }
-
-  GetUserByValidationValue(value: string) {
-    return this.GetGeneric(`/user/validation/${value}`)
-      .then((userResponse) => {
-        if (typeof userResponse.data === "undefined") return undefined;
-        if (userResponse.data.length < 1) return undefined;
-        const user: User = userResponse.data[0];
-        return user;
-      })
-      .catch((userFailReason) => {
-        console.log(`Failed to get user from validation value: ${userFailReason}`);
-        return undefined;
-      })
-  }
-
-  RefreshAuthToken(currentToken: string) {
-    return this.GetGeneric(`/auth/refresh`, new AxiosHeaders({ "Authorization": `Bearer ${currentToken}` }))
-      .then((refreshResponse) => {
-        if (typeof refreshResponse.data === "undefined") return "";
-        if (refreshResponse.data.length < 1) return "";
-        const newToken: string = refreshResponse.data[0].token;
-        return newToken;
-      })
-      .catch((refreshFailReason) => {
-        console.log(`Failed to refresh token: ${refreshFailReason}`);
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::refreshAuthToken", 
+          `failed to refresh token - reason ${fail}`
+        );
         return "";
       });
   }
 
-  RegisterUser(user: User) {
-    return this.PostGeneric("/user/", JSON.stringify(user))
-      .then((registerResponse) => {
-        if (typeof registerResponse.data === "undefined") return undefined;
-        if (registerResponse.data.length < 1) return undefined;
-        const registered: User = registerResponse.data[0];
-        return registered;
-      })
-      .catch((registerFailReason) => {
-        console.log(`Failed to register user: ${registerFailReason}`);
-        return undefined;
-      });
-  }
-
-  GetLeaderboardGlobal(callback: Function) {
-    return this.GetGeneric("/leaderboard/global")
-      .then((leaderboardResponse) => {
-        if (typeof leaderboardResponse.data === "undefined") return callback([]);
-        if (leaderboardResponse.data.length < 1) return callback([]);
-        const leaderboard: (number | string)[][] = leaderboardResponse.data;
-        callback(leaderboard);
-      })
-      .catch((leaderboardFailReason) => {
-        console.log(`Failed to retrieve global leaderboard: ${leaderboardFailReason}`);
-        return callback([]);
-      });
-  }
-
-  GetLeaderboardClass(classCode: string, callback: Function) {
-    return this.GetGeneric(`/leaderboard/class/${classCode}`)
-      .then((leaderboardResponse) => {
-        if (typeof leaderboardResponse.data === "undefined") return callback([]);
-        if (leaderboardResponse.data.length < 1) return callback([]);
-        const leaderboard: (number | string)[][] = leaderboardResponse.data;
-        callback(leaderboard);
-      })
-      .catch((leaderboardFailReason) => {
-        console.log(`Failed to retrieve global leaderboard: ${leaderboardFailReason}`);
-        return callback([]);
-      });
-  }
   GetOneLessonContent() {
     let lesson: LessonContent =  {
       contentType: 0,
