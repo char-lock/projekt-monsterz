@@ -3,7 +3,7 @@ import { ApiResponse } from "../shared/api.response";
 import UsersData from "./users.data";
 import { UserType, ValidationMethod } from "./users.types";
 import AuthData from "../auth/auth.data";
-import ApiLogger from "src/shared/logger";
+import ApiLogger from "../shared/logger";
 
 /** Handles the logic for any routing requests on the "/users/" endpoint. */
 export default class UsersController {

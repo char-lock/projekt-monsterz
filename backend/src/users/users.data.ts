@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NewUser } from "./users.types";
-import ApiLogger from "src/shared/logger";
+import ApiLogger from "../shared/logger";
 
 export default class UsersData {
 

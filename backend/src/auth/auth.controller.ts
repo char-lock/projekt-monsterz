@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { ApiResponse } from "src/shared/api.response";
+import { ApiResponse } from "../shared/api.response";
 import AuthData from "./auth.data";
 import UsersData from "../users/users.data";
 import { pbkdf2Sync } from "crypto";
 import * as jwt from "jsonwebtoken";
 import { config } from "../shared/config";
-import ApiLogger from "src/shared/logger";
+import ApiLogger from "../shared/logger";
 
 /** Handles the logic for any routing requests on the "auth" endpoint. */
 export default class AuthController {

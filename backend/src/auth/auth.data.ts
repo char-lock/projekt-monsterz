@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { pbkdf2Sync, getRandomValues } from "crypto";
-import ApiLogger from "src/shared/logger";
+import ApiLogger from "../shared/logger";
 
 export default class AuthData {
 
