@@ -139,6 +139,10 @@ export class ApiService {
       });
   }
 
+  /** 
+   * Returns either an authorization token if the username and password are valid,
+   * or returns an empty string.
+   */
   getAuthToken(username: string, password: string) {
     password = createHash("sha512").digest().toString("hex");
     return this.postApiRequest(
@@ -154,13 +158,14 @@ export class ApiService {
       })
       .catch((fail) => {
         this.logger.makeLog(
-          "api.service::getAuihToken", 
+          "api.service::getAuthToken", 
           `request failed to resolve - reason: ${fail}`
         );
         return "";
       });
   }
 
+  /** Returns a new authorization token for the provided information. */
   refreshAuthToken(currentToken: string) {
     return this.getApiRequest(
       "/auth/refresh", 
@@ -188,8 +193,8 @@ export class ApiService {
     }
     return lesson;
   }
-  GetWholeLessonContent() {
 
+  GetWholeLessonContent() {
     let lessonArray: LessonContent[] = [
       {
         contentType: 1,
