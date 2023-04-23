@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
-import { ApiResponse } from "../shared/api.response";
-import UsersData from "./users.data";
+
+import { ApiResponse } from "../../shared/api.response";
+import ApiLogger from "../../shared/logger";
 import { UserType, ValidationMethod } from "./users.types";
+
+import UsersData from "./users.data";
 import AuthData from "../auth/auth.data";
-import ApiLogger from "../shared/logger";
 
 /** Handles the logic for any routing requests on the "/users/" endpoint. */
 export default class UsersController {

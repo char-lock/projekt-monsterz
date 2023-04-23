@@ -4,12 +4,12 @@ import * as bodyParser from "body-parser";
 import * as express from "express";
 
 import { ApiResponse } from "./shared/api.response";
-import { config } from "./shared/config";
 import ApiLogger from "./shared/logger";
+import { config } from "./shared/config";
 
-import UsersRouter from "./users/users.routes";
-import AuthRouter from "./auth/auth.routes";
-import CourseRouter from "./course/course.routes";
+import UsersRouter from "./endpoints/users/users.routes";
+import AuthRouter from "./endpoints/auth/auth.routes";
+import CourseRouter from "./endpoints/course/course.routes";
 
 const fileLogger = new ApiLogger("index");
 

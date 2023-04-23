@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
-import ApiLogger from "../shared/logger";
-import CourseData from "./course.data";
-import { ApiResponse } from "src/shared/api.response";
 
+import { ApiResponse } from "src/shared/api.response";
+import ApiLogger from "../../shared/logger";
+
+import CourseData from "./course.data";
+
+/** Handles requests on the course endpoint */
 export default class CourseController {
 
   static fileLogger = new ApiLogger("course.controller");
@@ -86,7 +89,7 @@ export default class CourseController {
         logger.error("unhandled error encountered");
         logger.error(reject);
         res.status(500).describe("unknown server error occurred").send();
-      })
+      });
   }
 
   static getAllContentByLesson(req: Request, rawRes: Response) {
@@ -121,13 +124,13 @@ export default class CourseController {
             logger.error("unhandled error exception while getting content");
             logger.error(contentReject);
             res.status(500).describe("unknown server errror occurred").send();
-          })
+          });
       })
       .catch((lessonReject) => {
         logger.error("unhandled error exception while getting lesson");
         logger.error(lessonReject);
         res.status(500).describe("unknown server error occurred").send();
-      })
+      });
   }
 
   static getContentByPosition(req: Request, rawRes: Response) {
@@ -168,7 +171,7 @@ export default class CourseController {
         logger.error("unhandled exception occurred while getting lesson");
         logger.error(lessonReject);
         res.status(500).describe("unknown server error occurred").send();
-      })
+      });
   }
 
   static getLessonMetadataByPosition(req: Request, rawRes: Response) {
@@ -193,7 +196,7 @@ export default class CourseController {
         logger.error("unhandled exception occurred");
         logger.error(reject);
         res.status(500).describe("unknown server error occurred").send();
-      })
+      });
   }
 
 }

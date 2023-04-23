@@ -10,7 +10,7 @@ export enum UserType {
   STUDENT = 1,
   EDUCATOR = 2,
   SUPPORT = 99
-}
+};
 
 export type NewUser = {
   username: string;
@@ -22,4 +22,4 @@ export type NewUser = {
   validation_value: string;
   progress_lesson: number;
   progress_content: number;
-}
+};
