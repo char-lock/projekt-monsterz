@@ -28,3 +28,29 @@ model UserAuth {
   auth_key      String
   changed_on    String
 }
+
+model CourseUnit {
+  id              Int       @id @default(autoincrement())
+  title           String
+  description     String
+  lesson_count    Int
+}
+
+model CourseLesson {
+  id              Int     @id @default(autoincrement())
+  unit_id         Int
+  position        Int
+  title           String
+  description     String
+  content_count   Int
+}
+
+model CourseContent {
+  id              Int     @id @default(autoincrement())
+  lesson_id       Int
+  position        Int
+  content_type    Int
+  content_detail  String
+  correct_answer  String
+  other_answers   String
+}
