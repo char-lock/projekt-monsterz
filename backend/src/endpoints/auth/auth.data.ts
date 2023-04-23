@@ -11,10 +11,11 @@ export default class AuthData {
   static hashPassword(password: string) {
     const saltValues = new Uint8Array(12);
     getRandomValues(saltValues);
-    const salt = "";
-    saltValues.forEach((value) => value.toString(16))
-    const hashed = pbkdf2Sync(password, salt, 96000, 512, "sha512");
-    return `${salt}$${hashed.toString("hex")}`;
+    const salt = Array.from(saltValues)
+      .map((value) => { return value.toString(16);})
+      .join("");
+    const hashed = pbkdf2Sync(password, salt, 96000, 512, "sha512").toString("hex");
+    return `${salt}$${hashed}`;
   }
 
   static createAuthEntry(userId: number, password: string) {
