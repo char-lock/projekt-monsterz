@@ -7,22 +7,24 @@ import { UserSessionService } from "./user-session.service";
 import { User } from "../types/User";
 import { LoginService } from "./login.service";
 import { NewUser } from "../types/api.types";
+import { LoggerService } from "./logger.service";
 
 @Injectable()
 export class UserRegistrationService {
+
   constructor(
     private apiService: ApiService,
-    private loginService: LoginService
-  ) { }
+    private loginService: LoginService,
+    private logger: LoggerService
+  ) {}
 
   AttemptRegistration(user: NewUser, callback: Function) {
-    user.username = user.username?.toLowerCase();
+    user.username = user.username.toLowerCase();
     this.apiService.registerUser(user)
       .then((registerResponse) => {
-        if (typeof registerResponse === "undefined") {
-          console.log(`Failed to register: Unknown reason`);
-          callback(false);
-          return;
+        if (registerResponse === undefined) {
+          this.logger.makeLog("user-registration.service", "failed to register");
+          return callback(false);
         }
         if (user.password && user.username) {
           this.loginService.LoginAs(user.username, user.password, callback);
@@ -31,8 +33,9 @@ export class UserRegistrationService {
         }
       })
       .catch((registerFailReason) => {
-        console.log(`Failed to register: ${registerFailReason}`);
+        this.logger.makeLog("user-registration.service", `failed to register - reason: ${registerFailReason}`);
         callback(false);
       });
   }
+
 }

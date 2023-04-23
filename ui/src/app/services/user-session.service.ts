@@ -11,10 +11,12 @@ import { LoginService } from "./login.service";
 
 @Injectable()
 export class UserSessionService {
+  
   private authToken = "";
   private startedAt: number = -1;
   private lastRefresh: number = -1;
   private currentSubscription;
+  
   constructor(
     private apiService: ApiService,
     private cookieService: CookieController,
@@ -22,22 +24,22 @@ export class UserSessionService {
     private logger: LoggerService,
     private loginService: LoginService
   ) {
-    this.currentSubscription = this.loginService.getAuthToken().subscribe((value: string) => {
-      this.authToken = value;
-      this.setSessionDate();
-      this.SaveSession();
-    })
+    this.currentSubscription = this.loginService.getAuthToken()
+      .subscribe((value: string) => {
+        this.authToken = value;
+        this.setSessionDate();
+        this.SaveSession();
+      });
   }
-
 
   IsAuthenticated() {
     if (Date.now() > this.lastRefresh + (900 * 1000) && this.authToken !== "" && this.lastRefresh !== -1) {
-
-      this.logger.makeLog("User Session Service", "Is authenticated call was a success!");
+      this.logger.makeLog("User Session Service", "Is authenticated needs to refresh");
       return this.RefreshAuth().then((result) => { return result; });
     }
     return this.authToken !== ""
   }
+  
   GetSessionData() {
     const sessionData: UserSession = {
       currentUser: this.userService.getUser(),
@@ -60,7 +62,7 @@ export class UserSessionService {
       .then((refreshResponse) => {
         if (refreshResponse === "") {
           this.RevokeSession();
-          console.log(`Failed to refresh: Unknown reason`);
+          this.logger.makeLog("user-session.service::RefreshAuth", "failed to refresh");
           return false;
         }
         this.lastRefresh = Date.now();
@@ -69,10 +71,11 @@ export class UserSessionService {
       })
       .catch((refreshFailReason) => {
         this.RevokeSession();
-        console.log(`Failed to refresh: ${refreshFailReason}`);
+        this.logger.makeLog("user-session.service::RefreshAuth", `failed to refresh - reason: ${refreshFailReason}`);
         return false;
       });
   }
+
   RevokeSession() {
     this.authToken = "";
     this.startedAt = -1;
@@ -85,4 +88,5 @@ export class UserSessionService {
     this.lastRefresh = Date.now();
     this.logger.makeLog("User Session Service, Set Session Date", this.lastRefresh.toString())
   }
+
 }

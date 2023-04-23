@@ -16,10 +16,10 @@ export class ApplicationStateService {
     this.logger.makeLog("Application State Service", "Set Login State Modal")
     if (state < 0) {
       this.loginModal.next(0);
-      console.log("0")
+      this.logger.makeLog("application-state.service::SetLoginModalState", "0");
     } else if (state > 2) {
       this.loginModal.next(2);
-      console.log("2")
+      this.logger.makeLog("application-state.service::SetLoginModalState", "0");
     } else {
       this.loginModalState = state;
       this.loginModal.next(this.loginModalState);

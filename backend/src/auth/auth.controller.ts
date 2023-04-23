@@ -43,7 +43,6 @@ export default class AuthController {
           .then((userAuth) => {
             if (userAuth === undefined) {
               logger.warn(`${username} exists, but doesn't have an auth record -- this needs to be fixed`);
-              console.log(`user ${username} does not have an auth record`);
               return res
                 .status(500)
                 .describe(`malformed user record`)

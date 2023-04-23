@@ -15,7 +15,7 @@ export default class CourseData {
         return result;
       })
       .catch((reject) => {
-        console.log(JSON.stringify(reject));
+        logger.error(JSON.stringify(reject));
         throw(reject);
       });
   }
