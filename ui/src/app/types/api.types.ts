@@ -5,7 +5,7 @@ export type ApiResponse = {
   data?: any
 };
 
-enum UserType {
+export enum UserType {
   GUEST = -1,
   INDIVIDUAL = 0,
   STUDENT = 1,
@@ -13,7 +13,7 @@ enum UserType {
   SUPPORT = 99
 };
 
-enum ValidationMethod {
+export enum ValidationMethod {
   UNKNOWN = -1,
   EMAIL = 0,
   EDUCATION_CODE = 1

@@ -40,7 +40,7 @@ export class ValidationService {
             }
             return true;
           })
-          .catch((textFailReason) => {y
+          .catch((textFailReason) => {
             this.logger.makeLog("validation.service::IsUniqueEmail", textFailReason);
             return false;
           });
