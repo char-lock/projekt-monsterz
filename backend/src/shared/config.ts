@@ -11,5 +11,10 @@ function generateJwtSecret() {
 }
 
 export const config = {
+  debugMode: true,
+  enableHttp: true,
+  enableHttps: false,
+  httpPort: 9696,
+  httpsPort: 8888,
   jwtSecret: generateJwtSecret()
 };
