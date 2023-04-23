@@ -38,11 +38,13 @@ export class ApiResponse {
       throw("error: unknown response code");
     this.responseCode = statusCode;
     this.responseShortDesc = HttpResponseCode[statusCode.toString()];
+    return this;
   }
 
   /** Set the description for the API response. */
   describe(description: string) {
     this.responseLongDesc = description;
+    return this;
   }
 
   /** Sends the API response to the route. */
