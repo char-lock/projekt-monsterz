@@ -14,7 +14,7 @@ export class LoginService {
           private userService: UserService) {
      }
      LoginAs(username: string, password: string, callback: Function) {
-          this.apiService.GetAuthToken(username, password)
+          this.apiService.getAuthToken(username, password)
                .then((tokenResponse) => {
                     if (tokenResponse === "") {
                          console.log(`Failed to login: Unknown reason`);
@@ -23,7 +23,7 @@ export class LoginService {
                     }
                     this.authToken = tokenResponse;
                     this.setAuthToken();
-                    this.apiService.GetUserByUsername(username)
+                    this.apiService.getUserByUsername(username)
                          .then((userResponse) => {
                               if (!userResponse) {
                                    console.log(`Failed to retrieve user: Unknown reason`);

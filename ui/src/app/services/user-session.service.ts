@@ -56,7 +56,7 @@ export class UserSessionService {
   }
 
   RefreshAuth() {
-    return this.apiService.RefreshAuthToken(this.authToken)
+    return this.apiService.refreshAuthToken(this.authToken)
       .then((refreshResponse) => {
         if (refreshResponse === "") {
           this.RevokeSession();
