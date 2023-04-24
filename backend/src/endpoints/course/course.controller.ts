@@ -4,6 +4,7 @@ import { ApiResponse } from "../../shared/api.response";
 import ApiLogger from "../../shared/logger";
 
 import CourseData from "./course.data";
+import { NewCourseContent, NewCourseLesson, NewCourseUnit } from "./course.types";
 
 /** Handles requests on the course endpoint */
 export default class CourseController {
@@ -221,6 +222,102 @@ export default class CourseController {
         logger.error("unhandled exception occurred");
         logger.error(reject);
         res.status(500).describe("unknown server error occurred").send();
+      });
+  }
+
+  static createUnit(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("createUnit");
+    logger.debug(`received request: create new unit:\n${JSON.stringify(req.body)}`);
+    let unit: NewCourseUnit | undefined;
+    try {
+      unit = req.body.data || req.body;
+    } catch (err) {
+      logger.info("issue with request");
+      logger.info(err);
+      return res.status(400).describe("invalid unit data").send();
+    }
+    if (unit === undefined) {
+      logger.info("unit data not available");
+      return res.status(400).describe("invalid unit data").send();
+    }
+    CourseData.addUnit(unit)
+      .then((response) => {
+        if (response === undefined) {
+          logger.info("failed to add new unit");
+          return res.status(500).describe("unknown server error occurred").send();
+        }
+        return res.send(response);
+      })
+      .catch((reject) => {
+        logger.error("unexpected issue occurred");
+        logger.error(reject);
+        return res.status(500).describe("unknown server error occurred").send();
+      });
+  }
+
+  static createLesson(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("createLesson");
+    logger.debug(`received request: create new lesson:\n${JSON.stringify(req.body)}`);
+    let lesson: NewCourseLesson | undefined;
+    try {
+      lesson = req.body.data || req.body;
+    } catch (err) {
+      logger.info("issue with request");
+      logger.info(err);
+      return res.status(400).describe("invalid lesson data").send();
+    }
+    if (lesson === undefined) {
+      logger.info("unit data not available");
+      return res.status(400).describe("invalid lesson data").send();
+    }
+    CourseData.addLesson(lesson)
+      .then((response) => {
+        if (response === undefined) {
+          logger.info("failed to add new lesson");
+          return res.status(500).describe("unknown server error occurred").send();
+        }
+        return res.send(response);
+      })
+      .catch((reject) => {
+        logger.error("unexpected issue occurred");
+        logger.error(reject);
+        return res.status(500).describe("unknown server error occurred").send();
+      });
+  }
+
+  static createContent(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("createContent");
+    logger.debug(`received request: create new content:\n${JSON.stringify(req.body)}`);
+    let content: NewCourseContent | undefined;
+    try {
+      content = req.body.data || req.body;
+    } catch (err) {
+      logger.info("issue with request");
+      logger.info(err);
+      return res.status(400).describe("invalid content data").send();
+    }
+    if (content === undefined) {
+      logger.info("unit data not available");
+      return res.status(400).describe("invalid content data").send();
+    }
+    CourseData.addContent(content)
+      .then((response) => {
+        if (response === undefined) {
+          logger.info("failed to add new unit");
+          return res.status(500).describe("unknown server error occurred").send();
+        }
+        return res.send(response);
+      })
+      .catch((reject) => {
+        logger.error("unexpected issue occurred");
+        logger.error(reject);
+        return res.status(500).describe("unknown server error occurred").send();
       });
   }
 

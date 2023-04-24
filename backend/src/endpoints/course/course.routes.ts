@@ -19,6 +19,16 @@ router.get(
   CourseController.getLessonMetadataByPosition
 );
 
+// POST unit
+router.post("/units", CourseController.createUnit);
+
+// POST lesson
+router.post("/lessons", CourseController.createLesson);
+
+// POST content
+router.post("/content", CourseController.createContent);
+
+
 // GET content
 // By content ID
 router.get("/content/:contentId", CourseController.getContentById);

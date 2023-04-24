@@ -24,6 +24,7 @@ export class ContentService {
   ) {
     this.lessonId = this.userService.getCurrentLessonProgress();
     this.contentId = this.userService.getCurrentContentId();
+    if (this.userService.getUser() === undefined)
     this.updateQuestionList();
     this.currentQuestionObserve = new BehaviorSubject<CourseContent>(this.questionList[this.contentPosition]);
   }

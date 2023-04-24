@@ -56,6 +56,33 @@ export default class UsersData {
       });
   }
 
+  static getUsersByScore(count: number) {
+    const logger = UsersData.fileLogger.createFunctionLogger("getUsersByScore");
+    logger.debug(`getting ${count} users from database, sorting by progress ...`);
+    return UsersData.prisma.user.findMany({
+      orderBy: [{ progress_lesson: "desc"}, {progress_content: "desc"}],
+      take: count 
+    })
+      .then((result) => {
+        logger.debug(`found ${result.length} users`);
+        return result;
+      });
+  }
+
+  static getClassUsersByScore(educationCode: string, count: number) {
+    const logger = UsersData.fileLogger.createFunctionLogger("getUsersByScore");
+    logger.debug(`getting ${count} users from database with education code ${educationCode}, sorting by progress ...`);
+    return UsersData.prisma.user.findMany({
+      orderBy: [{ progress_lesson: "desc"}, {progress_content: "desc"}],
+      take: count,
+      where: { validation_value: educationCode }
+    })
+      .then((result) => {
+        logger.debug(`found ${result.length} users with education code ${educationCode}`);
+        return result;
+      });
+  }
+
   static createUser(user: NewUser) {
     const logger = UsersData.fileLogger.createFunctionLogger("createUser");
     logger.debug("received request to add new user to database");

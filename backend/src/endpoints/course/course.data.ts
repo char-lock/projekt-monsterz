@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import ApiLogger from "../../shared/logger";
+import { NewCourseContent, NewCourseLesson, NewCourseUnit } from "./course.types";
 
 export default class CourseData {
 
@@ -17,6 +18,20 @@ export default class CourseData {
       })
       .catch((reject) => {
         logger.error(JSON.stringify(reject));
+        throw(reject);
+      });
+  }
+
+  static addUnit(unit: NewCourseUnit) {
+    const logger = CourseData.fileLogger.createFunctionLogger("addUnit");
+    logger.debug(`adding unit to database:\n${JSON.stringify(unit)}`);
+    return this.prisma.courseUnit.create({ data: unit })
+      .then((result) => {
+        logger.debug(`created unit with id ${result.id}`);
+        return result;
+      })
+      .catch((reject) => {
+        logger.error(reject);
         throw(reject);
       });
   }
@@ -68,6 +83,20 @@ export default class CourseData {
       })
   }
 
+  static addLesson(lesson: NewCourseLesson) {
+    const logger = CourseData.fileLogger.createFunctionLogger("addLesson");
+    logger.debug(`adding lesson to database:\n${JSON.stringify(lesson)}`);
+    return this.prisma.courseLesson.create({ data: lesson })
+      .then((result) => {
+        logger.debug(`created lesson with id ${result.id}`);
+        return result;
+      })
+      .catch((reject) => {
+        logger.error(reject);
+        throw(reject);
+      });
+  }
+
   static getContentById(contentId: number) {
     const logger = CourseData.fileLogger.createFunctionLogger("getContentById");
     logger.debug(`getting content with id ${contentId}`);
@@ -105,6 +134,20 @@ export default class CourseData {
       .then((content) => {
         logger.debug(`found content for lesson id ${lessonId}, position ${position}`);
         return content;
+      })
+      .catch((reject) => {
+        logger.error(reject);
+        throw(reject);
+      });
+  }
+
+  static addContent(content: NewCourseContent) {
+    const logger = CourseData.fileLogger.createFunctionLogger("addContent");
+    logger.debug(`adding unit to database:\n${JSON.stringify(content)}`);
+    return this.prisma.courseContent.create({ data: content })
+      .then((result) => {
+        logger.debug(`created unit with id ${result.id}`);
+        return result;
       })
       .catch((reject) => {
         logger.error(reject);

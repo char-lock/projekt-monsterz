@@ -24,5 +24,5 @@ export type NewCourseContent = {
   content_type: ContentType;
   content_detail: string;
   correct_answer: string;
-  other_answers: string[];
+  other_answers: string;
 };
