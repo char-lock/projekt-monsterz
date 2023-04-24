@@ -1,4 +1,5 @@
 import { Directive, ElementRef } from "@angular/core";
+import { LoggerService } from "../services/logger.service";
 
 
 @Directive({
@@ -14,10 +15,16 @@ export class MonsterCageBackgroundDirective {
     'vecteezy_beautiful-green-hills-with-big-tree-and-mountains-row-on-the_5949107.jpg'
   ]
 
-  constructor(private element: ElementRef) {
+  constructor(
+    private logger: LoggerService,
+    private element: ElementRef
+  ) {
     this.element.nativeElement.style.background = "url(" +
       this.relativePath + this.href[this.getBackground()] + ")";
-    console.log(this.relativePath + this.href[this.getBackground()]);
+    this.logger.makeLog(
+      "monster-cage-background.directive", 
+      this.relativePath + this.href[this.getBackground()]
+    );
   }
 
   getBackground(): number {

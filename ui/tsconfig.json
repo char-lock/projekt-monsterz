@@ -3,7 +3,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "types": [
-      "node"
+      "node",
+      "jasmine"
     ],
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

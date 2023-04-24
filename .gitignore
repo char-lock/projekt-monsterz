@@ -1,7 +1,7 @@
 # Secrets, secrets hurt someone.
 .env
 *.pem
-/api/reference
+*.db
 
 # NodeJS
 node_modules
@@ -23,6 +23,7 @@ dist
 *.launch
 .settings/
 *.sublime-workspace
+.editorconfig
 
 # Visual Studio Code
 .vscode/*
@@ -44,3 +45,8 @@ typings
 # System Files
 .DS_Store
 Thumbs.db
+
+# Prisma
+*.db
+*.db-journal
+backend/prisma/migrations

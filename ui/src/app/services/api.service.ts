@@ -1,170 +1,270 @@
 import { Injectable } from "@angular/core";
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { AxiosHeaders } from "axios";
+import * as CryptoJS from "crypto-js";
 
-import { ApiResponse } from "../types/ApiResponse";
-import { User } from "../types/User";
+import { ApiResponse, CourseContent, CourseLesson, CourseUnit, NewUser, User } from "../types/api.types";
 import { LessonContent } from "../types/Content";
+import { LoggerService } from "./logger.service";
 
 @Injectable()
 export class ApiService {
 
-  static API_ENDPOINT = "http://localhost:8080";
+  static API_ENDPOINT = "http://localhost:9696";
 
-  constructor() { }
+  constructor(private logger: LoggerService) {}
 
-  PostGeneric(endpoint: string, body?: string, headers?: AxiosHeaders) {
+  /** Posts a request to the API server and returns the response. */
+  postApiRequest(endpoint: string, body?: string, headers?: AxiosHeaders) {
     if (!headers) headers = new AxiosHeaders();
-    headers?.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
-    headers?.set("Content-Type", "application/json");
+    headers.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
+    headers.set("Content-Type", "application/json");
     return axios.post(
       `${ApiService.API_ENDPOINT}${endpoint}`,
       body,
       { headers: headers }
     )
-      .then((postResponse) => {
-        const response: ApiResponse = postResponse.data;
-        return response;
+      .then((rawResponse: AxiosResponse) => {
+        return <ApiResponse>rawResponse.data;
       })
-      .catch((postFailReason) => {
-        const response: ApiResponse = { statusCode: 500, details: postFailReason, data: [] };
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::postApiRequest", 
+          `request failed to resolve - reason: ${fail}`
+        );
+        const response: ApiResponse = {
+          statusCode: 500,
+          statusShortDesc: "Internal Server Failure",
+          statusLongDesc: ""
+        };
         return response;
       });
   }
 
-  GetGeneric(endpoint: string, headers?: AxiosHeaders) {
+  /** Sends a get request to the API server and returns the response. */
+  getApiRequest(endpoint: string, headers?: AxiosHeaders) {
     if (!headers) headers = new AxiosHeaders();
-    headers?.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
     return axios.get(
       `${ApiService.API_ENDPOINT}${endpoint}`,
       { headers: headers }
     )
-      .then((getResponse) => {
-        const response: ApiResponse = getResponse.data;
-        return response;
+      .then((rawResponse) => {
+        return <ApiResponse>rawResponse.data;
       })
-      .catch((getFailReason) => {
-        const response: ApiResponse = { statusCode: 500, details: getFailReason, data: [] };
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getApiRequest",
+          `request failed to resolve - reason: ${fail}`
+        );
+        const response: ApiResponse = {
+          statusCode: 500,
+          statusShortDesc: "Internal Server Failure",
+          statusLongDesc: ""
+        };
         return response;
       });
   }
 
-  GetAuthToken(username: string, password: string) {
-    return this.PostGeneric("/auth/login", `{ "username": "${username}", "password": "${password}" }`)
-      .then((authResponse) => {
-        if (typeof authResponse.data === "undefined") {
-          return "";
-        }
-        if (authResponse.data.length < 1) {
-          return "";
-        }
-        const token: string = authResponse.data[0].token;
-        return token;
+  /** 
+   * Returns a User object if a user exists with the provided userId,
+   * otherwise returns undefined.
+   */
+  getUserById(userId: number) {
+    return this.getApiRequest(`/users/id/${userId}`)
+      .then((response) => {
+        return <User>response.data;
       })
-      .catch((authFailReason) => {
-        console.log(`Failed to retrieve auth token: ${authFailReason}`);
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getUserById",
+          `request failed to resolve - reason: ${fail}`
+        );
+        return undefined;
+      });
+  }
+
+  /** 
+   * Returns a User object if a user exists with the provided username,
+   * otherwise returns undefined.
+   */
+  getUserByUsername(username: string) {
+    return this.getApiRequest(`/users/username/${username}`)
+      .then((response) => {
+        return <User>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getUserByUsernames",
+          `request failed to resolve - reason: ${fail}`
+        );
+        return undefined;
+      });
+  }
+
+  /** 
+   * Returns a User object if a user exists with the provided validation
+   * value, otherwise returns undefined.
+   */
+  getUsersByValidationValue(value: string) {
+    return this.getApiRequest(`/users/validation/${value}`)
+      .then((response) => {
+        return <User[]>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getUserByValidationValue",
+          `request failed to resolve - reason: ${fail}`
+        );
+        return [];
+      });
+  }
+
+  /**
+   * Returns a list of User objects organised by position in the course content.
+   */
+  getUsersByScore(count: number) {
+    return this.getApiRequest(`/leaderboard/${count}`)
+      .then((users) => {
+        if (users.data === undefined) {
+          this.logger.makeLog("api.service::getUsersByScore", JSON.stringify(users));
+          return <User[]>[];
+        }
+        return <User[]>users.data;
+      })
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUsersByScore", reject);
+        return <User[]>[];
+      });
+  }
+
+  /**
+   * Returns a list of User objects organised by position in the course content
+   * and filtered by validation value.
+   */
+  getClassUsersByScore(educationCode: string, count: number) {
+    return this.getApiRequest(`/leaderboard/class/${educationCode}/${count}`)
+      .then((users) => {
+        if (users.data === undefined) {
+          this.logger.makeLog("api.service::getClassUsersByScore", JSON.stringify(users));
+          return <User[]>[];
+        }
+        return <User[]>users.data;
+      })
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getClassUsersByScore", reject);
+        return <User[]>[];
+      });
+  }
+
+  /** 
+   * Registers a user with the provided information, and returns the
+   * created user if the request is successful.
+   */
+  registerUser(user: NewUser) {
+    return this.postApiRequest("/users/", JSON.stringify(user))
+      .then((response) => {
+        return <User>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::registerUser", 
+          `request failed to resolve - reson: ${fail}`
+        );
+        return undefined;
+      });
+  }
+
+  /** 
+   * Returns either an authorization token if the username and password are valid,
+   * or returns an empty string.
+   */
+  getAuthToken(username: string, password: string) {
+    password = CryptoJS.SHA512(password).toString(CryptoJS.enc.Hex);
+    return this.postApiRequest(
+      "/auth/login",
+      `{
+        "username": "${username}",
+        "password": "${password}"
+      }`
+    )
+      .then((response) => {
+        if (response.data === undefined) return ""
+        return <string>response.data;
+      })
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::getAuthToken", 
+          `request failed to resolve - reason: ${fail}`
+        );
         return "";
       });
   }
 
-  GetUserById(userId: number) {
-    return this.GetGeneric(`/user/id/${userId}`)
-      .then((userResponse) => {
-        if (typeof userResponse.data === "undefined") return undefined;
-        if (userResponse.data.length < 1) return undefined;
-        const user: User = userResponse.data[0];
-        return user;
+  /** Returns a new authorization token for the provided information. */
+  refreshAuthToken(currentToken: string) {
+    return this.getApiRequest(
+      "/auth/refresh", 
+      new AxiosHeaders({ "Authorization": `Bearer ${currentToken}` })
+    )
+      .then((response) => {
+        if (response.data === undefined) return "";
+        return <string>response.data;
       })
-      .catch((userFailReason) => {
-        console.log(`Failed to get user from id: ${userFailReason}`);
-        return undefined;
-      });
-  }
-
-  GetUserByUsername(username: string) {
-    return this.GetGeneric(`/user/username/${username}`)
-      .then((userResponse) => {
-        if (typeof userResponse.data === "undefined") return undefined;
-        if (userResponse.data.length < 1) return undefined;
-        const user: User = userResponse.data[0];
-        return user;
-      })
-      .catch((userFailReason) => {
-        console.log(`Failed to get user from username: ${userFailReason}`);
-        return undefined;
-      });
-  }
-
-  GetUserByValidationValue(value: string) {
-    return this.GetGeneric(`/user/validation/${value}`)
-      .then((userResponse) => {
-        if (typeof userResponse.data === "undefined") return undefined;
-        if (userResponse.data.length < 1) return undefined;
-        const user: User = userResponse.data[0];
-        return user;
-      })
-      .catch((userFailReason) => {
-        console.log(`Failed to get user from validation value: ${userFailReason}`);
-        return undefined;
-      })
-  }
-
-  RefreshAuthToken(currentToken: string) {
-    return this.GetGeneric(`/auth/refresh`, new AxiosHeaders({ "Authorization": `Bearer ${currentToken}` }))
-      .then((refreshResponse) => {
-        if (typeof refreshResponse.data === "undefined") return "";
-        if (refreshResponse.data.length < 1) return "";
-        const newToken: string = refreshResponse.data[0].token;
-        return newToken;
-      })
-      .catch((refreshFailReason) => {
-        console.log(`Failed to refresh token: ${refreshFailReason}`);
+      .catch((fail) => {
+        this.logger.makeLog(
+          "api.service::refreshAuthToken", 
+          `failed to refresh token - reason ${fail}`
+        );
         return "";
       });
   }
 
-  RegisterUser(user: User) {
-    return this.PostGeneric("/user/", JSON.stringify(user))
-      .then((registerResponse) => {
-        if (typeof registerResponse.data === "undefined") return undefined;
-        if (registerResponse.data.length < 1) return undefined;
-        const registered: User = registerResponse.data[0];
-        return registered;
+  /** Returns the metadata related to the provided unit ID */
+  getUnitMeta(unitId: number) {
+    return this.getApiRequest(`/course/units/${unitId}/metadata`)
+      .then((result) => {
+        if (result.data === undefined) {
+          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
+        }
+        return <CourseUnit>result.data;
       })
-      .catch((registerFailReason) => {
-        console.log(`Failed to register user: ${registerFailReason}`);
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
         return undefined;
       });
   }
 
-  GetLeaderboardGlobal(callback: Function) {
-    return this.GetGeneric("/leaderboard/global")
-      .then((leaderboardResponse) => {
-        if (typeof leaderboardResponse.data === "undefined") return callback([]);
-        if (leaderboardResponse.data.length < 1) return callback([]);
-        const leaderboard: (number | string)[][] = leaderboardResponse.data;
-        callback(leaderboard);
+  /** Returns the metadata related to the provided lesson ID */
+  getLessonMeta(lessonId: number) {
+    return this.getApiRequest(`/course/lessons/${lessonId}/metadata`)
+      .then((result) => {
+        if (result.data === undefined) {
+          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
+        }
+        return <CourseLesson>result.data;
       })
-      .catch((leaderboardFailReason) => {
-        console.log(`Failed to retrieve global leaderboard: ${leaderboardFailReason}`);
-        return callback([]);
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
+        return undefined;
       });
   }
 
-  GetLeaderboardClass(classCode: string, callback: Function) {
-    return this.GetGeneric(`/leaderboard/class/${classCode}`)
-      .then((leaderboardResponse) => {
-        if (typeof leaderboardResponse.data === "undefined") return callback([]);
-        if (leaderboardResponse.data.length < 1) return callback([]);
-        const leaderboard: (number | string)[][] = leaderboardResponse.data;
-        callback(leaderboard);
+  /** Returns the content metadata related to the provided content ID */
+  getContentMeta(contentId: number) {
+    return this.getApiRequest(`/course/content/${contentId}`)
+      .then((result) => {
+        if (result.data === undefined) {
+          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
+        }
+        return <CourseContent>result.data;
       })
-      .catch((leaderboardFailReason) => {
-        console.log(`Failed to retrieve global leaderboard: ${leaderboardFailReason}`);
-        return callback([]);
+      .catch((reject) => {
+        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
+        return undefined;
       });
   }
+
   GetOneLessonContent() {
     let lesson: LessonContent =  {
       contentType: 0,
@@ -174,8 +274,8 @@ export class ApiService {
     }
     return lesson;
   }
-  GetWholeLessonContent() {
 
+  GetWholeLessonContent() {
     let lessonArray: LessonContent[] = [
       {
         contentType: 1,

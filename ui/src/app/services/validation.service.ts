@@ -41,12 +41,12 @@ export class ValidationService {
             return true;
           })
           .catch((textFailReason) => {
-            console.log(textFailReason);
+            this.logger.makeLog("validation.service::IsUniqueEmail", textFailReason);
             return false;
           });
       })
       .catch((failReason) => {
-        console.log(failReason);
+        this.logger.makeLog("validation.service::IsUniqueEmail", failReason);
         return true;
       });
   }

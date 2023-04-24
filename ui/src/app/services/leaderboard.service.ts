@@ -2,56 +2,109 @@ import { Injectable, OnInit } from "@angular/core";
 import { ApiService } from "./api.service";
 import { UserSessionService } from "./user-session.service";
 import { UserService } from "./user.service";
+import { LoggerService } from "./logger.service";
+import { User } from "../types/api.types";
+import { LeaderboardEntry } from "../types/other.types";
 
+/** Handles all operations related to fetching and calculating the leaderboard. */
 @Injectable()
 export class LeaderboardService {
-  leaderboardGlobal: (string | number)[][] = [];
-  leaderboardClass: (string | number)[][] = [];
+
+  leaderboardGlobal: LeaderboardEntry[] = [];
+  leaderboardClass: LeaderboardEntry[] = [];
   lastUpdated: number = -1;
 
   constructor(
     private apiService: ApiService,
     private userSession: UserSessionService,
-    private userService: UserService
-  ) { }
+    private userService: UserService,
+    private logger: LoggerService
+  ) {}
 
   GetGlobalLeaderboard() {
-    if (this.lastUpdated + (900 * 1000) < Date.now()) {
+    if (this.lastUpdated + (15 * 60 * 1000) < Date.now()) {
       this.lastUpdated = Date.now();
-      this.UpdateLeaderboard();
+      this.updateLeaderboard();
     }
     return this.leaderboardGlobal;
   }
 
   GetClassLeaderboard() {
-    if (this.lastUpdated + (900 * 1000) < Date.now()) {
+    if (this.lastUpdated + (15 * 60 * 1000) < Date.now()) {
       this.lastUpdated = Date.now();
-      this.UpdateLeaderboard();
+      this.updateLeaderboard();
     }
-    return this.leaderboardClass.sort(this.sortArrayByScore);
+    return this.leaderboardClass;
   }
 
-  UpdateLeaderboard() {
-    this.apiService.GetLeaderboardGlobal((resultGlobal: (string | number)[][]) => {
-      if (resultGlobal.length === 0) {
-        console.log("failed to get global leaderboard");
-      } else {
-        this.leaderboardGlobal = resultGlobal;
-        this.apiService.GetLeaderboardClass(this.userService.getClassCode(), (resultClass: (string | number)[][]) => {
-          if (resultClass.length === 0) {
-            console.log("Failed to get class leaderboard");
-            // Handle failure to retrieve
-          } else {
-            this.leaderboardClass = resultClass;
+  /** Calculates leaderboard entries and inserts them */
+  parseUsersToPercent(users: User[], global: boolean = true) {
+    if (global) {
+      this.leaderboardGlobal = [];
+    } else {
+      this.leaderboardClass = [];
+    }
+    users.forEach((user) => {
+      this.apiService.getLessonMeta(user.progress_lesson)
+        .then((lessonMetadata) => {
+          if (lessonMetadata === undefined) {
+            return this.logger.makeLog("leaderboard.service::parseUsersToScore", "failed to get lesson metadata");
           }
+          this.apiService.getContentMeta(user.progress_content)
+            .then((contentMetadata) => {
+              if (contentMetadata === undefined) {
+                return this.logger.makeLog("leaderboard.service::parseUsersToScore", "failed to get content metadata");
+              }
+              this.apiService.getUnitMeta(lessonMetadata.unit_id)
+                .then((unitMetadata) => {
+                  if (unitMetadata === undefined ){
+                    return this.logger.makeLog("leaderboard.service::parseUsersToScore", "failed to get unit metadata");
+                  }
+                  const unitProgress = (lessonMetadata.position - 1) / unitMetadata.lesson_count;
+                  const singleLesson = 1 / unitMetadata.lesson_count;
+                  let lessonProgress = contentMetadata.position / lessonMetadata.content_count;
+                  lessonProgress *= singleLesson;
+                  const entry: LeaderboardEntry = {
+                    username: user.username,
+                    percent: unitProgress + lessonProgress,
+                    score: Math.floor((unitProgress + lessonProgress) * 10000)
+                  };
+                  if (global) {
+                    this.leaderboardGlobal.push(entry);
+                  } else {
+                    this.leaderboardClass.push(entry);
+                  }
+                });
+            });
         });
-      }
     });
   }
-  sortArrayByScore(a: (string | number)[], b: (string | number)[]) {
-    if (a[1] === b[1]) return 0;
-    if (a[1] < b[1]) return 1;
-    return -1;
+
+  /** Updates the current scores within the leaderboard. */
+  updateLeaderboard() {
+    this.apiService.getUsersByScore(5)
+      .then((resultGlobal) => {
+        if (resultGlobal.length === 0) {
+          this.logger.makeLog("leaderboard.service::updateLeaderboard", "failed to retrieve global leaderboard");
+        } else {
+          this.parseUsersToPercent(resultGlobal, true);
+          const educationCode = this.userService.getClassCode();
+          this.apiService.getClassUsersByScore(educationCode, 5)
+            .then((resultClass) => {
+              if (resultClass.length === 0) {
+                this.logger.makeLog("leaderboard.service::updateLeaderboard", "failed to retrieve class leaderboard");
+              } else {
+                this.parseUsersToPercent(resultClass, false);
+              }
+            })
+            .catch((rejectClass) => {
+              this.logger.makeLog("leaderboard.service::updateLeaderboard", JSON.stringify(rejectClass));
+            })
+        }
+      })
+      .catch((rejectGlobal) => {
+        this.logger.makeLog("leaderboard.service::updateLeaderboard", JSON.stringify(rejectGlobal));
+      });
   }
 
 }

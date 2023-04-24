@@ -69,7 +69,7 @@ export class AppController {
                this.contentService.nextActivity();
           }
           else {
-               console.log("incorrect");
+               this.loggerService.makeLog("app.controller::checkForRightAnswer", "incorrect");
                //Display error!
           }
      }

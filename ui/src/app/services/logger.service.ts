@@ -4,9 +4,12 @@ import { isDevMode } from "@angular/core";
 
 @Injectable()
 export class LoggerService {
+
   makeLog(logLocation: string, logValue: string) {
     if (isDevMode()) {
-      console.log("Found here: " + logLocation + ": " + logValue);
+      const timestamp = new Date(Date.now()).toISOString();
+      console.log(`[${timestamp} | DEBUG]: (${logLocation}) ${logValue}`);
     }
   }
+
 }

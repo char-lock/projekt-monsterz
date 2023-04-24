@@ -7,50 +7,52 @@ import { UserService } from "./user.service";
 
 @Injectable()
 export class LoginService {
-     private authToken = "";
-     private currentAuthToken = new BehaviorSubject<string>("");
-     constructor(private apiService: ApiService,
-          private logger: LoggerService,
-          private userService: UserService) {
-     }
-     LoginAs(username: string, password: string, callback: Function) {
-          this.apiService.GetAuthToken(username, password)
-               .then((tokenResponse) => {
-                    if (tokenResponse === "") {
-                         console.log(`Failed to login: Unknown reason`);
-                         callback(false);
-                         return;
-                    }
-                    this.authToken = tokenResponse;
-                    this.setAuthToken();
-                    this.apiService.GetUserByUsername(username)
-                         .then((userResponse) => {
-                              if (!userResponse) {
-                                   console.log(`Failed to retrieve user: Unknown reason`);
-                                   callback(false);
-                                   return;
-                              }
-                              this.userService.setUser(userResponse);
+  
+  private authToken = "";
+  private currentAuthToken = new BehaviorSubject<string>("");
+  
+  constructor(
+      private apiService: ApiService,
+      private logger: LoggerService,
+      private userService: UserService
+  ) {}
+  
+  /** Attempts to login as the provided user. */
+  LoginAs(username: string, password: string, callback: Function) {
+    this.apiService.getAuthToken(username, password)
+      .then((tokenResponse) => {
+        if (tokenResponse === "") {
+          this.logger.makeLog("login.service::LoginAs", "failed to login: unknown reason");
+          return callback(false);
+        }
+        this.authToken = tokenResponse;
+        this.setAuthToken();
+        this.apiService.getUserByUsername(username)
+          .then((userResponse) => {
+            if (!userResponse) {
+              this.logger.makeLog("login.service::LoginAs", "failed to retrieve user");
+              return callback(false);
+            }
+            this.userService.setUser(userResponse);
+            return callback(true);
+          })
+          .catch((userFailReason) => {
+            this.logger.makeLog("login.service::LoginAs", `failed to retrieve user - reason: ${userFailReason}`);
+            return callback(false);
+          });
+      })
+      .catch((tokenFailReason) => {
+        this.logger.makeLog("login.service::LoginAs", `failed to login - reason: ${tokenFailReason}`);
+        return callback(false);
+      });
+    }
+    
+    setAuthToken() {
+      this.currentAuthToken.next(this.authToken);
+    }
 
-                              callback(true);
-                              return;
-                         })
-                         .catch((userFailReason) => {
-                              console.log(`Failed to retrieve user: ${userFailReason}`);
-                              callback(false);
-                              return;
-                         });
-               })
-               .catch((tokenFailReason) => {
-                    console.log(`Failed to login: ${tokenFailReason}`);
-                    callback(false);
-                    return;
-               });
-     }
-     setAuthToken() {
-          this.currentAuthToken.next(this.authToken);
-     }
-     getAuthToken() {
-          return this.currentAuthToken;
-     }
+    getAuthToken() {
+      return this.currentAuthToken;
+    }
+
 }
