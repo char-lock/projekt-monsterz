@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import axios, { AxiosResponse } from "axios";
 import { AxiosHeaders } from "axios";
-import { createHash } from "crypto";
+import * as CryptoJS from "crypto-js";
 
 import { ApiResponse, CourseContent, CourseLesson, CourseUnit, NewUser, User } from "../types/api.types";
 import { LessonContent } from "../types/Content";
@@ -162,7 +162,6 @@ export class ApiService {
    * created user if the request is successful.
    */
   registerUser(user: NewUser) {
-    user.password = createHash("sha512").digest().toString("hex");
     return this.postApiRequest("/users/", JSON.stringify(user))
       .then((response) => {
         return <User>response.data;
@@ -181,7 +180,7 @@ export class ApiService {
    * or returns an empty string.
    */
   getAuthToken(username: string, password: string) {
-    password = createHash("sha512").digest().toString("hex");
+    password = CryptoJS.SHA512(password).toString(CryptoJS.enc.Hex);
     return this.postApiRequest(
       "/auth/login",
       `{
