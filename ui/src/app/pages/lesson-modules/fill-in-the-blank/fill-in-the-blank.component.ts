@@ -4,7 +4,6 @@ import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { UserService } from 'src/app/services/user.service';
-import { LessonContent } from 'src/app/types/Content';
 
 @Component({
   selector: 'app-fill-in-the-blank',
@@ -13,7 +12,7 @@ import { LessonContent } from 'src/app/types/Content';
 })
 export class FillInTheBlankComponent {
   selectedAnswer: string = '';
-  currentQuestion: LessonContent = this.contentService.getCurrentQuestion();
+  currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
   private userSession: UserSessionService,
     private router: Router,
@@ -24,6 +23,11 @@ export class FillInTheBlankComponent {
         this.currentQuestion = change;
       })
     }
+
+    getQuestionText() {
+      return this.currentQuestion.content_detail;
+    }
+
     checkForRightAnswer(value: string) {
       this.appController.checkForRightAnswer(value);
     }

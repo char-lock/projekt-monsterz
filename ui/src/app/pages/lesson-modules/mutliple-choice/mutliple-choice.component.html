@@ -1,13 +1,13 @@
      <div class="question-and-answer-container">
      <div class="question">
           <h2>
-          {{ currentQuestion.contentText }}
+          {{ getQuestionText() }}
           </h2>
      </div>
      <div class="btn-group">
           <button 
           class="answer-button"
-          *ngFor="let answer of currentQuestion.genericAnswers"
+          *ngFor="let answer of getAnswerSet()"
           (click)="checkForRightAnswer(answer)">
           <h5>
                {{ answer }}

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { ApiResponse } from "src/shared/api.response";
+import { ApiResponse } from "../../shared/api.response";
 import ApiLogger from "../../shared/logger";
 
 import CourseData from "./course.data";
@@ -92,7 +92,7 @@ export default class CourseController {
       });
   }
 
-  static getAllContentByLesson(req: Request, rawRes: Response) {
+  static getAllContentByLessonPosition(req: Request, rawRes: Response) {
     const res = new ApiResponse(rawRes);
     const logger = CourseController.fileLogger
       .createFunctionLogger("getAllContentByLesson");
@@ -104,7 +104,7 @@ export default class CourseController {
         if (lesson === undefined) {
           logger.debug(`unable to find lesson in position ${lessonPosition} for unit id ${unitId}`);
           return res
-            .status(404)
+            .status(400)
             .describe(`lesson in position ${lessonPosition} does not exist for unit id ${unitId}`)
             .send();
         }
@@ -113,7 +113,7 @@ export default class CourseController {
             if (content.length === 0) {
               logger.debug(`no content found for lesson ${lessonPosition} unit ${unitId}`);
               return res
-                .status(404)
+                .status(400)
                 .describe(`content for lesson ${lessonPosition} unit ${unitId} does not exist`)
                 .send();
             }
@@ -130,6 +130,31 @@ export default class CourseController {
         logger.error("unhandled error exception while getting lesson");
         logger.error(lessonReject);
         res.status(500).describe("unknown server error occurred").send();
+      });
+  }
+
+  static getAllContentByLesson(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("getAllContentByLesson");
+    const lessonId = parseInt(req.params.lessonId);
+    logger.debug(`received request: get all content for lesson #${lessonId}`);
+    CourseData.getContentByLesson(lessonId)
+      .then((content) => {
+        if (content.length === 0) {
+          logger.debug(`no content found for lesson ${lessonId}`);
+          return res
+            .status(400)
+            .describe(`content for lesson ${lessonId} does not exist`)
+            .send();
+        }
+        logger.debug(`sending ${content.length} content items for lesson ${lessonId}}`);
+        res.send(content);
+      })
+      .catch((contentReject) => {
+        logger.error("unhandled error exception while getting content");
+        logger.error(contentReject);
+        res.status(500).describe("unknown server errror occurred").send();
       });
   }
 

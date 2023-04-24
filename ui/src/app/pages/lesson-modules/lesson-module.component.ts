@@ -16,9 +16,9 @@ export class LessonModuleComponent implements OnInit {
   currentProgress: number = 0;
   selectedAnswer: string = '';  
   
-  currentQuestion: LessonContent = this.contentService.getCurrentQuestion();
+  currentQuestion = this.contentService.getCurrentQuestion();
   
-  contentType: number = this.currentQuestion.contentType;
+  contentType: number = this.currentQuestion.content_type;
   constructor(private userSession: UserSessionService,
     private router: Router,
     private user: UserService,
@@ -30,7 +30,7 @@ export class LessonModuleComponent implements OnInit {
       this.currentProgress = change;
     })
     this.contentService.returnQuestion().subscribe((change) => {
-      this.contentType = change.contentType;
+      this.contentType = change.content_type;
       this.navigateToCorrectLesson();
     })
   }

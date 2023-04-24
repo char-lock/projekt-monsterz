@@ -1,8 +1,8 @@
-import { User } from "./User";
+import { User } from "./api.types";
 
 interface UserSession {
   currentToken: string,
-  currentUser: User
+  currentUser: User | undefined
 }
 
 export { UserSession };

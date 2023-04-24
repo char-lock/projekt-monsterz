@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { User } from "../types/User";
+import { User } from "../types/api.types";
 import { UserSession } from "../types/UserSession";
 import { BehaviorSubject } from "rxjs";
 import { ValidationService } from "./validation.service";
@@ -9,7 +9,7 @@ import { NewUser, ValidationMethod } from "../types/api.types";
 @Injectable()
 export class UserService {
 
-     private currentUser: User = {};
+     private currentUser: User | undefined;
 
      private currentUserProgressLessonCurrentProgress= new BehaviorSubject<number>(0)
      constructor(
@@ -26,25 +26,25 @@ export class UserService {
      }
 
      revokeUser() {
-          this.currentUser = {};
+          this.currentUser = undefined;
      }
      loadSession(sessionData: UserSession) {
           this.currentUser = sessionData.currentUser;
      }
      getCurrentScore() {
-          return this.currentUser.lesson_current ? this.currentUser.lesson_current : 0;
+          return this.currentUser?.progress_lesson ? this.currentUser.progress_lesson : 0;
      }
      getCurrentLessonProgressObservable() {
           return this.currentUserProgressLessonCurrentProgress;
      }
      getCurrentLessonProgress() {
-          return this.currentUser.lesson_current_progress ? this.currentUser.lesson_current_progress : 0;
+          return this.currentUser?.progress_content ? this.currentUser?.progress_content : 0;
      }
      getClassCode() {
-          return this.currentUser.verification_value ? this.currentUser.verification_value : "null";
+          return this.currentUser?.validation_value ? this.currentUser.validation_value : "null";
      }
      getCurrentUsername() {
-          return typeof this.currentUser.username !== "undefined" ? this.currentUser.username : "";
+          return this.currentUser?.username !== undefined ? this.currentUser.username : "";
      }
 
     /** Creates a new user payload for use during registration. */
@@ -62,23 +62,22 @@ export class UserService {
       };
     }
 
-     updateLessonCurrent (score: number) {
+    getCurrentContentId() {
+      return this.currentUser?.progress_content ? this.currentUser?.progress_content : 0;
+    }
+
+     updateLessonCurrent (lessonId: number) {
      //Progress for lessons completed.
-     if (this.currentUser.lesson_current)
+     if (this.currentUser?.progress_lesson)
      {
-          this.currentUser.lesson_current += score;
+          this.currentUser.progress_lesson = lessonId;
      }
      }
-     updateLessonCurrentProgress (score: number) {
-          if (this.currentUser.lesson_current_progress)
-          {
-          this.currentUser.lesson_current_progress += score;
-          this.currentUserProgressLessonCurrentProgress.next(this.currentUser.lesson_current_progress);  
-          }
-          else {
-               this.currentUser.lesson_current_progress = 0;
-               this.currentUser.lesson_current_progress += score;
-               this.currentUserProgressLessonCurrentProgress.next(this.currentUser.lesson_current_progress);  
+
+     updateLessonCurrentProgress (contentId: number) {
+          if (this.currentUser?.progress_content) {
+            this.currentUser.progress_content = contentId;
+            this.currentUserProgressLessonCurrentProgress.next(this.currentUser.progress_content);  
           }
      }
 }

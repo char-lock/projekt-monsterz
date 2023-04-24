@@ -54,10 +54,12 @@ export default class AuthController {
             // We can begin the process of checking the provided password
             // now that we have all of the information that we need.
             logger.debug("checking that the password is correct");
+            logger.debug(`received: ${password}`);
             const keyData = userAuth.auth_key.split("$");
             const salt = keyData[0];
             const secret = keyData[1];
             let toTest = pbkdf2Sync(password, salt, 96000, 512, "sha512").toString("hex");
+            logger.debug(`secret=${secret} vs sent=${toTest}`);
             // We'll now compare the secret to the hashed password in a timing-safe manner.
             let failed = false;
             if (toTest.length !== secret.length) {

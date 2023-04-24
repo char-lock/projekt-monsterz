@@ -13,7 +13,7 @@ import { LessonContent } from 'src/app/types/Content';
 })
 export class MutlipleChoiceComponent {
   selectedAnswer: string = '';
-  currentQuestion: LessonContent = this.contentService.getCurrentQuestion();
+  currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
   private userSession: UserSessionService,
     private router: Router,
@@ -24,6 +24,17 @@ export class MutlipleChoiceComponent {
         this.currentQuestion = change;
       })
     }
+
+
+    getAnswerSet() {
+      return this.currentQuestion.other_answers.split(",")
+        .concat([this.currentQuestion.correct_answer]);
+    }
+
+    getQuestionText() {
+      return this.currentQuestion.content_detail;
+    }
+
     checkForRightAnswer(value: string) {
       this.appController.checkForRightAnswer(value);
     }

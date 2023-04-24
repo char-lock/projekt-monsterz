@@ -2,6 +2,8 @@
 .env
 *.pem
 *.db
+prisma
+!schema.prisma
 
 # NodeJS
 node_modules

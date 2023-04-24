@@ -13,7 +13,7 @@ import { LessonContent } from 'src/app/types/Content';
 })
 export class DragDropComponent {
   selectedAnswer: string = '';
-  currentQuestion: LessonContent = this.contentService.getCurrentQuestion();
+  currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
     private userSession: UserSessionService,
     private router: Router,
@@ -25,6 +25,16 @@ export class DragDropComponent {
     })
 
   }
+
+  getQuestionText() {
+    return this.currentQuestion.content_detail;
+  }
+
+  getAnswerSet() {
+    return this.currentQuestion.other_answers.split(",")
+      .concat([this.currentQuestion.correct_answer]);
+  }
+
   checkForRightAnswerDrag() {
     this.appController.checkForRightAnswer(this.selectedAnswer);
     this.clearCurrentDragArea();

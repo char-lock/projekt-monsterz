@@ -1,7 +1,7 @@
      <div class="question-and-answer-container">
      <div class="question">
           <h2>
-          {{ currentQuestion.contentText }}
+          {{ getQuestionText() }}
           </h2>
      </div>
      <div id="answerbox"
@@ -14,7 +14,7 @@
           class="answer-drag"
           draggable="true"
           (dragstart)="drag($event)"
-          *ngFor="let answer of currentQuestion.genericAnswers">
+          *ngFor="let answer of getAnswerSet()">
           <p>
                {{ answer }}
           </p>

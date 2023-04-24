@@ -10,6 +10,7 @@ import { config } from "./shared/config";
 import UsersRouter from "./endpoints/users/users.routes";
 import AuthRouter from "./endpoints/auth/auth.routes";
 import CourseRouter from "./endpoints/course/course.routes";
+import LeaderboardRouter from "./endpoints/leaderboard/leaderboard.routes";
 
 const fileLogger = new ApiLogger("index");
 
@@ -28,6 +29,7 @@ app.get("/", (_, rawRes: express.Response) => {
 app.use("/users/", UsersRouter);
 app.use("/auth/", AuthRouter);
 app.use("/course/", CourseRouter);
+app.use("/leaderboard/", LeaderboardRouter);
 
 if (config.enableHttp) {
   fileLogger.debug("starting http server ...");

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { pbkdf2Sync, getRandomValues } from "crypto";
+import { pbkdf2Sync, createHash, getRandomValues } from "crypto";
 
 import ApiLogger from "../../shared/logger";
 
@@ -22,7 +22,8 @@ export default class AuthData {
     const logger = AuthData.fileLogger.createFunctionLogger("createAuthEntry");
     logger.debug("received request to add new auth entry");
     logger.debug("hashing provided password so that future login requests never send plaintext");
-    password = AuthData.hashPassword(password);
+    password = AuthData.hashPassword(createHash("sha512").update(password).digest().toString("hex"));
+    logger.debug(`hashed "${password}"`);
     return AuthData.prisma.userAuth.create({ 
       data: { 
         user_id: userId, 

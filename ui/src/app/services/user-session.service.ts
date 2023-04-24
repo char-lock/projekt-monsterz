@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { ApiService } from "./api.service";
-import { User } from "../types/User";
 import { UserSession } from "../types/UserSession";
 import { CookieController } from "./cookie.service";
 import { BehaviorSubject, Subject } from "rxjs";
@@ -53,6 +52,9 @@ export class UserSessionService {
   }
 
   LoadSession(sessionData: UserSession) {
+    if (sessionData.currentUser === undefined) {
+      return this.logger.makeLog("user-session.service::LoadSession", "User not set in saved session");
+    }
     this.userService.setUser(sessionData.currentUser);
     this.authToken = sessionData.currentToken;
   }

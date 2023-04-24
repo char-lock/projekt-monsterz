@@ -27,6 +27,7 @@ export class UserRegistrationService {
           return callback(false);
         }
         if (user.password && user.username) {
+          this.logger.makeLog("user-registration.service", `successfully registered -- id = ${registerResponse.id}`);
           this.loginService.LoginAs(user.username, user.password, callback);
         } else {
           callback(false);
