@@ -6,6 +6,7 @@ import { ApiService } from "./api.service";
 import { CourseContent } from "../types/api.types";
 import { UserService } from "./user.service";
 import { LoggerService } from "./logger.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Injectable()
 export class ContentService {
@@ -20,11 +21,12 @@ export class ContentService {
   constructor(
     private apiService: ApiService,
     private userService: UserService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    this.lessonId = this.userService.getCurrentLessonProgress();
-    this.contentId = this.userService.getCurrentContentId();
-    if (this.userService.getUser() === undefined)
+    this.lessonId = this.userService.getCurrentLessonProgress() + 1;
+    this.contentId = this.userService.getCurrentContentId() + 1;
     this.updateQuestionList();
     this.currentQuestionObserve = new BehaviorSubject<CourseContent>(this.questionList[this.contentPosition]);
   }
@@ -64,6 +66,7 @@ export class ContentService {
     } else {
       this.contentId = this.questionList[0].id;
     }
+    this.currentQuestionObserve = new BehaviorSubject<CourseContent>(this.questionList[this.contentPosition]);
   }
   
   getCurrentQuestion() {
@@ -79,8 +82,16 @@ export class ContentService {
       this.currentQuestionObserve.next(this.questionList[this.contentPosition]);
     }
   }
+
+  getAnswerList() {
+    return this.getCurrentQuestion().other_answers.split(",").filter((answer) => {
+      return this.getCurrentQuestion().other_answers.split(",").indexOf(answer) < 3;
+    }).concat(this.getCurrentQuestion().correct_answer);
+  }
   
-  completeLesson() {}
+  completeLesson() {
+    this.router.navigate(["/dashboard"], { relativeTo: this.route });
+  }
 
   checkForCorrectAnswer(value: string) {
     return this.getCurrentQuestion().correct_answer.toLowerCase() === value.toLowerCase();          

@@ -57,6 +57,7 @@ export type CourseLesson = {
 
 export enum ContentType {
   READING = 0,
+  DRAG_DROP,
   MULTIPLE_CHOICE,
   FILL_IN
 };

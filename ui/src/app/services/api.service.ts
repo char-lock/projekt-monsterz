@@ -225,7 +225,7 @@ export class ApiService {
 
   /** Returns the metadata related to the provided unit ID */
   getUnitMeta(unitId: number) {
-    return this.getApiRequest(`/course/units/${unitId}/metadata`)
+    return this.getApiRequest(`/course/units/${unitId}`)
       .then((result) => {
         if (result.data === undefined) {
           this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
@@ -240,7 +240,7 @@ export class ApiService {
 
   /** Returns the metadata related to the provided lesson ID */
   getLessonMeta(lessonId: number) {
-    return this.getApiRequest(`/course/lessons/${lessonId}/metadata`)
+    return this.getApiRequest(`/course/lessons/${lessonId}`)
       .then((result) => {
         if (result.data === undefined) {
           this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));

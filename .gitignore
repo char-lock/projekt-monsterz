@@ -4,6 +4,7 @@
 *.db
 prisma
 !schema.prisma
+backend/**/*.js
 
 # NodeJS
 node_modules

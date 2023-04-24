@@ -4,6 +4,7 @@ import { BehaviorSubject, Subject, Subscriber, Subscription } from "rxjs";
 import { UserSessionService } from "./user-session.service";
 import { LoggerService } from "./logger.service";
 import { UserService } from "./user.service";
+import { ContentService } from "./content.service";
 
 @Injectable()
 export class LoginService {
@@ -14,7 +15,8 @@ export class LoginService {
   constructor(
       private apiService: ApiService,
       private logger: LoggerService,
-      private userService: UserService
+      private userService: UserService,
+      private contentService: ContentService
   ) {}
   
   /** Attempts to login as the provided user. */
@@ -34,6 +36,7 @@ export class LoginService {
               return callback(false);
             }
             this.userService.setUser(userResponse);
+            this.contentService.updateQuestionList();
             return callback(true);
           })
           .catch((userFailReason) => {

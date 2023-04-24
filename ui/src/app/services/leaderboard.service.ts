@@ -45,12 +45,12 @@ export class LeaderboardService {
       this.leaderboardClass = [];
     }
     users.forEach((user) => {
-      this.apiService.getLessonMeta(user.progress_lesson)
+      this.apiService.getLessonMeta(user.progress_lesson + 1)
         .then((lessonMetadata) => {
           if (lessonMetadata === undefined) {
             return this.logger.makeLog("leaderboard.service::parseUsersToScore", "failed to get lesson metadata");
           }
-          this.apiService.getContentMeta(user.progress_content)
+          this.apiService.getContentMeta(user.progress_content + 1)
             .then((contentMetadata) => {
               if (contentMetadata === undefined) {
                 return this.logger.makeLog("leaderboard.service::parseUsersToScore", "failed to get content metadata");

@@ -7,6 +7,7 @@ import { ContentService } from 'src/app/services/content.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { UserService } from 'src/app/services/user.service';
 import { LessonContent } from 'src/app/types/Content';
+import { ContentType } from 'src/app/types/api.types';
 @Component({
   selector: 'app-lesson-module',
   templateUrl: './lesson-module.component.html',
@@ -39,17 +40,20 @@ export class LessonModuleComponent implements OnInit {
   }
   navigateToCorrectLesson() {
     switch (this.contentType) {
-      case 1:
+      case ContentType.MULTIPLE_CHOICE:
         this.router.navigate(['/lesson/multiple-choice'], { relativeTo: this.route });
         break;
-      case 2:
+      case ContentType.DRAG_DROP:
         this.router.navigate(['/lesson/drag-drop'], { relativeTo: this.route });
         break;
-      case 3:
+      case ContentType.READING:
         this.router.navigate(['/lesson/reading'], { relativeTo: this.route });
         break;
-      case 4:
+      case ContentType.FILL_IN:
         this.router.navigate(['/lesson/fill-in-the-blank'],{ relativeTo: this.route });
+        break;
+      default:
+        this.router.navigate(['/lesson/reading'], { relativeTo: this.route });
         break;
     }
   }

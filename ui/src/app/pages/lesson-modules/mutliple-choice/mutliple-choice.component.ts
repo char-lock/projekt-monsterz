@@ -27,8 +27,7 @@ export class MutlipleChoiceComponent {
 
 
     getAnswerSet() {
-      return this.currentQuestion.other_answers.split(",")
-        .concat([this.currentQuestion.correct_answer]);
+      return this.contentService.getAnswerList();
     }
 
     getQuestionText() {
