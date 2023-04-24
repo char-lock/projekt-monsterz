@@ -1,10 +1,14 @@
 import { Injectable } from "@angular/core";
 import { User } from "../types/User";
 import { UserSession } from "../types/UserSession";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 export class UserService {
      private currentUser: User = {};
+     private currentUserProgressLessonCurrentProgress= new BehaviorSubject<number>(0)
+     constructor() {
+     }
      setUser(user: User) {
           this.currentUser = user;
      }
@@ -19,6 +23,12 @@ export class UserService {
      }
      getCurrentScore() {
           return this.currentUser.lesson_current ? this.currentUser.lesson_current : 0;
+     }
+     getCurrentLessonProgressObservable() {
+          return this.currentUserProgressLessonCurrentProgress;
+     }
+     getCurrentLessonProgress() {
+          return this.currentUser.lesson_current_progress ? this.currentUser.lesson_current_progress : 0;
      }
      getClassCode() {
           return this.currentUser.verification_value ? this.currentUser.verification_value : "null";
@@ -51,6 +61,12 @@ export class UserService {
           if (this.currentUser.lesson_current_progress)
           {
           this.currentUser.lesson_current_progress += score;
-          }     
+          this.currentUserProgressLessonCurrentProgress.next(this.currentUser.lesson_current_progress);  
+          }
+          else {
+               this.currentUser.lesson_current_progress = 0;
+               this.currentUser.lesson_current_progress += score;
+               this.currentUserProgressLessonCurrentProgress.next(this.currentUser.lesson_current_progress);  
+          }
      }
 }

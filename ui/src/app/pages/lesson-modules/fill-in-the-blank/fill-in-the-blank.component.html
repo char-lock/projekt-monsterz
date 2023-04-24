@@ -1,0 +1,12 @@
+<div class="question-and-answer-container">
+     <div class="question">
+          <h2>
+          {{ currentQuestion.contentText }}
+          </h2>
+     </div>
+     <div class="input-container">
+          <label for="answer">Enter your answer below!</label>
+          <input #answer type="text" name="answer">
+     </div>
+     <button (click)="checkForRightAnswer(answer.value)">Submit</button>
+</div>

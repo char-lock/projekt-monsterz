@@ -22,8 +22,13 @@ import { MonsterCageBackgroundDirective } from './directives/monster-cage-backgr
 import { LoginService } from './services/login.service';
 import { UserService } from './services/user.service';
 import { AppController } from './services/app.controller';
-import { LessonModuleComponent } from './pages/lesson-module/lesson-module.component';
+import { LessonModuleComponent } from './pages/lesson-modules/lesson-module.component';
 import { ContentService } from './services/content.service';
+import { DragDropComponent } from './pages/lesson-modules/drag-drop/drag-drop.component';
+import { MutlipleChoiceComponent } from './pages/lesson-modules/mutliple-choice/mutliple-choice.component';
+import { ReadingComponent } from './pages/lesson-modules/reading/reading.component';
+import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +38,11 @@ import { ContentService } from './services/content.service';
     WelcomePageComponent,
     DashboardComponent,
     MonsterCageBackgroundDirective,
-    LessonModuleComponent
+    LessonModuleComponent,
+    DragDropComponent,
+    MutlipleChoiceComponent,
+    ReadingComponent,
+    FillInTheBlankComponent
   ],
   imports: [
     BrowserModule,

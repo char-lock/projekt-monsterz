@@ -9,10 +9,11 @@ import { LoginService } from "./login.service";
 import { UserRegistrationService } from "./user-registration.service";
 import { UserSessionService } from "./user-session.service";
 import { UserService } from "./user.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { User } from "../types/User";
 import { BehaviorSubject } from "rxjs";
 import { ContentService } from "./content.service";
+import { LessonModuleComponent } from "../pages/lesson-modules/lesson-module.component";
 
 @Injectable()
 export class AppController {
@@ -29,6 +30,7 @@ export class AppController {
           private userService: UserService,
           private router: Router,
           private contentService: ContentService,
+          private route: ActivatedRoute,
      ) {
      }
      setModalState(number: number) {
@@ -63,8 +65,8 @@ export class AppController {
      }
      checkForRightAnswer(value: string) {
           if (this.contentService.checkForCorrectAnswer(value)) {
+               this.userService.updateLessonCurrentProgress(10);
                this.contentService.nextActivity();
-               
           }
           else {
                console.log("incorrect");
@@ -76,5 +78,13 @@ export class AppController {
                this.router.navigate(["../"]);
                return;
           }
+          else {
+               console.log("WHY HERE!?")
+          }
      }
+     finishReading() {
+          this.userService.updateLessonCurrentProgress(10);
+          this.contentService.nextActivity();
+     }
+
 }
