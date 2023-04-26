@@ -79,7 +79,6 @@ export class AppController {
                return;
           }
           else {
-               console.log("WHY HERE!?")
           }
      }
      finishReading() {
