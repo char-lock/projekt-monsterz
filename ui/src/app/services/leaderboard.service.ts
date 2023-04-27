@@ -19,7 +19,7 @@ export class LeaderboardService {
     private userSession: UserSessionService,
     private userService: UserService,
     private logger: LoggerService
-  ) {}
+  ) { }
 
   GetGlobalLeaderboard() {
     if (this.lastUpdated + (15 * 60 * 1000) < Date.now()) {
@@ -57,7 +57,7 @@ export class LeaderboardService {
               }
               this.apiService.getUnitMeta(lessonMetadata.unit_id)
                 .then((unitMetadata) => {
-                  if (unitMetadata === undefined ){
+                  if (unitMetadata === undefined) {
                     return this.logger.makeLog("leaderboard.service::parseUsersToScore", "failed to get unit metadata");
                   }
                   const unitProgress = (lessonMetadata.position - 1) / unitMetadata.lesson_count;

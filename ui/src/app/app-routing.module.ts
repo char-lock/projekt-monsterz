@@ -11,12 +11,13 @@ import { FillInTheBlankComponent } from "./pages/lesson-modules/fill-in-the-blan
 const routes: Routes = [
   { path: "", component: WelcomePageComponent },
   { path: "dashboard", component: DashboardComponent },
-  { path: "lesson", component: LessonModuleComponent,
+  {
+    path: "lesson", component: LessonModuleComponent,
     children: [
-      {path: "multiple-choice", component: MutlipleChoiceComponent},
-      {path: "drag-drop", component: DragDropComponent},
-      {path: "reading", component: ReadingComponent},
-      {path: "fill-in-the-blank", component: FillInTheBlankComponent}
+      { path: "multiple-choice", component: MutlipleChoiceComponent },
+      { path: "drag-drop", component: DragDropComponent },
+      { path: "reading", component: ReadingComponent },
+      { path: "fill-in-the-blank", component: FillInTheBlankComponent }
     ]
   }
 ];
@@ -25,6 +26,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { 
-  
+export class AppRoutingModule {
+
 }

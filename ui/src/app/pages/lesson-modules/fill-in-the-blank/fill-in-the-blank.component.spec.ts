@@ -8,9 +8,9 @@ describe('FillInTheBlankComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FillInTheBlankComponent ]
+      declarations: [FillInTheBlankComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(FillInTheBlankComponent);
     component = fixture.componentInstance;

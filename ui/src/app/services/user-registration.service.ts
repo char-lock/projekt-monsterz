@@ -16,7 +16,7 @@ export class UserRegistrationService {
     private apiService: ApiService,
     private loginService: LoginService,
     private logger: LoggerService
-  ) {}
+  ) { }
 
   AttemptRegistration(user: NewUser, callback: Function) {
     user.username = user.username.toLowerCase();

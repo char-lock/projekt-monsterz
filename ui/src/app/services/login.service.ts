@@ -9,18 +9,18 @@ import { ToastService } from "./toast.service";
 
 @Injectable()
 export class LoginService {
-  
+
   private authToken = "";
   private currentAuthToken = new BehaviorSubject<string>("");
-  
+
   constructor(
-      private toastService: ToastService,
-      private apiService: ApiService,
-      private logger: LoggerService,
-      private userService: UserService,
-      private contentService: ContentService
-  ) {}
-  
+    private toastService: ToastService,
+    private apiService: ApiService,
+    private logger: LoggerService,
+    private userService: UserService,
+    private contentService: ContentService
+  ) { }
+
   /** Attempts to login as the provided user. */
   LoginAs(username: string, password: string, callback: Function) {
     this.apiService.getAuthToken(username, password)
@@ -50,7 +50,7 @@ export class LoginService {
             this.toastService.createToast(userFailReason, "Error");
             console.log("Toast Created!");
             return callback(false);
-            
+
           });
       })
       .catch((tokenFailReason) => {
@@ -59,14 +59,14 @@ export class LoginService {
         console.log("Toast Created!");
         return callback(false);
       });
-    }
-    
-    setAuthToken() {
-      this.currentAuthToken.next(this.authToken);
-    }
+  }
 
-    getAuthToken() {
-      return this.currentAuthToken;
-    }
+  setAuthToken() {
+    this.currentAuthToken.next(this.authToken);
+  }
+
+  getAuthToken() {
+    return this.currentAuthToken;
+  }
 
 }

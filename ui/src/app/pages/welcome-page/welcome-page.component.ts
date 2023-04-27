@@ -14,7 +14,7 @@ export class WelcomePageComponent {
     private appController: AppController,
     private logger: LoggerService,
     private toaster: ToastService
-  ) { 
+  ) {
   }
 
   OpenRegistrationModal() {

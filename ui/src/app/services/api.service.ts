@@ -13,7 +13,7 @@ export class ApiService {
 
   static API_ENDPOINT = "http://localhost:9696";
 
-  constructor(private logger: LoggerService) {}
+  constructor(private logger: LoggerService) { }
 
   /** Posts a request to the API server and returns the response. */
   postApiRequest(endpoint: string, body?: string, headers?: AxiosHeaders) {
@@ -30,10 +30,10 @@ export class ApiService {
       })
       .catch((fail) => {
         this.logger.makeLog(
-          "api.service::postApiRequest", 
+          "api.service::postApiRequest",
           `request failed to resolve - reason: ${fail}`
         );
-        
+
         const response: ApiResponse = fail.response.data || {
           statusCode: 500,
           statusShortDesc: "Internal Server Failure",
@@ -170,7 +170,7 @@ export class ApiService {
       })
       .catch((fail) => {
         this.logger.makeLog(
-          "api.service::registerUser", 
+          "api.service::registerUser",
           `request failed to resolve - reson: ${fail}`
         );
         return undefined;
@@ -197,7 +197,7 @@ export class ApiService {
       })
       .catch((fail) => {
         this.logger.makeLog(
-          "api.service::getAuthToken", 
+          "api.service::getAuthToken",
           `request failed to resolve - reason: ${fail}`
         );
         return "";
@@ -207,7 +207,7 @@ export class ApiService {
   /** Returns a new authorization token for the provided information. */
   refreshAuthToken(currentToken: string) {
     return this.getApiRequest(
-      "/auth/refresh", 
+      "/auth/refresh",
       new AxiosHeaders({ "Authorization": `Bearer ${currentToken}` })
     )
       .then((response) => {
@@ -216,7 +216,7 @@ export class ApiService {
       })
       .catch((fail) => {
         this.logger.makeLog(
-          "api.service::refreshAuthToken", 
+          "api.service::refreshAuthToken",
           `failed to refresh token - reason ${fail}`
         );
         return "";

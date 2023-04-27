@@ -81,8 +81,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getLeaderboard() {
-    return (this.globalLeaderboardSelected) 
-      ? this.leaderboardService.GetGlobalLeaderboard() 
+    return (this.globalLeaderboardSelected)
+      ? this.leaderboardService.GetGlobalLeaderboard()
       : this.leaderboardService.GetClassLeaderboard();
   }
 

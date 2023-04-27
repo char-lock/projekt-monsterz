@@ -7,10 +7,11 @@
   font-family: 'Kanit', sans-serif;
   overflow: hidden;
 }
+
 app-lesson-module {
   height: 100%;
- display: block;
- background-color: #fe1a55;
+  display: block;
+  background-color: #fe1a55;
 }
 
 body {

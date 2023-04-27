@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './fill-in-the-blank.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class FillInTheBlankComponent{
+export class FillInTheBlankComponent {
   selectedAnswer: string = '';
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(

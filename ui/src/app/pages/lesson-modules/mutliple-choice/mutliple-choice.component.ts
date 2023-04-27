@@ -15,26 +15,26 @@ export class MutlipleChoiceComponent {
   selectedAnswer: string = '';
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
-  private userSession: UserSessionService,
+    private userSession: UserSessionService,
     private router: Router,
     private user: UserService,
     private appController: AppController,
     private contentService: ContentService) {
-      this.contentService.returnQuestion().subscribe((change) => {
-        this.currentQuestion = change;
-      })
-    }
+    this.contentService.returnQuestion().subscribe((change) => {
+      this.currentQuestion = change;
+    })
+  }
 
 
-    getAnswerSet() {
-      return this.contentService.getAnswerList();
-    }
+  getAnswerSet() {
+    return this.contentService.getAnswerList();
+  }
 
-    getQuestionText() {
-      return this.currentQuestion.content_detail;
-    }
+  getQuestionText() {
+    return this.currentQuestion.content_detail;
+  }
 
-    checkForRightAnswer(value: string) {
-      this.appController.checkForRightAnswer(value);
-    }
+  checkForRightAnswer(value: string) {
+    this.appController.checkForRightAnswer(value);
+  }
 }
