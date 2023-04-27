@@ -11,18 +11,18 @@ export class UserService {
 
      private currentUser: User | undefined;
 
-     private currentUserProgressLessonCurrentProgress= new BehaviorSubject<number>(0)
+     private currentUserProgressLessonCurrentProgress = new BehaviorSubject<number>(0)
      constructor(
-      private validationService: ValidationService,
-      private logger: LoggerService
-     ) {}
-     
+          private validationService: ValidationService,
+          private logger: LoggerService
+     ) { }
+
      getUser() {
           return this.currentUser;
      }
 
      setUser(user: User) {
-      this.currentUser = user;
+          this.currentUser = user;
      }
 
      revokeUser() {
@@ -47,37 +47,36 @@ export class UserService {
           return this.currentUser?.username !== undefined ? this.currentUser.username : "";
      }
 
-    /** Creates a new user payload for use during registration. */
-    createNewUser(username: string, password: string, validationValue: string): NewUser {
-      const isEmail = this.validationService.ValidateEmail(validationValue);
-      // TODO: Implement parsing for education codes; right now, the program will
-      // accept any value as an education code.
-      return {
-        username: username,
-        password: password,
-        validation_method: isEmail 
-          ? ValidationMethod.EMAIL 
-          : ValidationMethod.EDUCATION_CODE,
-        validation_value: validationValue
-      };
-    }
-
-    getCurrentContentId() {
-      return this.currentUser?.progress_content ? this.currentUser?.progress_content : 0;
-    }
-
-     updateLessonCurrent (lessonId: number) {
-     //Progress for lessons completed.
-     if (this.currentUser?.progress_lesson)
-     {
-          this.currentUser.progress_lesson = lessonId;
-     }
+     /** Creates a new user payload for use during registration. */
+     createNewUser(username: string, password: string, validationValue: string): NewUser {
+          const isEmail = this.validationService.ValidateEmail(validationValue);
+          // TODO: Implement parsing for education codes; right now, the program will
+          // accept any value as an education code.
+          return {
+               username: username,
+               password: password,
+               validation_method: isEmail
+                    ? ValidationMethod.EMAIL
+                    : ValidationMethod.EDUCATION_CODE,
+               validation_value: validationValue
+          };
      }
 
-     updateLessonCurrentProgress (contentId: number) {
+     getCurrentContentId() {
+          return this.currentUser?.progress_content ? this.currentUser?.progress_content : 0;
+     }
+
+     updateLessonCurrent(lessonId: number) {
+          //Progress for lessons completed.
+          if (this.currentUser?.progress_lesson) {
+               this.currentUser.progress_lesson = lessonId;
+          }
+     }
+
+     updateLessonCurrentProgress(contentId: number) {
           if (this.currentUser?.progress_content) {
-            this.currentUser.progress_content = contentId;
-            this.currentUserProgressLessonCurrentProgress.next(this.currentUser.progress_content);  
+               this.currentUser.progress_content = contentId;
+               this.currentUserProgressLessonCurrentProgress.next(this.currentUser.progress_content);
           }
      }
 }

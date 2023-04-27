@@ -1,6 +1,6 @@
 interface Toast {
-  message: string,
-  style: {}, 
+  message?: string,
+  style?: {}
 }
 
 

@@ -8,9 +8,9 @@ describe('MutlipleChoiceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MutlipleChoiceComponent ]
+      declarations: [MutlipleChoiceComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MutlipleChoiceComponent);
     component = fixture.componentInstance;

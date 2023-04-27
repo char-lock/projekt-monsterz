@@ -14,6 +14,7 @@ import { User } from "../types/User";
 import { BehaviorSubject } from "rxjs";
 import { ContentService } from "./content.service";
 import { LessonModuleComponent } from "../pages/lesson-modules/lesson-module.component";
+import { ToastService } from "./toast.service";
 
 @Injectable()
 export class AppController {
@@ -31,6 +32,7 @@ export class AppController {
           private router: Router,
           private contentService: ContentService,
           private route: ActivatedRoute,
+          private toaster: ToastService
      ) {
      }
      setModalState(number: number) {
@@ -43,7 +45,7 @@ export class AppController {
                     this.applicationStateService.SetLoginModalState(0);
                     this.router.navigate(["../dashboard"]);
                } else {
-                    // TODO: Handle registration failure
+                    this.toaster.createToast("You Are Unable to Be Registered at this Time, Try Again Later", "Error");
                }
           });
           this.loggerService.makeLog("component.login-screen", "Requested a registration attempt.");
@@ -55,7 +57,7 @@ export class AppController {
                     this.router.navigate(["../dashboard"]);
                     this.loggerService.makeLog("App Controller", "Should've navigated to Dashboard!")
                } else {
-                    // TODO: Handle login failure
+                    this.toaster.createToast("Unable to Login, Try Again", "Error")
                }
           });
      }
@@ -70,7 +72,7 @@ export class AppController {
           }
           else {
                this.loggerService.makeLog("app.controller::checkForRightAnswer", "incorrect");
-               //Display error!
+               this.toaster.createToast("That Answer is Incorrect, Try Again", "Error");
           }
      }
      checkForAuthentication() {
@@ -79,7 +81,6 @@ export class AppController {
                return;
           }
           else {
-               console.log("WHY HERE!?")
           }
      }
      finishReading() {

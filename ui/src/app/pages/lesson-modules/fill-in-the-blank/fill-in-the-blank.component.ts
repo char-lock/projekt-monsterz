@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
@@ -14,21 +14,20 @@ export class FillInTheBlankComponent {
   selectedAnswer: string = '';
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
-  private userSession: UserSessionService,
+    private userSession: UserSessionService,
     private router: Router,
     private user: UserService,
     private appController: AppController,
     private contentService: ContentService) {
-      this.contentService.returnQuestion().subscribe((change) => {
-        this.currentQuestion = change;
-      })
-    }
+    this.contentService.returnQuestion().subscribe((change) => {
+      this.currentQuestion = change;
+    })
+  }
 
-    getQuestionText() {
-      return this.currentQuestion.content_detail;
-    }
-
-    checkForRightAnswer(value: string) {
-      this.appController.checkForRightAnswer(value);
-    }
+  getQuestionText() {
+    return this.currentQuestion.content_detail;
+  }
+  checkForRightAnswer(value: string) {
+    this.appController.checkForRightAnswer(value);
+  }
 }

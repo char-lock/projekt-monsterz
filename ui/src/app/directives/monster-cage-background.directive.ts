@@ -22,7 +22,7 @@ export class MonsterCageBackgroundDirective {
     this.element.nativeElement.style.background = "url(" +
       this.relativePath + this.href[this.getBackground()] + ")";
     this.logger.makeLog(
-      "monster-cage-background.directive", 
+      "monster-cage-background.directive",
       this.relativePath + this.href[this.getBackground()]
     );
   }

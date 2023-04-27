@@ -1,8 +1,12 @@
 <div class="reading-container">
+     <div class="directions">
+          <p>Complete the reading below, upon completion click the button that says next!</p>
+     </div>
      <p>
           {{ getContent() }}
      </p>
 </div>
-<button (click)="finishReading()">
+<button class="reading-button" (click)="finishReading()">
      Next
 </button>
+<app-toast></app-toast>

@@ -10,12 +10,12 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 @Injectable()
 export class ContentService {
-  
+
   questionList: CourseContent[] = [];
   lessonId: number;
   contentId: number;
   contentPosition = 0;
-  
+
   private currentQuestionObserve: BehaviorSubject<CourseContent>;
 
   constructor(
@@ -40,7 +40,7 @@ export class ContentService {
       .then((result) => {
         if (result.length === 0) {
           return this.logger.makeLog(
-            "content.service::updateQuestionList", 
+            "content.service::updateQuestionList",
             `no questions found for lesson id ${this.lessonId}`
           );
         }
@@ -49,7 +49,7 @@ export class ContentService {
       })
       .catch((reject) => {
         this.logger.makeLog(
-          "content.service::updateQuestionList", 
+          "content.service::updateQuestionList",
           `unable to update questions for lesson id ${this.lessonId} - reason: ${reject}`
         );
       });
@@ -68,11 +68,11 @@ export class ContentService {
     }
     this.currentQuestionObserve = new BehaviorSubject<CourseContent>(this.questionList[this.contentPosition]);
   }
-  
+
   getCurrentQuestion() {
     return this.questionList[this.contentPosition];
   }
-  
+
   nextActivity() {
     this.contentPosition++;
     if (this.contentPosition >= this.questionList.length) {
@@ -88,15 +88,15 @@ export class ContentService {
       return this.getCurrentQuestion().other_answers.split(",").indexOf(answer) < 3;
     }).concat(this.getCurrentQuestion().correct_answer);
   }
-  
+
   completeLesson() {
     this.router.navigate(["/dashboard"], { relativeTo: this.route });
   }
 
   checkForCorrectAnswer(value: string) {
-    return this.getCurrentQuestion().correct_answer.toLowerCase() === value.toLowerCase();          
+    return this.getCurrentQuestion().correct_answer.toLowerCase() === value.toLowerCase();
   }
-  
+
   returnQuestion() {
     return this.currentQuestionObserve;
   }

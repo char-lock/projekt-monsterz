@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ComponentRef, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from "./app-routing.module";
@@ -28,6 +28,8 @@ import { DragDropComponent } from './pages/lesson-modules/drag-drop/drag-drop.co
 import { MutlipleChoiceComponent } from './pages/lesson-modules/mutliple-choice/mutliple-choice.component';
 import { ReadingComponent } from './pages/lesson-modules/reading/reading.component';
 import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component';
+import { ToastService } from './services/toast.service';
+import { ToastComponent } from './shared/toast/toast.component';
 
 
 @NgModule({
@@ -42,12 +44,15 @@ import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blan
     DragDropComponent,
     MutlipleChoiceComponent,
     ReadingComponent,
-    FillInTheBlankComponent
+    FillInTheBlankComponent,
+    ToastComponent
+
   ],
   imports: [
     BrowserModule,
     CommonModule,
-    AppRoutingModule
+    AppRoutingModule,
+
   ],
   providers: [
     UserRegistrationService,
@@ -61,7 +66,8 @@ import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blan
     LoginService,
     UserService,
     AppController,
-    ContentService
+    ContentService,
+    ToastService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,7 +1,10 @@
 <div class="login-modal">
   <div class="login-modal-container">
+
     <button class="btn-exit" type="button" (click)="SetModalState(0)">x</button>
+
     <div class="form">
+      <app-toast></app-toast>
       <input #username id="username" name="username" placeholder="Username" type="text" />
       <input #password id="password" name="password" placeholder="Password" type="password" />
       <span *ngIf="modalState == 2">
@@ -13,5 +16,6 @@
       <button class="btn-login" id="login-btn" (click)="Login(username.value, password.value)"
         *ngIf="modalState == 1">LOGIN</button>
     </div>
+
   </div>
 </div>

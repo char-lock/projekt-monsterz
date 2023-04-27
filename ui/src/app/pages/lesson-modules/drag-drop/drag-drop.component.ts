@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { LessonModuleComponent } from '../lesson-module.component';
 import { Router } from '@angular/router';
 import { AppController } from 'src/app/services/app.controller';
@@ -25,6 +25,7 @@ export class DragDropComponent {
     })
 
   }
+
 
   getQuestionText() {
     return this.currentQuestion.content_detail;

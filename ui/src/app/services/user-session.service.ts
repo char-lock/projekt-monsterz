@@ -10,12 +10,12 @@ import { LoginService } from "./login.service";
 
 @Injectable()
 export class UserSessionService {
-  
+
   private authToken = "";
   private startedAt: number = -1;
   private lastRefresh: number = -1;
   private currentSubscription;
-  
+
   constructor(
     private apiService: ApiService,
     private cookieService: CookieController,
@@ -38,7 +38,7 @@ export class UserSessionService {
     }
     return this.authToken !== ""
   }
-  
+
   GetSessionData() {
     const sessionData: UserSession = {
       currentUser: this.userService.getUser(),

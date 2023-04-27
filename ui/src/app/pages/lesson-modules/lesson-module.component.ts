@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
@@ -15,10 +15,10 @@ import { ContentType } from 'src/app/types/api.types';
 })
 export class LessonModuleComponent implements OnInit {
   currentProgress: number = 0;
-  selectedAnswer: string = '';  
-  
+  selectedAnswer: string = '';
+
   currentQuestion = this.contentService.getCurrentQuestion();
-  
+
   contentType: number = this.currentQuestion.content_type;
   constructor(private userSession: UserSessionService,
     private router: Router,
@@ -27,14 +27,13 @@ export class LessonModuleComponent implements OnInit {
     private contentService: ContentService,
     private route: ActivatedRoute) {
 
-    this.user.getCurrentLessonProgressObservable().subscribe((change) => {
-      this.currentProgress = change;
-    })
+
     this.contentService.returnQuestion().subscribe((change) => {
       this.contentType = change.content_type;
       this.navigateToCorrectLesson();
     })
   }
+
   ngOnInit(): void {
     this.appController.checkForAuthentication();
   }
@@ -50,7 +49,7 @@ export class LessonModuleComponent implements OnInit {
         this.router.navigate(['/lesson/reading'], { relativeTo: this.route });
         break;
       case ContentType.FILL_IN:
-        this.router.navigate(['/lesson/fill-in-the-blank'],{ relativeTo: this.route });
+        this.router.navigate(['/lesson/fill-in-the-blank'], { relativeTo: this.route });
         break;
       default:
         this.router.navigate(['/lesson/reading'], { relativeTo: this.route });
