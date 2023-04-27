@@ -38,7 +38,7 @@ export class ToastComponent {
     setTimeout(() => {
       this.toggle = false;
       this.toaster.hide();
-    }, 19000);
+    }, 3000);
 
   }
 }
