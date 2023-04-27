@@ -29,7 +29,7 @@ import { MutlipleChoiceComponent } from './pages/lesson-modules/mutliple-choice/
 import { ReadingComponent } from './pages/lesson-modules/reading/reading.component';
 import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component';
 import { ToastService } from './services/toast.service';
-import { ToastComponent } from './pages/toast/toast.component';
+import { ToastComponent } from './shared/toast/toast.component';
 
 
 @NgModule({
