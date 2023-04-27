@@ -1,27 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, ComponentRef, ApplicationRef } from '@angular/core';
 import { ToastService } from 'src/app/services/toast.service';
 import { Toast } from 'src/app/types/Toast';
 
 @Component({
   selector: 'app-toast',
   template: `
-    <div *ngIf="toggle" 
+    <div 
     [ngStyle]="toast.style"
-    toastTimer="toast">
+    >
+    <h5>
       {{ toast.message }}
+    </h5>
     </div>
-  `
+  `,
+  styles: [` 
+    div {
+    }
+    `
+  ]
+
 })
 export class ToastComponent {
-  toast: Toast;
+  toast: Toast = {};
+
   toggle: boolean = true;
-  constructor(private toaster: ToastService) { 
-    this.toast = this.toaster.getToast()
-    this.setTimer() 
+  constructor(private toaster: ToastService,
+  ) {
+    this.toaster.getToast().subscribe((change) => {
+      this.toast = change;
+      if (this.toast) {
+        this.setTimer();
+      }
+    })
   }
+
   setTimer() {
-     setTimeout(() => {
-          this.toggle = false;
-     }, 3000);
+    setTimeout(() => {
+      this.toggle = false;
+      this.toaster.hide();
+    }, 19000);
+
   }
 }

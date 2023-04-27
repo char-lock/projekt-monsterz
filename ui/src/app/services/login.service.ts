@@ -5,6 +5,7 @@ import { UserSessionService } from "./user-session.service";
 import { LoggerService } from "./logger.service";
 import { UserService } from "./user.service";
 import { ContentService } from "./content.service";
+import { ToastService } from "./toast.service";
 
 @Injectable()
 export class LoginService {
@@ -13,6 +14,7 @@ export class LoginService {
   private currentAuthToken = new BehaviorSubject<string>("");
   
   constructor(
+      private toastService: ToastService,
       private apiService: ApiService,
       private logger: LoggerService,
       private userService: UserService,
@@ -25,6 +27,8 @@ export class LoginService {
       .then((tokenResponse) => {
         if (tokenResponse === "") {
           this.logger.makeLog("login.service::LoginAs", "failed to login: unknown reason");
+          this.toastService.createToast("Failed to login: unknown reason", "Error");
+
           return callback(false);
         }
         this.authToken = tokenResponse;
@@ -33,6 +37,8 @@ export class LoginService {
           .then((userResponse) => {
             if (!userResponse) {
               this.logger.makeLog("login.service::LoginAs", "failed to retrieve user");
+              this.toastService.createToast("Failed to Retrieve User", "Error");
+              console.log("Toast Created!");
               return callback(false);
             }
             this.userService.setUser(userResponse);
@@ -41,11 +47,16 @@ export class LoginService {
           })
           .catch((userFailReason) => {
             this.logger.makeLog("login.service::LoginAs", `failed to retrieve user - reason: ${userFailReason}`);
+            this.toastService.createToast(userFailReason, "Error");
+            console.log("Toast Created!");
             return callback(false);
+            
           });
       })
       .catch((tokenFailReason) => {
         this.logger.makeLog("login.service::LoginAs", `failed to login - reason: ${tokenFailReason}`);
+        this.toastService.createToast(tokenFailReason, "Error");
+        console.log("Toast Created!");
         return callback(false);
       });
     }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ComponentRef, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from "./app-routing.module";
@@ -46,11 +46,13 @@ import { ToastComponent } from './pages/toast/toast.component';
     ReadingComponent,
     FillInTheBlankComponent,
     ToastComponent
+
   ],
   imports: [
     BrowserModule,
     CommonModule,
-    AppRoutingModule
+    AppRoutingModule,
+
   ],
   providers: [
     UserRegistrationService,

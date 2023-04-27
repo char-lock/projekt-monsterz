@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
@@ -27,14 +27,13 @@ export class LessonModuleComponent implements OnInit {
     private contentService: ContentService,
     private route: ActivatedRoute) {
 
-    this.user.getCurrentLessonProgressObservable().subscribe((change) => {
-      this.currentProgress = change;
-    })
+ 
     this.contentService.returnQuestion().subscribe((change) => {
       this.contentType = change.content_type;
       this.navigateToCorrectLesson();
     })
   }
+
   ngOnInit(): void {
     this.appController.checkForAuthentication();
   }

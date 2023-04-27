@@ -4,9 +4,17 @@
           {{ getQuestionText() }}
           </h2>
      </div>
+     <div class="directions">
+          <p>Type in the correct answer for the question given above!</p>
+     </div>
      <div class="input-container">
           <label for="answer">Enter your answer below!</label>
-          <input #answer type="text" name="answer">
+          <input class="answer-input" #answer type="text" name="answer">
      </div>
-     <button (click)="checkForRightAnswer(answer.value)">Submit</button>
+     <button
+      class="answer-button"
+      (click)="checkForRightAnswer(answer.value)"
+      >Submit</button>
+      <app-toast></app-toast>
+
 </div>

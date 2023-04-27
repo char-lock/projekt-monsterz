@@ -15,7 +15,6 @@ export class WelcomePageComponent {
     private logger: LoggerService,
     private toaster: ToastService
   ) { 
-    toaster.createToast("Hello World", "Success");
   }
 
   OpenRegistrationModal() {

@@ -1,20 +1,23 @@
 import { Injectable } from "@angular/core";
 import { Toast } from "../types/Toast";
+import { BehaviorSubject, Observable } from "rxjs";
+import { ToastComponent } from "../pages/toast/toast.component";
 
 @Injectable()
 export class ToastService {
-  toast: Toast = {
-    message: "",
-    style: {}
-  };
+  toast: Toast = {};
+  toastObserve = new BehaviorSubject<Toast>(this.toast);
   constructor() {
   }
 
   createToast(message: string, status: string) {
     this.toast.message = message;
-    console.log(this.toast.message);
-    console.log("Toast message created!");
     this.setStyle(status);
+    this.toastObserve.next(this.toast);
+  }
+  hide() {
+    this.toast = {};
+    this.toastObserve.next(this.toast);
   }
   setStyle(status: string) {
     switch (status) {
@@ -54,8 +57,6 @@ export class ToastService {
     }
   }
   getToast() {
-    return this.toast;
-    console.log("Returning");
-    console.log(this.toast);
+    return this.toastObserve;
   }
 }

@@ -4,10 +4,14 @@
           {{ getQuestionText() }}
           </h2>
      </div>
+     <div class="directions">
+          <p>Drag the correct answer to the answer box below, click submit when you are completed!</p>
+     </div>
      <div id="answerbox"
+     class="answerbox"
      (drop)="onDrop($event)"
      (dragover)="allowDrop($event)"
-     >Enter the Right Answer Here!
+     >Drag the Right Answer Here!
 </div>
      <div class="btn-group">
           <div 
@@ -20,5 +24,9 @@
           </p>
           </div>
      </div>
-     <button (click)="checkForRightAnswerDrag()">Submit</button>
+     <button 
+     class="answer-button"
+     (click)="checkForRightAnswerDrag()">Submit</button>
+     <app-toast></app-toast>
+
 </div>

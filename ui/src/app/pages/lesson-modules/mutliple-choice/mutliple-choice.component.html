@@ -4,9 +4,12 @@
           {{ getQuestionText() }}
           </h2>
      </div>
+     <div class="directions">
+          <p>Click the correct answer for the question given above!</p>
+     </div>
      <div class="btn-group">
           <button 
-          class="answer-button"
+          class="multiple-choice"
           *ngFor="let answer of getAnswerSet()"
           (click)="checkForRightAnswer(answer)">
           <h5>
@@ -14,4 +17,6 @@
           </h5>
           </button>
      </div>
+     <app-toast></app-toast>
+
 </div>
