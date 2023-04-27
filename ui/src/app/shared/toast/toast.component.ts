@@ -15,6 +15,9 @@ import { Toast } from 'src/app/types/Toast';
   `,
   styles: [` 
     div {
+         width: 250px; 
+         padding: 6px 8px 8px; 
+         text-align: center;
     }
     `
   ]
@@ -30,11 +33,15 @@ export class ToastComponent {
       this.toast = change;
       if (this.toast) {
         this.setTimer();
+        console.log("Timeout Called");
+
       }
     })
   }
 
   setTimer() {
+    console.log("Timeout Called");
+
     setTimeout(() => {
       this.toggle = false;
       this.toaster.hide();

@@ -51,7 +51,6 @@ main.dashboard {
 }
 
 .scoreSheet {
-  background-color: var(--module-background-color);
   grid-area: scoresheet;
   align-self: center;
   border-radius: 20px;
@@ -63,6 +62,8 @@ main.dashboard {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color: var(--module-background-color);
+
   box-shadow: 0px -10px 0px 0px var(--module-box-shadow);
 }
 

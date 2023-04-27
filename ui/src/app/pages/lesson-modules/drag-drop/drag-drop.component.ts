@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LessonModuleComponent } from '../lesson-module.component';
 import { Router } from '@angular/router';
 import { AppController } from 'src/app/services/app.controller';
@@ -11,7 +11,7 @@ import { LessonContent } from 'src/app/types/Content';
   templateUrl: './drag-drop.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class DragDropComponent {
+export class DragDropComponent implements OnInit{
   selectedAnswer: string = '';
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
@@ -25,6 +25,10 @@ export class DragDropComponent {
     })
 
   }
+  ngOnInit(): void {
+    this.appController.checkForAuthentication();
+  }
+  
 
 
   getQuestionText() {
@@ -45,6 +49,7 @@ export class DragDropComponent {
     //Add to container on dra
     //Future directive.
     // ("text", $event.target.id);
+    $event.dataTransfer.clearData();
     $event.dataTransfer.setData("text", $event.target.innerText);
     console.log($event.text);
 
@@ -52,8 +57,14 @@ export class DragDropComponent {
   onDrop($event: any) {
     $event.preventDefault();
     console.log("On Drop Called");
-    let data = $event.dataTransfer.getData("text"); //Returning null.
-    document!.getElementById('answerbox')!.innerHTML = data.toString() //Works fine as it's null.
+    let data = $event.dataTransfer.getData("text");
+    console.log(data);
+    if (document.getElementById('answerbox')!.innerHTML != null) {
+      document!.getElementById('answerbox')!.innerHTML = data.toString()
+    }
+    else {
+      console.log("An Issue Occured")
+    }
     this.selectedAnswer = data;
     console.log(this.selectedAnswer);
   }

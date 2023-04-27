@@ -74,9 +74,11 @@ export class UserService {
      }
 
      updateLessonCurrentProgress(contentId: number) {
-          if (this.currentUser?.progress_content) {
-               this.currentUser.progress_content = contentId;
-               this.currentUserProgressLessonCurrentProgress.next(this.currentUser.progress_content);
-          }
+          
+     }
+     updateLessonProgress() {
+          this.currentUser!.progress_content++;
+          this.currentUserProgressLessonCurrentProgress.next(this.currentUser!.progress_content)
+          console.log(this.currentUser!.progress_content);
      }
 }

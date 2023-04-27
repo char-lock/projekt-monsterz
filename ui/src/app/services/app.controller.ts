@@ -61,6 +61,9 @@ export class AppController {
                }
           });
      }
+     goToDashboard() {
+          this.router.navigate(["../dashboard"]);
+     }
      logOut() {
           this.userSessionService.RevokeSession();
           this.router.navigate([".."]);

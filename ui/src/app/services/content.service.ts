@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class ContentService {
 
   questionList: CourseContent[] = [];
-  lessonId: number;
+  lessonId = this.userService.getCurrentLessonProgress() + 1;
   contentId: number;
   contentPosition = 0;
 
@@ -25,8 +25,11 @@ export class ContentService {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.lessonId = this.userService.getCurrentLessonProgress() + 1;
-    this.contentId = this.userService.getCurrentContentId() + 1;
+
+    this.userService.getCurrentLessonProgressObservable().subscribe((value) => {
+      this.lessonId = value + 1;
+    });
+    this.contentId = this.userService.getCurrentContentId();
     this.updateQuestionList();
     this.currentQuestionObserve = new BehaviorSubject<CourseContent>(this.questionList[this.contentPosition]);
   }
@@ -90,9 +93,13 @@ export class ContentService {
   }
 
   completeLesson() {
-    this.router.navigate(["/dashboard"], { relativeTo: this.route });
+    this.questionList = [];
+    this.contentPosition = 0;
+    this.userService.updateLessonProgress();
+    this.updateQuestionList();
+    this.router.navigate(["../success-message"]);
   }
-
+  
   checkForCorrectAnswer(value: string) {
     return this.getCurrentQuestion().correct_answer.toLowerCase() === value.toLowerCase();
   }

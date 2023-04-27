@@ -7,6 +7,7 @@ import { MutlipleChoiceComponent } from "./pages/lesson-modules/mutliple-choice/
 import { DragDropComponent } from "./pages/lesson-modules/drag-drop/drag-drop.component";
 import { ReadingComponent } from "./pages/lesson-modules/reading/reading.component";
 import { FillInTheBlankComponent } from "./pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component";
+import { SuccessMessageComponent } from "./pages/success-message/success-message.component";
 
 const routes: Routes = [
   { path: "", component: WelcomePageComponent },
@@ -17,9 +18,10 @@ const routes: Routes = [
       { path: "multiple-choice", component: MutlipleChoiceComponent },
       { path: "drag-drop", component: DragDropComponent },
       { path: "reading", component: ReadingComponent },
-      { path: "fill-in-the-blank", component: FillInTheBlankComponent }
+      { path: "fill-in-the-blank", component: FillInTheBlankComponent },
     ]
-  }
+  },
+  { path: "success-message", component: SuccessMessageComponent},
 ];
 
 @NgModule({

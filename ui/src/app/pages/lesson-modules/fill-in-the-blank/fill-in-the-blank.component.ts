@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './fill-in-the-blank.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class FillInTheBlankComponent {
+export class FillInTheBlankComponent implements OnInit{
   selectedAnswer: string = '';
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
@@ -23,11 +23,15 @@ export class FillInTheBlankComponent {
       this.currentQuestion = change;
     })
   }
+  ngOnInit(): void {
+    this.appController.checkForAuthentication();
+  }
 
   getQuestionText() {
     return this.currentQuestion.content_detail;
   }
   checkForRightAnswer(value: string) {
     this.appController.checkForRightAnswer(value);
+    
   }
 }

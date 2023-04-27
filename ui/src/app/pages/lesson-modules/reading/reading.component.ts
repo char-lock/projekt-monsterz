@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AppController } from '../../../../app/services/app.controller';
@@ -12,7 +12,7 @@ import { UserService } from '../../../../app/services/user.service';
   templateUrl: './reading.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class ReadingComponent {
+export class ReadingComponent implements OnInit{
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
     private userSession: UserSessionService,
@@ -24,7 +24,9 @@ export class ReadingComponent {
       this.currentQuestion = change;
     })
   }
-
+  ngOnInit(): void {
+    this.appController.checkForAuthentication();
+  }
   getContent() {
     return this.currentQuestion.content_detail;
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
@@ -11,7 +11,7 @@ import { LessonContent } from 'src/app/types/Content';
   templateUrl: './mutliple-choice.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class MutlipleChoiceComponent {
+export class MutlipleChoiceComponent implements OnInit{
   selectedAnswer: string = '';
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
@@ -25,7 +25,9 @@ export class MutlipleChoiceComponent {
     })
   }
 
-
+  ngOnInit(): void {
+    this.appController.checkForAuthentication();
+  }
   getAnswerSet() {
     return this.contentService.getAnswerList();
   }
