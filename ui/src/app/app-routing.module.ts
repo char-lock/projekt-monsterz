@@ -22,6 +22,7 @@ const routes: Routes = [
     ]
   },
   { path: "success-message", component: SuccessMessageComponent},
+  { path: '**', redirectTo: "", pathMatch: 'full'}
 ];
 
 @NgModule({
