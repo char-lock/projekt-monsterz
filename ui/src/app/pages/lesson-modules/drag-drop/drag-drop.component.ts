@@ -6,31 +6,32 @@ import { ContentService } from 'src/app/services/content.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { UserService } from 'src/app/services/user.service';
 import { LessonContent } from 'src/app/types/Content';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-lesson-module',
   templateUrl: './drag-drop.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class DragDropComponent implements OnInit{
+export class DragDropComponent implements OnInit, OnDestroy {
   selectedAnswer: string = '';
   currentQuestion = this.contentService.getCurrentQuestion();
+  subscription: Subscription;
   constructor(
     private userSession: UserSessionService,
     private router: Router,
     private user: UserService,
     private appController: AppController,
     private contentService: ContentService) {
-    this.contentService.returnQuestion().subscribe((change) => {
+    this.subscription = this.contentService.returnQuestion().subscribe((change) => {
       this.currentQuestion = change;
     })
-
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
   ngOnInit(): void {
     this.appController.checkForAuthentication();
   }
-  
-
-
   getQuestionText() {
     return this.currentQuestion.content_detail;
   }
@@ -45,10 +46,6 @@ export class DragDropComponent implements OnInit{
   }
 
   drag($event: any) {
-
-    //Add to container on dra
-    //Future directive.
-    // ("text", $event.target.id);
     $event.dataTransfer.clearData();
     $event.dataTransfer.setData("text", $event.target.innerText);
     console.log($event.text);

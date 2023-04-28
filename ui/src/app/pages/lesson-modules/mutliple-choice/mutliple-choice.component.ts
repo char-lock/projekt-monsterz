@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
@@ -11,8 +12,9 @@ import { LessonContent } from 'src/app/types/Content';
   templateUrl: './mutliple-choice.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class MutlipleChoiceComponent implements OnInit{
+export class MutlipleChoiceComponent implements OnInit, OnDestroy{
   selectedAnswer: string = '';
+  subscription: Subscription;
   currentQuestion = this.contentService.getCurrentQuestion();
   constructor(
     private userSession: UserSessionService,
@@ -20,9 +22,12 @@ export class MutlipleChoiceComponent implements OnInit{
     private user: UserService,
     private appController: AppController,
     private contentService: ContentService) {
-    this.contentService.returnQuestion().subscribe((change) => {
+      this.subscription = this.contentService.returnQuestion().subscribe((change) => {
       this.currentQuestion = change;
     })
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
 
   ngOnInit(): void {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
@@ -13,13 +13,12 @@ import { ContentType } from 'src/app/types/api.types';
   templateUrl: './lesson-module.component.html',
   styleUrls: ['./lesson-module.component.css']
 })
-export class LessonModuleComponent implements OnInit {
+export class LessonModuleComponent implements OnInit, OnDestroy {
   currentProgress: number = 0;
   selectedAnswer: string = '';
-
   currentQuestion = this.contentService.getCurrentQuestion();
-
-  contentType: number = this.currentQuestion.content_type;
+  contentType: number = 0;
+  subscription: Subscription;
   constructor(private userSession: UserSessionService,
     private router: Router,
     private user: UserService,
@@ -28,7 +27,7 @@ export class LessonModuleComponent implements OnInit {
     private route: ActivatedRoute) {
 
 
-    this.contentService.returnQuestion().subscribe((change) => {
+    this.subscription = this.contentService.returnQuestion().subscribe((change) => {
       this.contentType = change.content_type;
       this.navigateToCorrectLesson();
     })
@@ -36,6 +35,9 @@ export class LessonModuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.appController.checkForAuthentication();
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
   navigateToCorrectLesson() {
     switch (this.contentType) {

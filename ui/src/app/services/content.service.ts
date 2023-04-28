@@ -25,7 +25,6 @@ export class ContentService {
     private router: Router,
     private route: ActivatedRoute
   ) {
-
     this.userService.getCurrentLessonProgressObservable().subscribe((value) => {
       this.lessonId = value + 1;
     });
