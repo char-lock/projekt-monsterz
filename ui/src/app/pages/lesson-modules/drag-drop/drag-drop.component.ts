@@ -1,12 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { LessonModuleComponent } from '../lesson-module.component';
-import { Router } from '@angular/router';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
-import { UserSessionService } from 'src/app/services/user-session.service';
-import { UserService } from 'src/app/services/user.service';
-import { LessonContent } from 'src/app/types/Content';
 import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-lesson-module',
   templateUrl: './drag-drop.component.html',
@@ -17,9 +13,6 @@ export class DragDropComponent implements OnInit, OnDestroy {
   currentQuestion = this.contentService.getCurrentQuestion();
   subscription: Subscription;
   constructor(
-    private userSession: UserSessionService,
-    private router: Router,
-    private user: UserService,
     private appController: AppController,
     private contentService: ContentService) {
     this.subscription = this.contentService.returnQuestion().subscribe((change) => {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppController } from 'src/app/services/app.controller';
-import { ContentService } from 'src/app/services/content.service';
 
 @Component({
   selector: 'app-success-message',
@@ -9,8 +8,7 @@ import { ContentService } from 'src/app/services/content.service';
   styleUrls: ['./success-message.component.css']
 })
 export class SuccessMessageComponent implements OnInit {
-  constructor(private contentService: ContentService,
-    private appController: AppController,
+  constructor(private appController: AppController,
     private router: Router) {
   }
   ngOnInit(): void {

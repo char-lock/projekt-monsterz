@@ -1,11 +1,8 @@
 import { Injectable } from "@angular/core";
-
 import axios, { AxiosResponse } from "axios";
 import { AxiosHeaders } from "axios";
 import * as CryptoJS from "crypto-js";
-
 import { ApiResponse, CourseContent, CourseLesson, CourseUnit, NewUser, User } from "../types/api.types";
-import { LessonContent } from "../types/Content";
 import { LoggerService } from "./logger.service";
 
 @Injectable()

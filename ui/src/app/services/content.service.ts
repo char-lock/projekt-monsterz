@@ -1,8 +1,6 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-
 import { ApiService } from "./api.service";
-
 import { CourseContent } from "../types/api.types";
 import { UserService } from "./user.service";
 import { LoggerService } from "./logger.service";
@@ -106,5 +104,4 @@ export class ContentService {
   returnQuestion() {
     return this.currentQuestionObserve;
   }
-
 }

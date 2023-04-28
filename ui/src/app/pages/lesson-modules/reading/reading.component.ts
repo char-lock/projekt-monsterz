@@ -17,9 +17,6 @@ export class ReadingComponent implements OnInit, OnDestroy{
   currentQuestion = this.contentService.getCurrentQuestion();
   subscription: Subscription = new Subscription;
   constructor(
-    private userSession: UserSessionService,
-    private router: Router,
-    private user: UserService,
     private appController: AppController,
     private contentService: ContentService) {
       this.subscription = this.contentService.returnQuestion().subscribe((change) => {

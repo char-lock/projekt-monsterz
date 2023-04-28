@@ -5,8 +5,6 @@ import { LoggerService } from "./logger.service";
 
 @Injectable()
 export class CookieController {
-  private cookieValue = "";
-
   constructor(
     private cookieService: CookieService,
     private logger: LoggerService

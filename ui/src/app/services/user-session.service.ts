@@ -2,8 +2,6 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { ApiService } from "./api.service";
 import { UserSession } from "../types/UserSession";
 import { CookieController } from "./cookie.service";
-import { BehaviorSubject, Subject } from "rxjs";
-import { Observable } from "rxjs-compat";
 import { UserService } from "./user.service";
 import { LoggerService } from "./logger.service";
 import { LoginService } from "./login.service";

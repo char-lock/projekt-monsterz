@@ -1,7 +1,6 @@
-import { ComponentRef, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Toast } from "../types/Toast";
 import { BehaviorSubject, Observable } from "rxjs";
-import { ToastComponent } from "../shared/toast/toast.component";
 
 @Injectable()
 export class ToastService {

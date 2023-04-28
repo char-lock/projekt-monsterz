@@ -1,13 +1,12 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
-
+import { Subscription } from 'rxjs';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { UserService } from 'src/app/services/user.service';
-import { LessonContent } from 'src/app/types/Content';
 import { ContentType } from 'src/app/types/api.types';
+
 @Component({
   selector: 'app-lesson-module',
   templateUrl: './lesson-module.component.html',
@@ -19,9 +18,8 @@ export class LessonModuleComponent implements OnInit, OnDestroy {
   currentQuestion = this.contentService.getCurrentQuestion();
   contentType: number = 0;
   subscription: Subscription;
-  constructor(private userSession: UserSessionService,
+  constructor(
     private router: Router,
-    private user: UserService,
     private appController: AppController,
     private contentService: ContentService,
     private route: ActivatedRoute) {
