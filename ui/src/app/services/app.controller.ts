@@ -43,7 +43,6 @@ export class AppController {
      Login(username: string, password: string) {
           this.loginService.LoginAs(username, password, (success: boolean) => {
                if (success) {
-                    this.applicationStateService.SetLoginModalState(0);
                     this.router.navigate(["../dashboard"]);
                     this.loggerService.makeLog("App Controller", "Should've navigated to Dashboard!")
                } else {
