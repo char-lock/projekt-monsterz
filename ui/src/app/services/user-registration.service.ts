@@ -8,30 +8,29 @@ import { LoggerService } from "./logger.service";
 export class UserRegistrationService {
 
   constructor(
-    private apiService: ApiService,
-    private loginService: LoginService,
-    private logger: LoggerService
-  ) { }
+    private _api: ApiService,
+    private _login: LoginService,
+    private _logger: LoggerService
+  ) {}
 
-  AttemptRegistration(user: NewUser, callback: Function) {
+  log(func: string, message: string, meta?: any) {
+    this._logger.log("user-registration.service", func, message, meta);
+  }
+
+  /** Attempts to register using the provided new user information. */
+  register(user: NewUser, callback: (n: boolean) => void) {
     user.username = user.username.toLowerCase();
-    this.apiService.registerUser(user)
-      .then((registerResponse) => {
-        if (registerResponse === undefined) {
-          this.logger.makeLog("user-registration.service", "failed to register");
-          return callback(false);
-        }
-        if (user.password && user.username) {
-          this.logger.makeLog("user-registration.service", `successfully registered -- id = ${registerResponse.id}`);
-          this.loginService.LoginAs(user.username, user.password, callback);
-        } else {
-          callback(false);
-        }
-      })
-      .catch((registerFailReason) => {
-        this.logger.makeLog("user-registration.service", `failed to register - reason: ${registerFailReason}`);
+    this._api.registerUser(user, (registered: User) => {
+      if (user.username && user.password) {
+        this.log("register", `successfully registered as ${user.username}`);
+        this._login.login(user.username, user.password, (success: boolean) => {
+          callback(success);
+        });
+      } else {
+        this.log("register", `failed to register as ${user.username}`);
         callback(false);
-      });
+      }
+    });
   }
 
 }

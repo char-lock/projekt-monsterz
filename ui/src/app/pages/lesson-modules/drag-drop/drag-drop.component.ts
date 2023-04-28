@@ -10,27 +10,32 @@ import { Subscription } from 'rxjs';
 })
 export class DragDropComponent implements OnInit, OnDestroy {
   selectedAnswer: string = '';
-  currentQuestion = this.contentService.getCurrentQuestion();
-  subscription: Subscription;
+
+  currentQuestion = this.contentService.currentQuestion.value;
+  private subscription: Subscription;
+
   constructor(
     private appController: AppController,
     private contentService: ContentService) {
-    this.subscription = this.contentService.returnQuestion().subscribe((change) => {
+    this.subscription = this.contentService.currentQuestion.subscribe((change) => {
       this.currentQuestion = change;
     })
   }
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe()
-  }
+  
   ngOnInit(): void {
     this.appController.checkForAuthentication();
   }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
+  }
+
   getQuestionText() {
-    return this.currentQuestion.content_detail;
+    return this.currentQuestion?.content_detail;
   }
 
   getAnswerSet() {
-    return this.contentService.getAnswerList();
+    return this.contentService.answerList.value;
   }
 
   checkForRightAnswerDrag() {

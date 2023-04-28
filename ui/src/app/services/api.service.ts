@@ -1,300 +1,285 @@
 import { Injectable } from "@angular/core";
-import axios, { AxiosResponse } from "axios";
+
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { AxiosHeaders } from "axios";
 import * as CryptoJS from "crypto-js";
-import { ApiResponse, CourseContent, CourseLesson, CourseUnit, NewUser, User } from "../types/api.types";
+
+import { 
+  ApiResponse, 
+  CourseContent, 
+  CourseLesson, 
+  CourseUnit, 
+  NewUser, 
+  User 
+} from "../types/api.types";
 import { LoggerService } from "./logger.service";
+import { LeaderboardEntry } from "../types/other.types";
 
 @Injectable()
 export class ApiService {
 
   static API_ENDPOINT = "http://localhost:9696";
 
-  constructor(private logger: LoggerService) { }
+  constructor(private _logger: LoggerService) {}
 
-  /** Posts a request to the API server and returns the response. */
-  postApiRequest(endpoint: string, body?: string, headers?: AxiosHeaders) {
+  /** Writes a log using the logger service and specifying the source. */
+  log(func: string, message: string, meta?: any) {
+    this._logger.log("api.service", func, message, meta);
+  }
+
+  /**
+   * Sends a request to the API server using the "post" HTTP method
+   * and uses the provided callback function to return the response
+   * to the request source.
+   */
+  postApi(
+    endpoint: string, 
+    body: string, 
+    headers: AxiosHeaders | undefined, 
+    callback: (n: ApiResponse) => void
+  ) {
+    // Ensure that the proper headers are set for an API request.
     if (!headers) headers = new AxiosHeaders();
     headers.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
     headers.set("Content-Type", "application/json");
-    return axios.post(
+    // Send the request according to the parameters provided, and use
+    // the callback function as the handler.
+    axios.post(
       `${ApiService.API_ENDPOINT}${endpoint}`,
       body,
       { headers: headers }
     )
-      .then((rawResponse: AxiosResponse) => {
-        return <ApiResponse>rawResponse.data;
+      .then((axiosResponse: AxiosResponse) => {
+        callback(<ApiResponse>axiosResponse.data);
       })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::postApiRequest",
-          `request failed to resolve - reason: ${fail}`
-        );
-
-        const response: ApiResponse = fail.response.data || {
-          statusCode: 500,
-          statusShortDesc: "Internal Server Failure",
-          statusLongDesc: ""
-        };
-        return response;
+      .catch((axiosError: AxiosError) => {
+        if (!axiosError.response) {
+          return this.log(
+            "postApi", 
+            "Did not receive a proper response from the API",
+            axiosError
+          );
+        }
+        callback(<ApiResponse>axiosError.response.data);
       });
   }
 
-  /** Sends a get request to the API server and returns the response. */
-  getApiRequest(endpoint: string, headers?: AxiosHeaders) {
+  /**
+   * Sends a request to the API server using the "get" HTTP method
+   * and uses the provided callback function to return the response
+   * to the request source.
+   */
+  getApi(
+    endpoint: string, 
+    headers: AxiosHeaders | undefined, 
+    callback: (n: ApiResponse) => void
+  ) {
+    // Setup the required headers for an API request.
     if (!headers) headers = new AxiosHeaders();
-    return axios.get(
+    axios.get(
       `${ApiService.API_ENDPOINT}${endpoint}`,
       { headers: headers }
     )
-      .then((rawResponse) => {
-        return <ApiResponse>rawResponse.data;
+      .then((axiosResponse: AxiosResponse) => {
+        callback(<ApiResponse>axiosResponse.data);
       })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::getApiRequest",
-          `request failed to resolve - reason: ${fail}`
-        );
-        const response: ApiResponse = fail.response.data || {
-          statusCode: 500,
-          statusShortDesc: "Internal Server Failure",
-          statusLongDesc: ""
-        };
-        return response;
+      .catch((axiosError: AxiosError) => {
+        if (!axiosError.response) {
+          return this.log(
+            "getApi",
+            "Did not receive a proper response from the API",
+            axiosError
+          );
+        }
+        callback(<ApiResponse>axiosError.response.data);
       });
   }
 
   /** 
-   * Returns a User object if a user exists with the provided userId,
-   * otherwise returns undefined.
+   * Requests a User from the API using the provided ID, and sends it
+   * through the specified callback function.
    */
-  getUserById(userId: number) {
-    return this.getApiRequest(`/users/id/${userId}`)
-      .then((response) => {
-        return <User>response.data;
-      })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::getUserById",
-          `request failed to resolve - reason: ${fail}`
-        );
-        return undefined;
-      });
+  getUserById(userId: number, callback: (n: User) => void) {
+    this.getApi(`/users/id/${userId}`, undefined, (response: ApiResponse) => {
+      callback(<User>response.data);
+    });
   }
 
   /** 
-   * Returns a User object if a user exists with the provided username,
-   * otherwise returns undefined.
+   * Requests a User from the API using the provided username, and
+   * sends it through the specified callback function.
    */
-  getUserByUsername(username: string) {
-    return this.getApiRequest(`/users/username/${username}`)
-      .then((response) => {
-        return <User>response.data;
-      })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::getUserByUsernames",
-          `request failed to resolve - reason: ${fail}`
-        );
-        return undefined;
-      });
+  getUserByUsername(username: string, callback: (n: User) => void) {
+    this.getApi(`/users/username/${username}`, undefined, (response: ApiResponse) => {
+      callback(<User>response.data);
+    });
   }
 
   /** 
-   * Returns a User object if a user exists with the provided validation
-   * value, otherwise returns undefined.
+   * Requests a list of User objects using the provided validation
+   * value and sends it through the specified callback function.
    */
-  getUsersByValidationValue(value: string) {
-    return this.getApiRequest(`/users/validation/${value}`)
-      .then((response) => {
-        return <User[]>response.data;
-      })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::getUserByValidationValue",
-          `request failed to resolve - reason: ${fail}`
-        );
-        return [];
-      });
+  getUsersByValidationValue(value: string, callback: (n: User[]) => void) {
+    this.getApi(`/users/validation/${value}`, undefined, (response: ApiResponse) => {
+      callback(<User[]>response.data);
+    });
   }
 
   /**
-   * Returns a list of User objects organised by position in the course content.
+   * Requests a list of User objects with length `count` or less,
+   * sorted by current course progress, and sends it through the
+   * specified callback function.
    */
-  getUsersByScore(count: number) {
-    return this.getApiRequest(`/leaderboard/${count}`)
-      .then((users) => {
-        if (users.data === undefined) {
-          this.logger.makeLog("api.service::getUsersByScore", JSON.stringify(users));
-          return <User[]>[];
-        }
-        return <User[]>users.data;
-      })
-      .catch((reject) => {
-        this.logger.makeLog("api.service::getUsersByScore", reject);
-        return <User[]>[];
-      });
+  getUsersByScore(count: number, callback: (n: User[]) => void) {
+    this.getApi(`/leaderboard/${count}`, undefined, (response: ApiResponse) => {
+      return <User[]>response.data;
+    });
   }
 
   /**
-   * Returns a list of User objects organised by position in the course content
-   * and filtered by validation value.
+   * Requests a list of User objects with length `count` or less,
+   * sorted by position in the course content and filtered by
+   * validation value, and sends it through the specified callback
+   * function.
    */
-  getClassUsersByScore(educationCode: string, count: number) {
-    return this.getApiRequest(`/leaderboard/class/${educationCode}/${count}`)
-      .then((users) => {
-        if (users.data === undefined) {
-          this.logger.makeLog("api.service::getClassUsersByScore", JSON.stringify(users));
-          return <User[]>[];
-        }
-        return <User[]>users.data;
-      })
-      .catch((reject) => {
-        this.logger.makeLog("api.service::getClassUsersByScore", reject);
-        return <User[]>[];
-      });
+  getClassUsersByScore(educationCode: string, count: number, callback: (n: User[]) => void) {
+    this.getApi(`/leaderboard/class/${educationCode}/${count}`, undefined, (response: ApiResponse) => {
+      callback(<User[]>response.data);
+    });
   }
 
   /** 
-   * Registers a user with the provided information, and returns the
-   * created user if the request is successful.
+   * Requests registration for a user with the provided information,
+   * and returns the created user through the callback function.
    */
-  registerUser(user: NewUser) {
-    this.logger.makeLog("api.service::registerUser", `registering user:\n${JSON.stringify(user)}`);
-    return this.postApiRequest("/users/", JSON.stringify(user))
-      .then((response) => {
-        return <User>response.data;
-      })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::registerUser",
-          `request failed to resolve - reson: ${fail}`
-        );
-        return undefined;
-      });
+  registerUser(user: NewUser, callback: (n: User) => void) {
+    this.log("registerUser", "registering user ...", user);
+    this.postApi("/users/", JSON.stringify(user), undefined, (response: ApiResponse) => {
+      if (response.data) {
+        callback(<User>response.data);
+      } else {
+        this.log("registerUser", "failed to register", response);
+      }
+    });
   }
 
   /** 
-   * Returns either an authorization token if the username and password are valid,
-   * or returns an empty string.
+   * Requests an authorization token using the provided credentials and
+   * returns it through the callback function.
    */
-  getAuthToken(username: string, password: string) {
+  getAuthToken(username: string, password: string, callback: (n: string) => void) {
+    // Hash the password, as expected to be received by the API.
     password = CryptoJS.SHA512(password).toString(CryptoJS.enc.Hex);
-    this.logger.makeLog("api.service::getAuthToken", `attempting to login with credentials: { username: ${username}, password: ${password} }`);
-    return this.postApiRequest(
-      "/auth/login",
-      `{
-        "username": "${username}",
-        "password": "${password}"
-      }`
-    )
-      .then((response) => {
-        if (response.data === undefined) return ""
-        return <string>response.data;
-      })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::getAuthToken",
-          `request failed to resolve - reason: ${fail}`
-        );
-        return "";
-      });
+    this.log("getAuthToken", `attempting to login as ${username} ...`);
+    this.postApi(
+      "/auth/login", 
+      `{ "username": "${username}", "password": "${password}" }`, 
+      undefined,
+      (response: ApiResponse) => {
+        callback(<string>response.data);
+    });
   }
 
-  /** Returns a new authorization token for the provided information. */
-  refreshAuthToken(currentToken: string) {
-    return this.getApiRequest(
-      "/auth/refresh",
-      new AxiosHeaders({ "Authorization": `Bearer ${currentToken}` })
-    )
-      .then((response) => {
-        if (response.data === undefined) return "";
-        return <string>response.data;
-      })
-      .catch((fail) => {
-        this.logger.makeLog(
-          "api.service::refreshAuthToken",
-          `failed to refresh token - reason ${fail}`
-        );
-        return "";
-      });
+  /** 
+   * Requests that the provided token be refreshed and returns the new
+   * token through the callback function.
+   */
+  refreshAuthToken(currentToken: string, callback: (n: string) => void) {
+    this.getApi(
+      "/auth/refresh", 
+      new AxiosHeaders({ "Authroization": `Bearer ${currentToken}` }), 
+      (response: ApiResponse) => {
+        callback(<string>response.data);
+    });
   }
 
-  /** Returns the metadata related to the provided unit ID */
-  getUnitMeta(unitId: number) {
-    return this.getApiRequest(`/course/units/${unitId}`)
-      .then((result) => {
-        if (result.data === undefined) {
-          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
-        }
-        return <CourseUnit>result.data;
-      })
-      .catch((reject) => {
-        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
-        return undefined;
-      });
+  /** 
+   * Requests the CourseUnit for a provided CourseUnit ID, and returns
+   * the result through the callback function.
+   */
+  getUnitById(unitId: number, callback: (n: CourseUnit) => void) {
+    this.getApi(`/course/units/${unitId}`, undefined, (response: ApiResponse) => {
+      callback(<CourseUnit>response.data);
+    });
   }
 
-  /** Returns the metadata related to the provided lesson ID */
-  getLessonMeta(lessonId: number) {
-    return this.getApiRequest(`/course/lessons/${lessonId}`)
-      .then((result) => {
-        if (result.data === undefined) {
-          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
-        }
-        return <CourseLesson>result.data;
-      })
-      .catch((reject) => {
-        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
-        return undefined;
-      });
+  /** 
+   * Requests the CourseLesson for a provided CourseLesson ID, and returns
+   * the result through the callback function.
+   */
+  getLessonById(lessonId: number, callback: (n: CourseLesson) => void) {
+    this.getApi(`/course/lessons/${lessonId}`, undefined, (response: ApiResponse) => {
+      callback(<CourseLesson>response.data);
+    });
   }
 
-  /** Returns the content metadata related to the provided content ID */
-  getContentMeta(contentId: number) {
-    return this.getApiRequest(`/course/content/${contentId}`)
-      .then((result) => {
-        if (result.data === undefined) {
-          this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(result));
-        }
-        return <CourseContent>result.data;
-      })
-      .catch((reject) => {
-        this.logger.makeLog("api.service::getUnitMeta", JSON.stringify(reject));
-        return undefined;
-      });
+  /** 
+   * Requests the CourseContent for a provided CourseContent ID, and returns
+   * the result through the callback function.
+   */
+  getContentById(contentId: number, callback: (n: CourseContent) => void) {
+    this.getApi(`/course/content/${contentId}`, undefined, (response: ApiResponse) => {
+      callback(<CourseContent>response.data);
+    });
   }
 
-  /** Returns the content details for the provided lesson and content position. */
-  getContentByPosition(lessonId: number, position: number) {
-    return this.getApiRequest(`/course/lessons/${lessonId}/content/${position}`)
-      .then((result) => {
-        if (result.data === undefined || result.data.length === 0) {
-          this.logger.makeLog("api.service::getContentByLesson", JSON.stringify(result));
-          return undefined;
-        }
-        return <CourseContent>result.data;
-      })
-      .catch((reject) => {
-        this.logger.makeLog("api.service::getContentByLesson", JSON.stringify(reject));
-        return undefined;
-      });
+  /** 
+   * Requests the CourseContent for a provided position within a
+   * provided lesson identified by its CourseLesson ID, and returns
+   * the result through the callback function.
+   */
+  getContentByPosition(lessonId: number, position: number, callback: (n: CourseContent) => void) {
+    this.getApi(
+      `/course/lessons/${lessonId}/content/${position}`, 
+      undefined, 
+      (response: ApiResponse) => {
+        callback(<CourseContent>response.data);
+    });
   }
 
-  /** Returns all content related to a provided lesson ID. */
-  getContentByLesson(lessonId: number) {
-    return this.getApiRequest(`/course/lessons/${lessonId}/content`)
-      .then((result) => {
-        if (result.data === undefined || result.data.length === 0) {
-          this.logger.makeLog("api.service::getContentByLesson", JSON.stringify(result));
-          return [];
-        }
-        return <CourseContent[]>result.data;
-      })
-      .catch((reject) => {
-        this.logger.makeLog("api.service::getContentByLesson", JSON.stringify(reject));
-        return [];
+  /** 
+   * Requests a list of CourseContent for a provided lesson identified
+   * by its CourseLesson ID, and returns the result through the
+   * callback function.
+   */
+  getContentByLesson(lessonId: number, callback: (n: CourseContent[]) => void) {
+    this.getApi(
+      `/course/lessons/${lessonId}/content/`, 
+      undefined, 
+      (response: ApiResponse) => {
+        callback(<CourseContent[]>response.data);
+    });
+  }
+
+  getUserScores(users: User[], callback: (n: LeaderboardEntry) => void ) {
+    this.log("getUserScores", "retrieving scores for users", users);
+    users.forEach((user, index) => {
+      this.getLessonById(user.progress_lesson + 1, (lesson) => {
+        this.getUnitById(lesson.unit_id, (unit) => {
+          this.getContentById(user.progress_content + 1, (content) => {
+            const percent = this.calculateProgress(
+              lesson.position, unit.lesson_count, 
+              content.position, lesson.content_count
+            );
+            callback({
+              username: user.username,
+              percent: percent,
+              score: Math.floor(percent * 10000)
+            });
+          });
+        });
       });
+    });
+  }
+
+  calculateProgress(
+    lesson: number, totalLessons: number, 
+    content: number, totalContent: number
+  ) {
+    const lessonProgress = (lesson - 1) / totalLessons;
+    const singleLesson = 1 / totalLessons;
+    const contentProgress = (content - 1) / totalContent;
+    return lessonProgress + (contentProgress * singleLesson);
   }
 
 }

@@ -5,17 +5,31 @@ import { BehaviorSubject } from "rxjs";
 import { ValidationService } from "./validation.service";
 import { LoggerService } from "./logger.service";
 import { NewUser, ValidationMethod } from "../types/api.types";
+import { LoginService } from "./login.service";
 
 @Injectable()
 export class UserService {
 
-     private currentUser: User | undefined;
+     private currentUser: User | undefined = undefined;
+    user = new BehaviorSubject<User | undefined>(this.currentUser);
 
      private currentUserProgressLessonCurrentProgress = new BehaviorSubject<number>(0)
+
+
      constructor(
           private validationService: ValidationService,
-          private logger: LoggerService
-     ) { }
+          private _login: LoginService,
+          private _logger: LoggerService
+     ) {
+      this._login.user.subscribe((change) => {
+        this.currentUser = change;
+        this.user.next(this.currentUser);
+      });
+     }
+
+     log(func: string, message: string, meta?: any) {
+      this._logger.log("user.service", func, message, meta);
+     }
 
      getUser() {
           return this.currentUser;

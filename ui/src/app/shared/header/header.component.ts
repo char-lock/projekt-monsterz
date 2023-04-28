@@ -30,10 +30,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit() { }
 
   IsLoginModalOpen() {
-    return this.modalState > 0 && !this.userSession.IsAuthenticated();
+    return this.modalState > 0 && !this.userSession.isAuthenticated();
   }
   IsLoggedIn() {
-    return this.userSession.IsAuthenticated();
+    return this.userSession.isAuthenticated();
   }
   OpenLoginModal() {
     return this.appController.setModalState(1);

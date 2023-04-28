@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
+import { LoggerService } from 'src/app/services/logger.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { UserService } from 'src/app/services/user.service';
 import { ContentType } from 'src/app/types/api.types';
@@ -13,30 +14,50 @@ import { ContentType } from 'src/app/types/api.types';
   styleUrls: ['./lesson-module.component.css']
 })
 export class LessonModuleComponent implements OnInit, OnDestroy {
+
   currentProgress: number = 0;
   selectedAnswer: string = '';
-  currentQuestion = this.contentService.getCurrentQuestion();
+
+  currentQuestion = this.contentService.currentQuestion.value;
+  private subscription: Subscription;
+
   contentType: number = 0;
-  subscription: Subscription;
+
   constructor(
+    private userSession: UserSessionService,
     private router: Router,
     private appController: AppController,
     private contentService: ContentService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private _logger: LoggerService
+  ) {
+    this.subscription = this.contentService.currentQuestion.subscribe((change) => {
+      this.log("constructor", "subscription to current question triggered");
+      if (change !== undefined) {
+        this.log("constructor", "appropriate change detected");
+        this.currentQuestion = change;
+        this.contentType = change.content_type;
+        this.navigateToCorrectLesson();
+      }
+    });
+  }
 
-
-    this.subscription = this.contentService.returnQuestion().subscribe((change) => {
-      this.contentType = change.content_type;
-      this.navigateToCorrectLesson();
-    })
+  log(func: string, message: string, meta?: any) {
+    this._logger.log("lesson-module.component", func, message, meta);
   }
 
   ngOnInit(): void {
     this.appController.checkForAuthentication();
   }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
   }
+
+  ngAfterViewInit(): void {
+    this.contentService.updateQuestionList();
+  }
+
   navigateToCorrectLesson() {
     switch (this.contentType) {
       case ContentType.MULTIPLE_CHOICE:
@@ -56,4 +77,5 @@ export class LessonModuleComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
 }
