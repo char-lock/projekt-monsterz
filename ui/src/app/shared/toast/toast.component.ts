@@ -5,7 +5,7 @@ import { Toast } from 'src/app/types/Toast';
 @Component({
   selector: 'app-toast',
   template: `
-    <div 
+    <div
     [ngStyle]="toast.style"
     >
     <h5>
@@ -25,27 +25,10 @@ import { Toast } from 'src/app/types/Toast';
 })
 export class ToastComponent {
   toast: Toast = {};
-
-  toggle: boolean = true;
   constructor(private toaster: ToastService,
   ) {
     this.toaster.getToast().subscribe((change) => {
-      this.toast = change;
-      if (this.toast) {
-        this.setTimer();
-        console.log("Timeout Called");
-
-      }
-    })
-  }
-
-  setTimer() {
-    console.log("Timeout Called");
-
-    setTimeout(() => {
-      this.toggle = false;
-      this.toaster.hide();
-    }, 4000);
-
+      this.toast = change
+    });
   }
 }

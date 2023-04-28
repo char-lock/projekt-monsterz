@@ -1,6 +1,7 @@
-import { Injectable } from "@angular/core";
+import { ComponentRef, Injectable } from "@angular/core";
 import { Toast } from "../types/Toast";
 import { BehaviorSubject, Observable } from "rxjs";
+import { ToastComponent } from "../shared/toast/toast.component";
 
 @Injectable()
 export class ToastService {
@@ -14,9 +15,11 @@ export class ToastService {
     this.setStyle(status);
     this.toastObserve.next(this.toast);
   }
-  hide() {
+  stopToast() {
     this.toast = {};
+    setTimeout(() => {
     this.toastObserve.next(this.toast);
+    }, 3000)
   }
   setStyle(status: string) {
     switch (status) {

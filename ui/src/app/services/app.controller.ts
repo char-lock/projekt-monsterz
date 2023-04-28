@@ -46,6 +46,7 @@ export class AppController {
                     this.router.navigate(["../dashboard"]);
                } else {
                     this.toaster.createToast("You Are Unable to Be Registered at this Time, Try Again Later", "Error");
+                    this.toaster.stopToast();
                }
           });
           this.loggerService.makeLog("component.login-screen", "Requested a registration attempt.");
@@ -57,7 +58,8 @@ export class AppController {
                     this.router.navigate(["../dashboard"]);
                     this.loggerService.makeLog("App Controller", "Should've navigated to Dashboard!")
                } else {
-                    this.toaster.createToast("Unable to Login, Try Again", "Error")
+                    this.toaster.createToast("Unable to Login, Try Again", "Error");
+                    this.toaster.stopToast();
                }
           });
      }
@@ -76,6 +78,7 @@ export class AppController {
           else {
                this.loggerService.makeLog("app.controller::checkForRightAnswer", "incorrect");
                this.toaster.createToast("That Answer is Incorrect, Try Again", "Error");
+               this.toaster.stopToast();
           }
      }
      checkForAuthentication() {
