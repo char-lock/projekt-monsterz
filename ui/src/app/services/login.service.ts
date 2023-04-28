@@ -5,67 +5,52 @@ import { LoggerService } from "./logger.service";
 import { UserService } from "./user.service";
 import { ContentService } from "./content.service";
 import { ToastService } from "./toast.service";
+import { User } from "../types/api.types";
 
 @Injectable()
 export class LoginService {
 
-  private authToken = "";
-  private currentAuthToken = new BehaviorSubject<string>("");
+  private _authToken = "";
+  authToken = new BehaviorSubject<string>(this._authToken);
+
+  private _username = "";
+  username = new BehaviorSubject<string>(this._username);
+
+  private _user: User | undefined = undefined;
+  user = new BehaviorSubject<User | undefined>(this._user);
 
   constructor(
     private toastService: ToastService,
-    private apiService: ApiService,
-    private logger: LoggerService,
-    private userService: UserService,
-    private contentService: ContentService
-  ) { }
-
-  /** Attempts to login as the provided user. */
-  LoginAs(username: string, password: string, callback: Function) {
-    this.apiService.getAuthToken(username, password)
-      .then((tokenResponse) => {
-        if (tokenResponse === "") {
-          this.logger.makeLog("login.service::LoginAs", "failed to login: unknown reason");
-          this.toastService.createToast("Failed to login: unknown reason", "Error");
-
-          return callback(false);
-        }
-        this.authToken = tokenResponse;
-        this.setAuthToken();
-        this.apiService.getUserByUsername(username)
-          .then((userResponse) => {
-            if (!userResponse) {
-              this.logger.makeLog("login.service::LoginAs", "failed to retrieve user");
-              this.toastService.createToast("Failed to Retrieve User", "Error");
-              console.log("Toast Created!");
-              return callback(false);
-            }
-            this.userService.setUser(userResponse);
-            this.contentService.updateQuestionList();
-            return callback(true);
-          })
-          .catch((userFailReason) => {
-            this.logger.makeLog("login.service::LoginAs", `failed to retrieve user - reason: ${userFailReason}`);
-            this.toastService.createToast(userFailReason, "Error");
-            console.log("Toast Created!");
-            return callback(false);
-
-          });
-      })
-      .catch((tokenFailReason) => {
-        this.logger.makeLog("login.service::LoginAs", `failed to login - reason: ${tokenFailReason}`);
-        this.toastService.createToast(tokenFailReason, "Error");
-        console.log("Toast Created!");
-        return callback(false);
+    private _api: ApiService,
+    private _logger: LoggerService
+  ) {
+    this.username.subscribe((change) => {
+      this._api.getUserByUsername(change, (user) => {
+        this._user = user;
+        this.user.next(this._user);
       });
+    });
   }
 
-  setAuthToken() {
-    this.currentAuthToken.next(this.authToken);
+  log(func: string, message: string, meta?: any) {
+    this._logger.log("login.service", func, message, meta);
   }
 
-  getAuthToken() {
-    return this.currentAuthToken;
+  /** Requests a new token using the provided credentials. */
+  login(username: string, password: string, callback: (n: boolean) => void) {
+    username = username.toLowerCase();
+    this._api.getAuthToken(username, password, (token: string) => {
+      if (token === "") {
+        this.log("login", `failed to login as ${username}`);
+        this.toastService.createToast("Login failed!\nReason: Unknown", "error");
+        return callback(false);
+      }
+      this._authToken = token;
+      this.authToken.next(this._authToken);
+      this._username = username;
+      this.username.next(this._username);
+      callback(true);
+    });
   }
 
 }

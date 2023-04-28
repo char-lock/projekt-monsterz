@@ -3,7 +3,7 @@
     <div class="scoreSheet">
       <div class="scoreSheetText"></div>
       <div class="progress"><canvas id="progressArc" width="280" height="280"></canvas></div>
-      <div class="progress-percent">{{ progress * 100 }}%</div>
+      <div class="progress-percent">{{ (progress * 100).toFixed(2) }}%</div>
       <div class="blocker">
         <h1>
           Unit Progress

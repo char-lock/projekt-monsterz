@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscribable, Subscription } from "rxjs";
 import { ApiService } from "./api.service";
 import { CourseContent } from "../types/api.types";
 import { UserService } from "./user.service";
@@ -9,99 +9,124 @@ import { ActivatedRoute, Router } from "@angular/router";
 @Injectable()
 export class ContentService {
 
-  questionList: CourseContent[] = [];
-  lessonId = this.userService.getCurrentLessonProgress() + 1;
+  private _questionList: CourseContent[] = [];
+  questionList = new BehaviorSubject<CourseContent[]>(this._questionList);
+
+  lessonId: number;
   contentId: number;
   contentPosition = 0;
 
-  private currentQuestionObserve: BehaviorSubject<CourseContent>;
+  private _currentQuestion: CourseContent | undefined = undefined;
+  private _questionSubscription: Subscription;
+  currentQuestion = new BehaviorSubject<CourseContent | undefined>(this._currentQuestion);
+
+  private _answerList: string[] = [];
+  private _listSubscription: Subscription;
+  answerList = new BehaviorSubject<string[]>(this._answerList);
+
+  private _userSubscription: Subscription;
 
   constructor(
-    private apiService: ApiService,
+    private _api: ApiService,
     private userService: UserService,
-    private logger: LoggerService,
+    private _logger: LoggerService,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.userService.getCurrentLessonProgressObservable().subscribe((value) => {
-      this.lessonId = value + 1;
+    this.lessonId = this.userService.getCurrentLessonProgress() + 1;
+    this.contentId = this.userService.getCurrentContentId() + 1;
+
+    this._listSubscription = this.questionList.subscribe((change) => {
+      const filtered = change.filter(value => value.id === this.lessonId);
+      if (filtered.length > 0) {
+        this.contentPosition = change.indexOf(filtered[0]);
+      } else if (change.length > 0){
+        this.contentId = change[0].id;
+        this.contentPosition = 0;
+      }
+      if (this.contentPosition < change.length) {
+        this._currentQuestion = change[this.contentPosition];
+        this.currentQuestion.next(this._currentQuestion);
+      }
     });
-    this.contentId = this.userService.getCurrentContentId();
-    this.updateQuestionList();
-    this.currentQuestionObserve = new BehaviorSubject<CourseContent>(this.questionList[this.contentPosition]);
+
+    this._questionSubscription = this.currentQuestion.subscribe((change) => {
+      if (change) {
+        this._answerList = change.other_answers.split(",")
+          .filter((_, index) => index < 3)
+          .concat([change.correct_answer]);
+        this.answerList.next(this._answerList);
+      }
+    });
+
+    this._userSubscription = this.userService.user.subscribe((change) => {
+      if (change) {
+        this.contentId = change.progress_content + 1;
+        this.lessonId = change.progress_lesson + 1;
+        this.updateQuestionList();
+      }
+    });
+  }
+
+  log(func: string, message: string, meta?: any) {
+    this._logger.log("content.service", func, message, meta);
   }
 
   /** 
-   * Requests the list of questions for the current lesson according to
-   * the currently set lesson ID and sets the question list accordingly.
+   * Requests the question list for the current lesson using the API
+   * service, and updates the question list once received.
    */
   updateQuestionList() {
-    this.apiService.getContentByLesson(this.lessonId)
-      .then((result) => {
-        if (result.length === 0) {
-          return this.logger.makeLog(
-            "content.service::updateQuestionList",
-            `no questions found for lesson id ${this.lessonId}`
-          );
-        }
-        this.questionList = result;
-        this.updateIdOrPosition();
-      })
-      .catch((reject) => {
-        this.logger.makeLog(
-          "content.service::updateQuestionList",
-          `unable to update questions for lesson id ${this.lessonId} - reason: ${reject}`
-        );
-      });
+    this._api.getContentByLesson(this.lessonId, (content: CourseContent[]) => {
+      this.log(
+        "updateQuestionList", 
+        `received ${content.length} content for lesson id ${this.lessonId}`
+      );
+      this._questionList = content;
+      this.questionList.next(content);
+    });
   }
 
   /** 
-   * If the current content ID is in the question list, updates the position to its index.
-   * otherwise updates content ID to the ID for question in position 0.
+   * Shifts to the next content in line and updates the internal service
+   * state accordingly.
    */
-  updateIdOrPosition() {
-    const content = this.questionList.filter(value => value.id === this.contentId);
-    if (content.length > 0) {
-      this.contentPosition = this.questionList.indexOf(content[0]);
-    } else {
-      this.contentId = this.questionList[0].id;
-    }
-    this.currentQuestionObserve = new BehaviorSubject<CourseContent>(this.questionList[this.contentPosition]);
-  }
-
-  getCurrentQuestion() {
-    return this.questionList[this.contentPosition];
-  }
-
-  nextActivity() {
+  nextContent() {
     this.contentPosition++;
-    if (this.contentPosition >= this.questionList.length) {
-      this.logger.makeLog("content.service::nextActivity", "reached end of available content");
+    if (this.contentPosition >= this.questionList.value.length) {
+      this.log("nextContent", "reached end of available content");
       this.completeLesson();
     } else {
-      this.currentQuestionObserve.next(this.questionList[this.contentPosition]);
+      this._currentQuestion = this._questionList[this.contentPosition];
+      this.currentQuestion.next(this._currentQuestion);
     }
   }
 
-  getAnswerList() {
-    return this.getCurrentQuestion().other_answers.split(",").filter((answer) => {
-      return this.getCurrentQuestion().other_answers.split(",").indexOf(answer) < 3;
-    }).concat(this.getCurrentQuestion().correct_answer);
-  }
-
+  /** 
+   * Updates the internal service state and redirects the user to an
+   * appropriate ending screen.
+   */
   completeLesson() {
-    this.questionList = [];
-    this.contentPosition = 0;
-    this.userService.updateLessonProgress();
-    this.updateQuestionList();
-    this.router.navigate(["../success-message"]);
-  }
-  
-  checkForCorrectAnswer(value: string) {
-    return this.getCurrentQuestion().correct_answer.toLowerCase() === value.toLowerCase();
+    this.contentPosition = -1;
+    this.nextLesson();
+    this.router.navigate(["/dashboard"], { relativeTo: this.route });
   }
 
-  returnQuestion() {
-    return this.currentQuestionObserve;
+  /** 
+   * Shifts to the next content in line and updates the internal service
+   * state accordingly.
+   */
+  nextLesson() {
+    // TODO: Implement the nextLesson method.
+  }
+
+  /** 
+   * Returns whether or not a provided answer matches the current
+   * content's correct answer.
+   */
+  checkAnswer(guess: string) {
+    return this._currentQuestion
+      ? this._currentQuestion.correct_answer.toLowerCase() === guess.toLowerCase()
+      : false;
   }
 }

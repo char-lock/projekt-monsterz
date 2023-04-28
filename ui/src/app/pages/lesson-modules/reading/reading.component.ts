@@ -13,27 +13,32 @@ import { Subscription } from 'rxjs';
   templateUrl: './reading.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class ReadingComponent implements OnInit, OnDestroy{
-  currentQuestion = this.contentService.getCurrentQuestion();
-  subscription: Subscription = new Subscription;
+export class ReadingComponent {
+
+  currentQuestion = this.contentService.currentQuestion.value;
+  private subscription: Subscription;
   constructor(
     private appController: AppController,
     private contentService: ContentService) {
-      this.subscription = this.contentService.returnQuestion().subscribe((change) => {
+    this.subscription = this.contentService.currentQuestion.subscribe((change) => {
       this.currentQuestion = change;
     })
   }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
   }
+
   ngOnInit(): void {
     this.appController.checkForAuthentication();
   }
+
   getContent() {
-    return this.currentQuestion.content_detail;
+    return this.currentQuestion?.content_detail;
   }
 
   finishReading() {
     this.appController.finishReading();
   }
+
 }

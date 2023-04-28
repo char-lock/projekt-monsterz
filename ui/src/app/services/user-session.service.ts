@@ -12,29 +12,43 @@ export class UserSessionService {
   private authToken = "";
   private startedAt: number = -1;
   private lastRefresh: number = -1;
-  private currentSubscription;
 
   constructor(
-    private apiService: ApiService,
+    private _api: ApiService,
     private cookieService: CookieController,
     private userService: UserService,
-    private logger: LoggerService,
-    private loginService: LoginService
+    private _logger: LoggerService,
+    private _login: LoginService
   ) {
-    this.currentSubscription = this.loginService.getAuthToken()
-      .subscribe((value: string) => {
-        this.authToken = value;
-        this.setSessionDate();
-        this.SaveSession();
-      });
+    this._login.authToken.subscribe((change) => {
+      this.authToken = change;
+      this.lastRefresh = Date.now();
+      if (this.startedAt === -1) this.startedAt = Date.now();
+    });
   }
 
-  IsAuthenticated() {
-    if (Date.now() > this.lastRefresh + (900 * 1000) && this.authToken !== "" && this.lastRefresh !== -1) {
-      this.logger.makeLog("User Session Service", "Is authenticated needs to refresh");
-      return this.RefreshAuth().then((result) => { return result; });
+  log(func: string, message: string, meta?: any) {
+    this._logger.log("user-session.service", func, message, meta);
+  }
+
+  /** Returns whether or not the current authToken needs to be refreshed. */
+  get needRefresh() {
+    return (Date.now() > this.lastRefresh + (15 * 60 * 1000)
+      && this.authToken !== ""
+      && this.lastRefresh !== -1);
+  }
+
+  isAuthenticated() {
+    if (this.needRefresh) {
+      this.refresh();
     }
-    return this.authToken !== ""
+    return this.authToken !== "";
+  }
+
+  refresh() {
+    this._api.refreshAuthToken(this.authToken, (token) => {
+      this.authToken = token;
+    });
   }
 
   GetSessionData() {
@@ -51,29 +65,10 @@ export class UserSessionService {
 
   LoadSession(sessionData: UserSession) {
     if (sessionData.currentUser === undefined) {
-      return this.logger.makeLog("user-session.service::LoadSession", "User not set in saved session");
+      return this.log("LoadSession", "User not set in saved session");
     }
     this.userService.setUser(sessionData.currentUser);
     this.authToken = sessionData.currentToken;
-  }
-
-  RefreshAuth() {
-    return this.apiService.refreshAuthToken(this.authToken)
-      .then((refreshResponse) => {
-        if (refreshResponse === "") {
-          this.RevokeSession();
-          this.logger.makeLog("user-session.service::RefreshAuth", "failed to refresh");
-          return false;
-        }
-        this.lastRefresh = Date.now();
-        this.authToken = refreshResponse;
-        return true;
-      })
-      .catch((refreshFailReason) => {
-        this.RevokeSession();
-        this.logger.makeLog("user-session.service::RefreshAuth", `failed to refresh - reason: ${refreshFailReason}`);
-        return false;
-      });
   }
 
   RevokeSession() {
@@ -86,7 +81,7 @@ export class UserSessionService {
   setSessionDate() {
     this.startedAt = Date.now();
     this.lastRefresh = Date.now();
-    this.logger.makeLog("User Session Service, Set Session Date", this.lastRefresh.toString())
+    this.log("Set Session Date", this.lastRefresh.toString())
   }
 
 }
