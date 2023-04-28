@@ -1,34 +1,31 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-
+import { Subscription } from 'rxjs';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 import { UserSessionService } from 'src/app/services/user-session.service';
 import { UserService } from 'src/app/services/user.service';
-import { LessonContent } from 'src/app/types/Content';
 import { ContentType } from 'src/app/types/api.types';
+
 @Component({
   selector: 'app-lesson-module',
   templateUrl: './lesson-module.component.html',
   styleUrls: ['./lesson-module.component.css']
 })
-export class LessonModuleComponent implements OnInit {
+export class LessonModuleComponent implements OnInit, OnDestroy {
   currentProgress: number = 0;
   selectedAnswer: string = '';
-
   currentQuestion = this.contentService.getCurrentQuestion();
-
-  contentType: number = this.currentQuestion.content_type;
-  constructor(private userSession: UserSessionService,
+  contentType: number = 0;
+  subscription: Subscription;
+  constructor(
     private router: Router,
-    private user: UserService,
     private appController: AppController,
     private contentService: ContentService,
     private route: ActivatedRoute) {
 
 
-    this.contentService.returnQuestion().subscribe((change) => {
+    this.subscription = this.contentService.returnQuestion().subscribe((change) => {
       this.contentType = change.content_type;
       this.navigateToCorrectLesson();
     })
@@ -36,6 +33,9 @@ export class LessonModuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.appController.checkForAuthentication();
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
   navigateToCorrectLesson() {
     switch (this.contentType) {

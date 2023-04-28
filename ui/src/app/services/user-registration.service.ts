@@ -1,10 +1,5 @@
 import { Injectable } from "@angular/core";
-
 import { ApiService } from "./api.service";
-import { CookieController } from "./cookie.service";
-import { UserSessionService } from "./user-session.service";
-
-import { User } from "../types/User";
 import { LoginService } from "./login.service";
 import { NewUser } from "../types/api.types";
 import { LoggerService } from "./logger.service";

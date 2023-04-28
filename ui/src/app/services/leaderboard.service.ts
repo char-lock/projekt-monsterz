@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { UserSessionService } from "./user-session.service";
 import { UserService } from "./user.service";

@@ -1,29 +1,18 @@
 import { Injectable } from "@angular/core";
-import { ApiService } from "./api.service";
 import { ApplicationStateService } from "./application-state.service";
-import { CookieService } from "ngx-cookie-service";
-import { ValidationService } from "./validation.service";
-import { LeaderboardService } from "./leaderboard.service";
 import { LoggerService } from "./logger.service";
 import { LoginService } from "./login.service";
 import { UserRegistrationService } from "./user-registration.service";
 import { UserSessionService } from "./user-session.service";
 import { UserService } from "./user.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { User } from "../types/User";
-import { BehaviorSubject } from "rxjs";
 import { ContentService } from "./content.service";
-import { LessonModuleComponent } from "../pages/lesson-modules/lesson-module.component";
 import { ToastService } from "./toast.service";
 
 @Injectable()
 export class AppController {
      constructor(
-          private apiService: ApiService,
           private applicationStateService: ApplicationStateService,
-          private cookieService: CookieService,
-          private validationService: ValidationService,
-          private leaderboardService: LeaderboardService,
           private loggerService: LoggerService,
           private loginService: LoginService,
           private userRegistrationService: UserRegistrationService,
@@ -46,6 +35,7 @@ export class AppController {
                     this.router.navigate(["../dashboard"]);
                } else {
                     this.toaster.createToast("You Are Unable to Be Registered at this Time, Try Again Later", "Error");
+                    this.toaster.stopToast();
                }
           });
           this.loggerService.makeLog("component.login-screen", "Requested a registration attempt.");
@@ -53,13 +43,16 @@ export class AppController {
      Login(username: string, password: string) {
           this.loginService.LoginAs(username, password, (success: boolean) => {
                if (success) {
-                    this.applicationStateService.SetLoginModalState(0);
                     this.router.navigate(["../dashboard"]);
                     this.loggerService.makeLog("App Controller", "Should've navigated to Dashboard!")
                } else {
-                    this.toaster.createToast("Unable to Login, Try Again", "Error")
+                    this.toaster.createToast("Unable to Login, Try Again", "Error");
+                    this.toaster.stopToast();
                }
           });
+     }
+     goToDashboard() {
+          this.router.navigate(["../dashboard"]);
      }
      logOut() {
           this.userSessionService.RevokeSession();
@@ -73,6 +66,7 @@ export class AppController {
           else {
                this.loggerService.makeLog("app.controller::checkForRightAnswer", "incorrect");
                this.toaster.createToast("That Answer is Incorrect, Try Again", "Error");
+               this.toaster.stopToast();
           }
      }
      checkForAuthentication() {

@@ -24,7 +24,7 @@ main.dashboard {
   align-self: center;
   align-content: center;
   overflow: hidden;
-  padding: 20px;
+  padding: 1px;
   align-items: center;
   justify-items: center;
 }
@@ -51,7 +51,6 @@ main.dashboard {
 }
 
 .scoreSheet {
-  background-color: var(--module-background-color);
   grid-area: scoresheet;
   align-self: center;
   border-radius: 20px;
@@ -63,9 +62,13 @@ main.dashboard {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color: var(--module-background-color);
+
   box-shadow: 0px -10px 0px 0px var(--module-box-shadow);
 }
-
+.leaderboard h1 {
+  height: 100%;
+}
 .scoreSheet h1 {
   padding-top: 10px;
 }
@@ -135,9 +138,8 @@ main.dashboard {
   text-align: left;
   vertical-align: bottom;
   text-align: left;
-  letter-spacing: 2px;
   width: 100%;
-  height: 100%;
+  height: min-content;
   border-collapse: separate;
   border-radius: 45px;
 }
@@ -169,14 +171,15 @@ tr.score-other:first-of-type {
   border-bottom-left-radius: 15px;
 }
 
+
 .score-you>td:nth-child(3) {
   border-bottom-right-radius: 15px;
 }
 
 .circle-color {
   margin-left: 1px;
-  width: 30px;
-  height: 30px;
+  width: auto;
+  height: auto;
   border-radius: 100%;
   background-color: var(--leaderboard-circle-color);
 }

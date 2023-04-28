@@ -14,9 +14,11 @@ export class ToastService {
     this.setStyle(status);
     this.toastObserve.next(this.toast);
   }
-  hide() {
+  stopToast() {
     this.toast = {};
+    setTimeout(() => {
     this.toastObserve.next(this.toast);
+    }, 3000)
   }
   setStyle(status: string) {
     switch (status) {
