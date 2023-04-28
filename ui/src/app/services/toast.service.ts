@@ -15,7 +15,7 @@ export class ToastService {
     this.toastObserve.next(this.toast);
   }
 
-  hide() {
+  stopToast() {
     this.toast = {};
     setTimeout(() => {
     this.toastObserve.next(this.toast);

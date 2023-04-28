@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { LoginService } from "./login.service";
-import { NewUser } from "../types/api.types";
+import { NewUser, User } from "../types/api.types";
 import { LoggerService } from "./logger.service";
 
 @Injectable()

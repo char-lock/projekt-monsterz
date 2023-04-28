@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ContentService } from "./content.service";
 import { ToastService } from "./toast.service";
 import { ValidationMethod } from "../types/api.types";
+import { ValidationService } from "./validation.service";
 
 @Injectable()
 export class AppController {
@@ -22,7 +23,8 @@ export class AppController {
           private router: Router,
           private contentService: ContentService,
           private route: ActivatedRoute,
-          private toaster: ToastService
+          private toaster: ToastService,
+          private validationService: ValidationService
      ) {
      }
      setModalState(number: number) {
