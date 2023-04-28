@@ -13,6 +13,8 @@ export class LeaderboardService {
   leaderboardGlobal: LeaderboardEntry[] = [];
   leaderboardClass: LeaderboardEntry[] = [];
   updatedOn: number = -1;
+  updatingGlobal = false;
+  updatingClass = false;
 
   constructor(
     private _api: ApiService,
@@ -52,14 +54,20 @@ export class LeaderboardService {
 
   update() {
     this.updatedOn = Date.now();
-    this.leaderboardGlobal = [];
-    this._api.getUsersByScore(5, (users) => {
-      this._api.getUserScores(users, (score) => { this.leaderboardGlobal.push(score); });
-    });
-    this.leaderboardClass = [];
-    this._api.getClassUsersByScore(this._user.getClassCode(), 5, (users) => {
-      this._api.getUserScores(users, (score) => { this.leaderboardClass.push(score); });
-    });
+    if (!this.updatingGlobal) {
+      this.updatingGlobal = true;
+      this.leaderboardGlobal = [];
+      this._api.getUsersByScore(5, (users) => {
+        this._api.getUserScores(users, (score) => { this.leaderboardGlobal.push(score); if (this.leaderboardGlobal.length === users.length) { this.updatingGlobal = false; }});
+      });
+    }
+    if (!this.updatingClass) {
+      this.updatingClass = true;
+      this.leaderboardClass = [];
+      this._api.getClassUsersByScore(this._user.getClassCode(), 5, (users) => {
+        this._api.getUserScores(users, (score) => { this.leaderboardClass.push(score); if (this.leaderboardClass.length === users.length) { this.updatingGlobal = false; }});
+      });
+    }
   }
 
 }

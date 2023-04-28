@@ -132,7 +132,7 @@ export class ApiService {
    */
   getUsersByScore(count: number, callback: (n: User[]) => void) {
     this.getApi(`/leaderboard/${count}`, undefined, (response: ApiResponse) => {
-      return <User[]>response.data;
+      callback(<User[]>response.data);
     });
   }
 
