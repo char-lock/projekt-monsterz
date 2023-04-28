@@ -28,7 +28,6 @@ export class ContentService {
 
   constructor(
     private _api: ApiService,
-    private userService: UserService,
     private _logger: LoggerService,
     private router: Router,
     private route: ActivatedRoute

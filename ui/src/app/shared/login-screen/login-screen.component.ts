@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
 import { UserRegistrationService } from 'src/app/services/user-registration.service';
-import { UserSessionService } from 'src/app/services/user-session.service';
+import { UserSessionService } from 'src/app/services/session.service';
 import { ValidationService } from '../../services/validation.service';
 import { LoggerService } from '../../services/logger.service';
 

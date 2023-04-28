@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from "./app-routing.module";
 
 import { LoggerService } from "./services/logger.service";
-import { UserSessionService } from "./services/user-session.service";
+import { UserSessionService } from "./services/session.service";
 import { CookieController } from "./services/cookie.service";
 import { ValidationService } from './services/validation.service';
 import { UserRegistrationService } from './services/user-registration.service';

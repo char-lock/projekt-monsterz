@@ -12,6 +12,7 @@ export class LoggerService {
     if (meta) console.log(JSON.stringify(meta));
   }
 
+  /** @deprecated Prefer `log`  */
   makeLog(logLocation: string, logValue: string) {
     if (isDevMode()) {
       const timestamp = new Date(Date.now()).toISOString();

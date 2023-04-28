@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from "@angular/router";
 import { ApplicationStateService } from 'src/app/services/application-state.service';
 
-import { UserSessionService } from 'src/app/services/user-session.service';
+import { UserSessionService } from 'src/app/services/session.service';
 import { CookieController } from '../../services/cookie.service';
 import { LoggerService } from '../../services/logger.service';
 import { AppController } from 'src/app/services/app.controller';

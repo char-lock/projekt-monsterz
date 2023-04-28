@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AppController } from 'src/app/services/app.controller';
 import { LeaderboardService } from 'src/app/services/leaderboard.service';
-import { UserSessionService } from 'src/app/services/user-session.service';
+import { UserSessionService } from 'src/app/services/session.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

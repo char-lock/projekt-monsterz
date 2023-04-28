@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 import { LoggerService } from 'src/app/services/logger.service';
-import { UserSessionService } from 'src/app/services/user-session.service';
+import { UserSessionService } from 'src/app/services/session.service';
 import { UserService } from 'src/app/services/user.service';
 import { ContentType } from 'src/app/types/api.types';
 

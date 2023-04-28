@@ -15,6 +15,12 @@ import {
 import { LoggerService } from "./logger.service";
 import { LeaderboardEntry } from "../types/other.types";
 
+/** 
+ * A service that provides an abstraction layer for sending requests
+ * to the API and receiving the responses.
+ * 
+ * @class ApiService
+ */
 @Injectable()
 export class ApiService {
 
@@ -152,13 +158,14 @@ export class ApiService {
    * Requests registration for a user with the provided information,
    * and returns the created user through the callback function.
    */
-  registerUser(user: NewUser, callback: (n: User) => void) {
+  registerUser(user: NewUser, callback: (n: User | undefined) => void) {
     this.log("registerUser", "registering user ...", user);
     this.postApi("/users/", JSON.stringify(user), undefined, (response: ApiResponse) => {
       if (response.data) {
         callback(<User>response.data);
       } else {
         this.log("registerUser", "failed to register", response);
+        callback(undefined);
       }
     });
   }
@@ -272,6 +279,7 @@ export class ApiService {
     });
   }
 
+  /** Helper function for calculating a user's current progress. */
   calculateProgress(
     lesson: number, totalLessons: number, 
     content: number, totalContent: number

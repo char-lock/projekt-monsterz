@@ -1,10 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApplicationStateService } from "./application-state.service";
 import { LoggerService } from "./logger.service";
-import { LoginService } from "./login.service";
 import { UserRegistrationService } from "./user-registration.service";
-import { UserSessionService } from "./user-session.service";
-import { UserService } from "./user.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ContentService } from "./content.service";
 import { ToastService } from "./toast.service";
@@ -16,10 +13,6 @@ export class AppController {
      constructor(
           private applicationStateService: ApplicationStateService,
           private loggerService: LoggerService,
-          private loginService: LoginService,
-          private userRegistrationService: UserRegistrationService,
-          private userSessionService: UserSessionService,
-          private userService: UserService,
           private router: Router,
           private contentService: ContentService,
           private route: ActivatedRoute,

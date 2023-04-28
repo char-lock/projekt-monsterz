@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AppController } from '../../../../app/services/app.controller';
 
 import { ContentService } from '../../../../app/services/content.service';
-import { UserSessionService } from '../../../../app/services/user-session.service';
+import { UserSessionService } from '../../../services/session.service';
 import { UserService } from '../../../../app/services/user.service';
 import { Subscription } from 'rxjs';
 

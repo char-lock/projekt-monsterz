@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service'
 import { ApplicationStateService } from './services/application-state.service';
 import { LoggerService } from './services/logger.service';
-import { UserSessionService } from './services/user-session.service';
+import { UserSessionService } from './services/session.service';
 import { UserSession } from './types/UserSession';
 
 @Component({
