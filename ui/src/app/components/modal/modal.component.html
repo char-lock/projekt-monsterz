@@ -1,0 +1,7 @@
+<div class="modal-unfocused" *ngIf="active"></div>
+<div class="modal-container" *ngIf="active">
+  <button class="modal-btn-close"></button>
+  <div class="modal-content">
+    <ng-content [select]="modalContent"></ng-content>
+  </div>
+</div>

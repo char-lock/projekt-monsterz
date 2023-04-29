@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
-import { UserSessionService } from "./session.service";
-import { UserService } from "./user.service";
+import { SessionService } from "./session.service";
 import { LoggerService } from "./logger.service";
-import { User } from "../types/api.types";
 import { LeaderboardEntry } from "../types/other.types";
 
 /** Handles all operations related to fetching and calculating the leaderboard. */
@@ -18,15 +16,14 @@ export class LeaderboardService {
 
   constructor(
     private _api: ApiService,
-    private _session: UserSessionService,
-    private _user: UserService,
+    private _session: SessionService,
     private _logger: LoggerService
   ) {
-    this._user.user.subscribe((change) => {
+    this._session.userSubject.subscribe((change) => {
       if (change) {
         this.update();
       }
-    })
+    });
   }
 
   log(func: string, message: string, meta?: any) {
@@ -54,18 +51,31 @@ export class LeaderboardService {
 
   update() {
     this.updatedOn = Date.now();
-    if (!this.updatingGlobal) {
+    if (!this.updatingGlobal && this._session.isValid()) {
       this.updatingGlobal = true;
       this.leaderboardGlobal = [];
       this._api.getUsersByScore(5, (users) => {
-        this._api.getUserScores(users, (score) => { this.leaderboardGlobal.push(score); if (this.leaderboardGlobal.length === users.length) { this.updatingGlobal = false; }});
+        this._api.getUserScores(users, (score) => { 
+          this.leaderboardGlobal.push(score); 
+          if (this.leaderboardGlobal.length === users.length) { 
+            this.updatingGlobal = false; 
+          }
+        });
       });
     }
-    if (!this.updatingClass) {
+    if (!this.updatingClass && this._session.isValid()) {
       this.updatingClass = true;
       this.leaderboardClass = [];
-      this._api.getClassUsersByScore(this._user.getClassCode(), 5, (users) => {
-        this._api.getUserScores(users, (score) => { this.leaderboardClass.push(score); if (this.leaderboardClass.length === users.length) { this.updatingGlobal = false; }});
+      this._api.getClassUsersByScore(
+        this._session.user.validation_value, 
+        5, 
+        (users) => {
+          this._api.getUserScores(users, (score) => { 
+            this.leaderboardClass.push(score); 
+            if (this.leaderboardClass.length === users.length) { 
+              this.updatingGlobal = false; 
+            }
+          });
       });
     }
   }

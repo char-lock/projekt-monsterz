@@ -1,0 +1,15 @@
+<div class="login-form">
+  <input 
+    #username 
+    id="username" 
+    name="username" 
+    placeholder="Username/Email Address" 
+    type="text" 
+  />
+  <input #password id="password" name="password" placeholder="Password" type="password" />
+  <button 
+    class="btn-login" 
+    id="login-btn" 
+    (click)="login(username.value, password.value)"
+  >LOGIN</button>
+</div>

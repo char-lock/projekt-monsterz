@@ -24,12 +24,12 @@ import { LeaderboardEntry } from "../types/other.types";
 @Injectable()
 export class ApiService {
 
-  static API_ENDPOINT = "http://localhost:9696";
+  private API_ENDPOINT = "http://localhost:9696";
 
   constructor(private _logger: LoggerService) {}
 
-  /** Writes a log using the logger service and specifying the source. */
-  log(func: string, message: string, meta?: any) {
+  /** Writes a log as the ApiService. */
+  private log(func: string, message: string, meta?: any) {
     this._logger.log("api.service", func, message, meta);
   }
 
@@ -46,12 +46,12 @@ export class ApiService {
   ) {
     // Ensure that the proper headers are set for an API request.
     if (!headers) headers = new AxiosHeaders();
-    headers.set("Access-Control-Allow-Origin", ApiService.API_ENDPOINT);
+    headers.set("Access-Control-Allow-Origin", this.API_ENDPOINT);
     headers.set("Content-Type", "application/json");
     // Send the request according to the parameters provided, and use
     // the callback function as the handler.
     axios.post(
-      `${ApiService.API_ENDPOINT}${endpoint}`,
+      `${this.API_ENDPOINT}${endpoint}`,
       body,
       { headers: headers }
     )
@@ -83,7 +83,7 @@ export class ApiService {
     // Setup the required headers for an API request.
     if (!headers) headers = new AxiosHeaders();
     axios.get(
-      `${ApiService.API_ENDPOINT}${endpoint}`,
+      `${this.API_ENDPOINT}${endpoint}`,
       { headers: headers }
     )
       .then((axiosResponse: AxiosResponse) => {
@@ -258,6 +258,10 @@ export class ApiService {
     });
   }
 
+  /** 
+   * Requests the data required to calculate the scores for a list of
+   * Users and feeds them through the callback as they are calculated.
+   */
   getUserScores(users: User[], callback: (n: LeaderboardEntry) => void ) {
     this.log("getUserScores", "retrieving scores for users", users);
     users.forEach((user, index) => {

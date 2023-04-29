@@ -1,6 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 
 @Component({
@@ -15,7 +14,6 @@ export class MutlipleChoiceComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private appController: AppController,
     private contentService: ContentService) {
     this.subscription = this.contentService.currentQuestion.subscribe((change) => {
       this.currentQuestion = change;
@@ -27,7 +25,6 @@ export class MutlipleChoiceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.appController.checkForAuthentication();
   }
   getAnswerSet() {
     return this.contentService.answerList.value;
@@ -38,7 +35,6 @@ export class MutlipleChoiceComponent implements OnInit, OnDestroy {
   }
 
   checkForRightAnswer(value: string) {
-    this.appController.checkForRightAnswer(value);
   }
 
 }

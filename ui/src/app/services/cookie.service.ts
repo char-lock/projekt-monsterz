@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { UserSession } from "../types/UserSession";
 import { LoggerService } from "./logger.service";
 
 /** 

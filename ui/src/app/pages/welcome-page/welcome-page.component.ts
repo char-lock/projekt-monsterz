@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { AppController } from 'src/app/services/app.controller';
 import { LoggerService } from 'src/app/services/logger.service';
-import { ToastService } from 'src/app/services/toast.service';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-welcome-page',
@@ -9,14 +8,15 @@ import { ToastService } from 'src/app/services/toast.service';
   styleUrls: ['./welcome-page.component.css']
 })
 export class WelcomePageComponent {
+  
   constructor(
-    private appController: AppController,
-    private logger: LoggerService,
-  ) {
+    private _modal: ModalService,
+    private _logger: LoggerService
+  ) {}
+
+  /** Opens a modal for the Registration form.  */
+  openModal() {
+    this._modal.create("register");
   }
 
-  OpenRegistrationModal() {
-    this.appController.setModalState(2);
-    this.logger.makeLog("Welcome Page Component | Open Registration Modal Function", "Clicked to Set Modal State within App Controller")
-  }
 }

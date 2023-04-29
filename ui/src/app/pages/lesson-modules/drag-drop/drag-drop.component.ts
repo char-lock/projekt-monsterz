@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 import { Subscription } from 'rxjs';
+import { SessionService } from 'src/app/services/session.service';
+import { LoggerService } from 'src/app/services/logger.service';
 
 @Component({
   selector: 'app-lesson-module',
@@ -11,19 +12,21 @@ import { Subscription } from 'rxjs';
 export class DragDropComponent implements OnInit, OnDestroy {
   selectedAnswer: string = '';
 
-  currentQuestion = this.contentService.currentQuestion.value;
+  currentQuestion = this._content.currentQuestion.value;
   private subscription: Subscription;
 
   constructor(
-    private appController: AppController,
-    private contentService: ContentService) {
-    this.subscription = this.contentService.currentQuestion.subscribe((change) => {
+    private _content: ContentService,
+    private _session: SessionService,
+    private _logger: LoggerService
+  ) {
+    this.subscription = this._content.currentQuestion.subscribe((change) => {
       this.currentQuestion = change;
     })
   }
   
   ngOnInit(): void {
-    this.appController.checkForAuthentication();
+    this._session.isValid();
   }
 
   ngOnDestroy(): void {
@@ -35,11 +38,11 @@ export class DragDropComponent implements OnInit, OnDestroy {
   }
 
   getAnswerSet() {
-    return this.contentService.answerList.value;
+    return this._content.answerList.value;
   }
 
   checkForRightAnswerDrag() {
-    this.appController.checkForRightAnswer(this.selectedAnswer);
+    this._content.checkAnswer(this.selectedAnswer);
     this.clearCurrentDragArea();
   }
 

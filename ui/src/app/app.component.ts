@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
-import { CookieService } from 'ngx-cookie-service'
-import { ApplicationStateService } from './services/application-state.service';
-import { LoggerService } from './services/logger.service';
-import { UserSessionService } from './services/session.service';
-import { UserSession } from './types/UserSession';
+import { CookieService } from "./services/cookie.service";
+import { LoggerService } from "./services/logger.service";
+import { SessionService } from "./services/session.service";
+
 
 @Component({
   selector: 'app-root',
@@ -12,19 +11,16 @@ import { UserSession } from './types/UserSession';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'projekt-monsterz-front'
+  
+  title = 'projekt-monsterz-ui'
+
   constructor(
-    private logger: LoggerService,
-    private cookieService: CookieService,
-    private userSession: UserSessionService,
-    private appState: ApplicationStateService
-  ) { }
+    private _session: SessionService,
+    private _logger: LoggerService
+  ) {}
 
   ngOnInit() {
-    if (this.cookieService.get("projekt-monsterz.session") !== "") {
-      const previousSession: UserSession = JSON.parse(this.cookieService.get("projekt-monsterz.session"));
-      this.userSession.LoadSession(previousSession);
-      this.logger.makeLog("app.component", "loaded user session from cookie");
-    }
+    this._session.importFromCookie();
   }
+
 }

@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subscribable, Subscription } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { ApiService } from "./api.service";
 import { CourseContent } from "../types/api.types";
-import { UserService } from "./user.service";
 import { LoggerService } from "./logger.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { SessionService } from "./session.service";
+import { User } from "../types/api.types";
 
 @Injectable()
 export class ContentService {
@@ -12,8 +13,8 @@ export class ContentService {
   private _questionList: CourseContent[] = [];
   questionList = new BehaviorSubject<CourseContent[]>(this._questionList);
 
-  lessonId: number;
-  contentId: number;
+  lessonId: number = 0;
+  contentId: number = 0;
   contentPosition = 0;
 
   private _currentQuestion: CourseContent | undefined = undefined;
@@ -30,10 +31,15 @@ export class ContentService {
     private _api: ApiService,
     private _logger: LoggerService,
     private router: Router,
+    private _session: SessionService,
     private route: ActivatedRoute
   ) {
-    this.lessonId = this.userService.getCurrentLessonProgress() + 1;
-    this.contentId = this.userService.getCurrentContentId() + 1;
+    this._session.userSubject.subscribe((change: User | undefined) => {
+      if (change) {
+        this.lessonId = change.progress_lesson;
+        this.contentId = change.progress_content;
+      }
+    });
 
     this._listSubscription = this.questionList.subscribe((change) => {
       const filtered = change.filter(value => value.id === this.lessonId);
@@ -58,7 +64,7 @@ export class ContentService {
       }
     });
 
-    this._userSubscription = this.userService.user.subscribe((change) => {
+    this._userSubscription = this._session.userSubject.subscribe((change) => {
       if (change) {
         this.contentId = change.progress_content + 1;
         this.lessonId = change.progress_lesson + 1;

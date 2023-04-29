@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
-import { Toast } from "../types/Toast";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 export class ToastService {
-  toast: Toast = {};
-  toastObserve = new BehaviorSubject<Toast>(this.toast);
+  toast: any = {};
+  toastObserve = new BehaviorSubject<any>(this.toast);
 
   constructor() {}
 

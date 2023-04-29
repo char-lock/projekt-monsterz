@@ -1,11 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AppController } from '../../../../app/services/app.controller';
-
 import { ContentService } from '../../../../app/services/content.service';
-import { UserSessionService } from '../../../services/session.service';
-import { UserService } from '../../../../app/services/user.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,8 +14,8 @@ export class ReadingComponent {
   currentQuestion = this.contentService.currentQuestion.value;
   private subscription: Subscription;
   constructor(
-    private appController: AppController,
-    private contentService: ContentService) {
+    private contentService: ContentService
+  ) {
     this.subscription = this.contentService.currentQuestion.subscribe((change) => {
       this.currentQuestion = change;
     })
@@ -29,16 +25,12 @@ export class ReadingComponent {
     this.subscription.unsubscribe()
   }
 
-  ngOnInit(): void {
-    this.appController.checkForAuthentication();
-  }
+  ngOnInit(): void {}
 
   getContent() {
     return this.currentQuestion?.content_detail;
   }
 
-  finishReading() {
-    this.appController.finishReading();
-  }
+  finishReading() {}
 
 }

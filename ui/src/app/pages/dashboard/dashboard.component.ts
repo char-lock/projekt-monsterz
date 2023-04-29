@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
-import { AppController } from 'src/app/services/app.controller';
 import { LeaderboardService } from 'src/app/services/leaderboard.service';
-import { UserSessionService } from 'src/app/services/session.service';
-import { UserService } from 'src/app/services/user.service';
+import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,13 +20,11 @@ export class DashboardComponent implements OnInit {
   constructor(
     private _api: ApiService,
     private leaderboardService: LeaderboardService,
-    private userService: UserService,
-    private appController: AppController
+    private _session: SessionService
   ) {}
 
   ngOnInit() {
-    this.appController.checkForAuthentication();
-    this.userService.user.subscribe((change) => {
+    this._session.userSubject.subscribe((change) => {
       if (change) {
         this._api.getUserScores([change], (score) => {
           this.score = score.score;
@@ -41,8 +37,8 @@ export class DashboardComponent implements OnInit {
   }
 
   getLessonLabel() {
-    if (this.userService.user.value) {
-      this._api.getLessonById(this.userService.user.value.progress_lesson + 1, (lesson) => {
+    if (this._session.user) {
+      this._api.getLessonById(this._session.user.progress_lesson + 1, (lesson) => {
         this.currentLesson = `Lesson ${lesson.unit_id}-${lesson.position}`;
       });
     }

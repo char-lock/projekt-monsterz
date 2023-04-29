@@ -1,0 +1,17 @@
+@import url("./_normalise.css");
+@import url("./_variables.css");
+
+html, body {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+
+  font-family: "Kanit", sans-serif;
+  font-size: 18pt;
+  font-variant-caps: all-small-caps;
+  color: var(--colour-primary-foreground);
+
+  background-color: var(--colour-primary);
+}

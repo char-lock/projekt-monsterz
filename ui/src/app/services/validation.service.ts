@@ -2,6 +2,11 @@ import { Injectable } from "@angular/core";
 import { LoggerService } from "./logger.service";
 import { ApiService } from "./api.service";
 
+/**
+ * A service that handles validating input.
+ * 
+ * @class ValidationService
+ */
 @Injectable()
 export class ValidationService {
 

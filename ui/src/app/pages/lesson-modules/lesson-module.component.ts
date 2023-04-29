@@ -1,11 +1,9 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AppController } from 'src/app/services/app.controller';
 import { ContentService } from 'src/app/services/content.service';
 import { LoggerService } from 'src/app/services/logger.service';
-import { UserSessionService } from 'src/app/services/session.service';
-import { UserService } from 'src/app/services/user.service';
+import { SessionService } from 'src/app/services/session.service';
 import { ContentType } from 'src/app/types/api.types';
 
 @Component({
@@ -24,9 +22,8 @@ export class LessonModuleComponent implements OnInit, OnDestroy {
   contentType: number = 0;
 
   constructor(
-    private userSession: UserSessionService,
+    private _session: SessionService,
     private router: Router,
-    private appController: AppController,
     private contentService: ContentService,
     private route: ActivatedRoute,
     private _logger: LoggerService
@@ -47,7 +44,7 @@ export class LessonModuleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.appController.checkForAuthentication();
+    this._session.isValid();
   }
 
   ngOnDestroy(): void {

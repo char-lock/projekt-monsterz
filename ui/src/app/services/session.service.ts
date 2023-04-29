@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Buffer } from "buffer";
 import { ApiService } from "./api.service";
 import { LoggerService } from "./logger.service";
 import { BehaviorSubject } from "rxjs";
@@ -64,6 +65,7 @@ export class SessionService {
    * act on the results a single time.
    */
   refresh(callback?: (success: boolean) => void) {
+    this._refreshedOn = Date.now();
     this._api.refreshAuthToken(this.authToken, (token) => {
       this._authToken = token;
       this._authTokenSubject.next(this._authToken);

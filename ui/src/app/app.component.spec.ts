@@ -16,16 +16,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'projekt-monsterz-front'`, () => {
+  it(`should have as title 'projekt-monsterz-ui'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('projekt-monsterz-front');
+    expect(app.title).toEqual('projekt-monsterz-ui');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('projekt-monsterz-front app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('projekt-monsterz-ui app is running!');
   });
 });

@@ -1,0 +1,81 @@
+:root {
+  /** Colours -> Standard */
+  /** Black */
+  --colour-black-100: rgb();
+  --colour-black-75: rgb();
+  --colour-black-50: rgb();
+  --colour-black-25: rgb();
+  /** White */
+  --colour-white-100: rgb();
+  --colour-white-75: rgb();
+  --colour-white-50: rgb();
+  --colour-white-25: rgb();
+  /** Red */
+  --colour-red-lighter: rgb();
+  --colour-red: rgb();
+  --colour-red-darker: rgb();
+  /** Orange */
+  --colour-orange-lighter: rgb();
+  --colour-orange: rgb();
+  --colour-orange-darker: rgb();
+  /** Yellow */
+  --colour-yellow-lighter: rgb();
+  --colour-yellow: rgb();
+  --colour-yellow-darker: rgb();
+  /** Green */
+  --colour-green-lighter: rgb();
+  --colour-green: rgb();
+  --colour-green-darker: rgb();
+  /** Blue */
+  --colour-blue-lighter: rgb();
+  --colour-blue: rgb();
+  --colour-blue-darker: rgb();
+  /** Indigo */
+  --colour-indigo-lighter: rgb();
+  --colour-indigo: rgb();
+  --colour-indigo-darker: rgb();
+  /** Violet */
+  --colour-violet-lighter: rgb();
+  --colour-violet: rgb();
+  --colour-violet-darker: rgb();
+  /** Magenta */
+  --colour-magenta-lighter: rgb();
+  --colour-magenta: rgb();
+  --colour-magenta-darker: rgb();
+
+  /** Colours -> Theme */
+  --colour-primary-foreground: var(--colour-white-100);
+  --colour-primary-lighter: rgb();
+  --colour-primary: rgb();
+  --colour-primary-darker: rgb();
+
+  --colour-secondary-foreground: var(--colour-black-100);
+  --colour-secondary-lighter: rgb();
+  --colour-secondary: rgb();
+  --colour-secondary:darker: rgb();
+
+  /** Colours -> Component */
+  --modal-background: var(--colour-white-100);
+  --modal-foreground: var(--colour-black-100);
+  --modal-overlay-background: var(--colour-black-50);
+
+  --header-background-color: #481557;
+  --header-text-color: #f2f4e7;
+  --modal-background-color: rgba(0, 0, 0, 0.5);
+  --login-modal-background-color: #9A103F;
+  --login-modal-text-color: white;
+  --text-input-background-color: #c0f6ff;
+  --login-modal-border-color: #7dd3e1;
+  --text-input-color: #240101;
+  --login-button-background-color: #fe1a55;
+  --login-button-text-color: white;
+  --login-exit-button-color: #f2f4e7;
+  --dashboard-background: #f4254c;
+  --icon-color: white;
+  --leaderboard-indication-light: green;
+  --module-background-color: #c2f5ff;
+  --module-box-shadow: #83d1e1;
+  --leaderboard-odd-background-color: #a5c1f0;
+  --leaderboard-circle-color: blue;
+  /* Continue at dashboard component */
+}
