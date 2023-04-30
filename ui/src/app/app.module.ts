@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { AppRouterModule } from "./router.module";
 import { UserInterfaceModule } from './components/ui.module';
@@ -38,6 +39,7 @@ import { MonsterCageBackgroundDirective } from './directives/monster-cage-backgr
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     AppRouterModule,
     UserInterfaceModule,

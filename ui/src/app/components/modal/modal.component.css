@@ -1,0 +1,68 @@
+.modal-unfocused {
+  height: 100vh;
+  width: 100vw;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+
+  background-color: rgba(1, 2, 3, 0.75);
+}
+
+.modal-container {
+  height: fit-content;
+  width: fit-content;
+  display: block;
+  position: relative;
+  margin: 5vh auto;
+  overflow: hidden;
+
+  border-radius: 1em;
+
+  background-color: var(--colour-secondary);
+  z-index: 2000;
+}
+
+.modal-btn-close {
+  height: 1em;
+  width: 1em;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  border: none;
+  background-color: transparent;
+  display: block;
+
+  color: var(--colour-secondary-foreground);
+  font-size: 24pt;
+  font-weight: 700;
+  user-select: none;
+  z-index: 3000;
+
+  filter: opacity(.5);
+
+  cursor: pointer;
+}
+
+.modal-content {
+  margin: 1em;
+  margin-top: 4em;
+  display: block;
+}
+
+.modal-shading {
+  position: absolute;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;  
+  border-radius: 1em;
+  border-style: solid;
+  border-width: 0.5rem;
+  border-color: var(--colour-secondary-darker);
+  filter: blur(8px);
+  border-bottom-color: rgba(255, 255, 255, 0.09);
+  border-right-color: rgba(255, 255, 255, 0.09);
+}

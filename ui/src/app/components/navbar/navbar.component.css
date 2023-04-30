@@ -1,0 +1,42 @@
+.pm-navbar {
+  width: 100%;
+  height: 2rem;
+  padding-top: 0.25rem;
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+
+  font-size: 24pt;
+  font-weight: 700;
+
+  background-color: var(--colour-accent);
+}
+
+.pm-navbar__logo {
+  margin-left: 1em;
+}
+
+ul.pm-navbar__items {
+  margin: 0;
+  display: inline-block;
+  position: absolute;
+  right: 1em;
+}
+
+li.pm-navbar__item::marker {
+  content: "";
+  margin: 0;
+}
+
+button.pm-navbar__button {
+  border: none;
+  background-color: transparent;
+  color: var(--colour-accent-foreground);
+
+  font-variant-caps: all-small-caps;
+  font-size: 24pt;
+  font-weight: 700;
+
+  cursor: pointer;
+}

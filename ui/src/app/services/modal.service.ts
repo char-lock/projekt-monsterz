@@ -1,6 +1,7 @@
 import { ApplicationRef, createComponent, ComponentRef, EnvironmentInjector, Injectable } from "@angular/core";
 import { LoggerService } from "./logger.service";
 import { ModalComponent } from "../components/modal/modal.component";
+import { LoginModal } from "../components/modal/content/login/login.modal";
 
 /** 
  * A service that manages the display of modals throughout the
@@ -11,10 +12,9 @@ import { ModalComponent } from "../components/modal/modal.component";
 @Injectable()
 export class ModalService {
 
-  private _content: string[] = [
-    "login",
-    "register"
-  ];
+  private _content: { [key: string]: any } = {
+    "login": LoginModal
+  };
 
   private _modalRef: ComponentRef<ModalComponent> | undefined;
 
@@ -31,10 +31,10 @@ export class ModalService {
 
   /** Creates a modal with the specified content. */
   create(selector: string) {
-    if (!this._content.includes(selector)) { 
+    if (!Object.keys(this._content).includes(selector)) { 
       return this.log("create", `requested invalid modal selector "${selector}"`); 
     }
-    if (this._modalRef === undefined) {
+    if (this._modalRef !== undefined) {
       return this.log("create", "a modal is already open");
     }
     this.log("create", `creating and displaying ${selector} modal ...`);
@@ -45,14 +45,18 @@ export class ModalService {
     });
     if (this._modalRef) {
       this._app.attachView(this._modalRef.hostView);
+      this._modalRef.instance.content = this._content[selector];
       this._modalRef.instance.closed.subscribe(() => {
+        this.log("create", "received close signal");
         document.body.removeChild(modal);
         if (this._modalRef) {
           this._app.detachView(this._modalRef.hostView);
           this._modalRef = undefined;
         }
       });
-      this._modalRef.instance.content = `[modalContent="${selector}"]`;
+      this._modalRef.instance.content = this._content[selector];
+      this._modalRef.instance.loadContent();
+      document.body.appendChild(modal);
     }
   }
 
@@ -60,7 +64,7 @@ export class ModalService {
   changeContent(content: string) {
     if (this._modalRef) {
       this.log("changeContent", `changing modal content to ${content} ...`);
-      this._modalRef.instance.content = `[modalContent="${content}"]`;
+      this._modalRef.instance.content = this._content[content];
     }
   }
 

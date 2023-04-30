@@ -1,7 +1,8 @@
-<div class="modal-unfocused" *ngIf="active"></div>
-<div class="modal-container" *ngIf="active">
-  <button class="modal-btn-close"></button>
+<div class="modal-unfocused"></div>
+<div class="modal-container">
+  <div class="modal-shading"></div>
+  <button class="modal-btn-close" (click)="close()">X</button>
   <div class="modal-content">
-    <ng-content [select]="modalContent"></ng-content>
+    <ng-template modalContent></ng-template>
   </div>
 </div>
