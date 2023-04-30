@@ -1,3 +1,8 @@
+.pm-input {
+  position: relative;
+  width: fit-content;
+}
+
 .pm-input__input {
   height: 1em;
   min-width: 16em; 
@@ -10,7 +15,7 @@
   padding: 0.5em;
   padding-left: 2em;
 
-  background-color: rgba(1, 2, 3, 0.125);
+  background-color: rgba(245, 245, 245, 1);
   color: rgba(1, 2, 3, 0.5);
 
   border-radius: 1em;
@@ -28,19 +33,19 @@
 }
 
 .pm-input__input:focus {
-  background-color: rgba(247, 176, 93, 0.125);
+  background-color: rgba(253, 248, 241, 1);
   outline: none;
   box-shadow: inset 0px -1px 4px 2px rgba(247, 176, 93, 0.0625), inset 0px 2px 4px 2px rgba(247, 176, 93, 0.25), 0 0 3px 1.5px rgb(247, 176, 93);
 }
 
 .pm-input__input.invalid, .pm-input__input.invalid:focus {
-  background-color: rgba(230, 37, 106, 0.125);
+  background-color: rgba(255, 240, 245, 1);
   outline: none;
   box-shadow: inset 0px -1px 4px 2px rgba(230, 37, 106, 0.0625), inset 0px 2px 4px 2px rgba(230, 37, 106, 0.25), 0 0 3px 1.5px rgb(230, 37, 106);
 }
 
 .pm-input__input.valid, .pm-input__input.valid:focus {
-  background-color: rgba(43, 167, 78, 0.125);
+  background-color: rgba(240, 251, 243, 1);
   outline: none;
   box-shadow: inset 0px -1px 4px 2px rgba(43, 167, 78, 0.0625), inset 0px 2px 4px 2px rgba(43, 167, 78, 0.25), 0 0 3px 1.5px rgb(43, 167, 78);
 }
@@ -69,4 +74,44 @@
 
 .pm-input__rule span.invalid {
   color: rgb(230, 37, 106);
+}
+
+i.pm-input__icon {
+  height: 1em;
+  width: 1em;
+  mask-size: fill;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  background-color: rgb(0, 0, 0, 0.5);
+  position: absolute;
+}
+
+i.pm-input__icon_type {
+  top: 0.33em;
+  left: 0.5em;
+}
+
+i.pm-input__icon.invalid {
+  background-color: rgb(230, 37, 106);
+}
+
+i.pm-input__icon.valid {
+  background-color: rgb(43, 167, 78);
+}
+
+i.pm-input__icon_visibility {
+  right: 0.5em;
+  top: 0.33em;
+}
+
+i.pm-input__icon_show {
+  mask-image: url("../../../assets/icons/eye-solid.svg");
+}
+
+i.pm-input__icon_hide {
+  mask-image: url("../../../assets/icons/eye-slash-solid.svg");
+}
+
+ul.pm-input__rules {
+  margin-top: 0.125em;
 }

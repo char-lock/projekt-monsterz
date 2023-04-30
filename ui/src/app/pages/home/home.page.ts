@@ -10,6 +10,10 @@ export class HomePage {
 
   inputRules: ValidationRule[] = [
     {
+      check: (input: string) => { return input.trim().length > 0; },
+      description: "Required"
+    },
+    {
       check: (input: string) => { return input.length > 2; },
       description: 'Must be greater than 2 characters in length'
     },

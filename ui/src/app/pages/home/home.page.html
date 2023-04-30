@@ -7,7 +7,16 @@
   <pm-button [clickHandler]="onClick" [backgroundColour]="'var(--colour-primary)'">Submit</pm-button>
   <pm-input 
     [placeholder]="'Username / Email'" 
-    [iconUrl]="''" 
+    [iconUrl]="'./assets/icons/user-regular.svg'" 
     [type]="'text'" 
-    [validationRules]="inputRules"></pm-input>
+    [validationRules]="inputRules"
+    [id]="'username'"
+  ></pm-input>
+  <pm-input
+    [placeholder]="'Password'" 
+    [iconUrl]="'./assets/icons/lock-solid.svg'" 
+    [type]="'password'" 
+    [validationRules]="inputRules"
+    [id]="'password'"
+  ></pm-input>
 </main>
