@@ -1,0 +1,11 @@
+<div class="pm-input">
+  <input ngModel #inputValue [class]="inputClass" (change)="updateClasses($event)" [placeholder]="placeholder" [type]="type"/>
+  <i class="pm-input__icon" [style]="'background-image: url(' + iconUrl + ');'"></i>
+  <i class="pm-input__icon_toggle pm-input__icon_show" *ngIf="type === 'password' && !showingPassword" (click)="showPassword()"></i>
+  <i class="pm-input__icon_toggle pm-input__icon_hide" *ngIf="type === 'password' && showingPassword" (click)="hidePassword()"></i> 
+  <ul class="pm-input__rules">
+    <li *ngFor="let rule of validationRules" class="pm-input__rule">
+      <span [class]="rule.check(inputValue.value) ? 'valid' : 'invalid'"> {{ rule.description }}</span>
+    </li>
+  </ul>
+</div>

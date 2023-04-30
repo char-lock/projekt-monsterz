@@ -3,3 +3,8 @@ export type LeaderboardEntry = {
   percent: number;
   score: number;
 };
+
+export type ValidationRule = {
+  check: (input: string) => boolean;
+  description: string 
+};

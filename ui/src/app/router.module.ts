@@ -8,9 +8,10 @@ import { DragDropComponent } from "./pages/lesson-modules/drag-drop/drag-drop.co
 import { ReadingComponent } from "./pages/lesson-modules/reading/reading.component";
 import { FillInTheBlankComponent } from "./pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component";
 import { SuccessMessageComponent } from "./pages/success-message/success-message.component";
+import { HomePage } from "./pages/home/home.page";
 
 const routes: Routes = [
-  { path: "", component: WelcomePageComponent },
+  { path: "", component: HomePage },
   { path: "dashboard", component: DashboardComponent },
   {
     path: "lesson", component: LessonModuleComponent,

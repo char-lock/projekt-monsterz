@@ -1,0 +1,72 @@
+.pm-input__input {
+  height: 1em;
+  min-width: 16em; 
+
+  font-size: 16pt;
+  font-weight: 200;
+  text-transform: lowercase;
+  letter-spacing: 0.0625em;
+
+  padding: 0.5em;
+  padding-left: 2em;
+
+  background-color: rgba(1, 2, 3, 0.125);
+  color: rgba(1, 2, 3, 0.5);
+
+  border-radius: 1em;
+  border-style: none;
+
+  box-shadow: inset 0px -1px 4px rgba(0, 0, 0, 0.125), inset 0px 2px 4px rgba(0, 0, 0, 0.50);
+}
+
+.pm-input__input:hover {
+  box-shadow: inset 0px -1px 4px rgba(0, 0, 0, 0.0625), inset 0px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.pm-input__input:active {
+  box-shadow: inset 0px -1px 4px rgba(0, 0, 0, 0.0625), inset 0px 2px 6px 4px rgba(0, 0, 0, 0.25);
+}
+
+.pm-input__input:focus {
+  background-color: rgba(247, 176, 93, 0.125);
+  outline: none;
+  box-shadow: inset 0px -1px 4px 2px rgba(247, 176, 93, 0.0625), inset 0px 2px 4px 2px rgba(247, 176, 93, 0.25), 0 0 3px 1.5px rgb(247, 176, 93);
+}
+
+.pm-input__input.invalid, .pm-input__input.invalid:focus {
+  background-color: rgba(230, 37, 106, 0.125);
+  outline: none;
+  box-shadow: inset 0px -1px 4px 2px rgba(230, 37, 106, 0.0625), inset 0px 2px 4px 2px rgba(230, 37, 106, 0.25), 0 0 3px 1.5px rgb(230, 37, 106);
+}
+
+.pm-input__input.valid, .pm-input__input.valid:focus {
+  background-color: rgba(43, 167, 78, 0.125);
+  outline: none;
+  box-shadow: inset 0px -1px 4px 2px rgba(43, 167, 78, 0.0625), inset 0px 2px 4px 2px rgba(43, 167, 78, 0.25), 0 0 3px 1.5px rgb(43, 167, 78);
+}
+
+.pm-input__rules {
+  margin-top: 0;
+}
+
+.pm-input__rules li::marker {
+  content: "";
+}
+
+.pm-input__rule {
+  margin-left: -1em;
+
+  font-size: 10pt;
+  font-variant-caps: normal;
+  font-weight: 200;
+
+  color: rgb(1, 2, 3);
+}
+
+.pm-input__rule span.valid {
+  color: rgb(43, 167, 78);
+}
+
+.pm-input__rule span.invalid {
+  color: rgb(230, 37, 106);
+}

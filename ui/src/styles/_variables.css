@@ -1,15 +1,16 @@
 :root {
   /** Colours -> Standard */
   /** Black */
-  --colour-black-100: rgb();
-  --colour-black-75: rgb();
-  --colour-black-50: rgb();
-  --colour-black-25: rgb();
+  --colour-black-100: rgba(1, 2, 3, 1.00);
+  --colour-black-75: rgba(1, 2, 3, 0.75);
+  --colour-black-50: rgba(1, 2, 3, 0.50);
+  --colour-black-25: rgba(1, 2, 3, 0.25);
+  --colour-black-12: rgba(1, 2, 3, 0.125);
   /** White */
-  --colour-white-100: rgb();
-  --colour-white-75: rgb();
-  --colour-white-50: rgb();
-  --colour-white-25: rgb();
+  --colour-white-100: rgba(240, 240, 245, 1.00);
+  --colour-white-75: rgba(240, 240, 245, 0.75);
+  --colour-white-50: rgba(240, 240, 245, 0.50);
+  --colour-white-25: rgba(240, 240, 245, 0.25);
   /** Red */
   --colour-red-lighter: rgb();
   --colour-red: rgb();
@@ -45,14 +46,14 @@
 
   /** Colours -> Theme */
   --colour-primary-foreground: var(--colour-white-100);
-  --colour-primary-lighter: rgb();
-  --colour-primary: rgb();
-  --colour-primary-darker: rgb();
+  --colour-primary-lighter: rgb(249, 120, 144);
+  --colour-primary: rgb(244, 37, 76);
+  --colour-primary-darker: rgb(172, 13, 42);
 
   --colour-secondary-foreground: var(--colour-black-100);
-  --colour-secondary-lighter: rgb();
-  --colour-secondary: rgb();
-  --colour-secondary:darker: rgb();
+  --colour-secondary-lighter: rgb(244, 254, 255);
+  --colour-secondary: rgb(194, 245, 255)  ;
+  --colour-secondary-darker: rgb(125, 211, 225);
 
   /** Colours -> Component */
   --modal-background: var(--colour-white-100);
@@ -65,15 +66,15 @@
   --login-modal-background-color: #9A103F;
   --login-modal-text-color: white;
   --text-input-background-color: #c0f6ff;
-  --login-modal-border-color: #7dd3e1;
+  --login-modal-border-color: rgb(125, 211, 225);
   --text-input-color: #240101;
   --login-button-background-color: #fe1a55;
   --login-button-text-color: white;
   --login-exit-button-color: #f2f4e7;
-  --dashboard-background: #f4254c;
+  --dashboard-background: rgb(244, 37, 76);
   --icon-color: white;
   --leaderboard-indication-light: green;
-  --module-background-color: #c2f5ff;
+  --module-background-color: rgb(194, 245, 255);
   --module-box-shadow: #83d1e1;
   --leaderboard-odd-background-color: #a5c1f0;
   --leaderboard-circle-color: blue;
