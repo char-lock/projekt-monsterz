@@ -5,18 +5,18 @@
     </div>
   </pm-card>
   <pm-button [clickHandler]="onClick" [backgroundColour]="'var(--colour-primary)'">Submit</pm-button>
-  <pm-input 
+  <fang-input 
     [placeholder]="'Username / Email'" 
     [iconUrl]="'./assets/icons/user-regular.svg'" 
     [type]="'text'" 
     [validationRules]="inputRules"
     [id]="'username'"
-  ></pm-input>
-  <pm-input
+  ></fang-input>
+  <fang-input
     [placeholder]="'Password'" 
     [iconUrl]="'./assets/icons/lock-solid.svg'" 
     [type]="'password'" 
     [validationRules]="inputRules"
     [id]="'password'"
-  ></pm-input>
+  ></fang-input>
 </main>

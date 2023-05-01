@@ -1,62 +1,35 @@
-<div class="pm-input">
+<div class="fang_input">
   <input 
-    [(ngModel)]="inputRef"
-    [class]="
-      'pm-input__input' 
-      + (hasBeenFocused && validationRules.length > 0 
-      ? (validate() 
-        ? ' valid' 
-        : ' invalid') 
-      : '')
-    "
+    [(ngModel)]="inputValue"
     [name]="id"
-    [placeholder]="placeholder" 
+    [id]="id"
+    [class]="inputClasses.join(' ')"
+    [placeholder]="placeholder"
     [type]="type"
   />
   <i 
-    [class]="
-      'pm-input__icon pm-input__icon_type'
-      + (hasBeenFocused && validationRules.length > 0 
-      ? (validate() 
-        ? ' valid' 
-        : ' invalid')
-      : '')
-    " 
+    [class]="getIconClasses().join(' ')"
     [style]="'mask-image: url(' + iconUrl + ');'"
   ></i>
   <i 
-    [class]="
-      'pm-input__icon  pm-input__icon_visibility pm-input__icon_show'
-      + (hasBeenFocused && validationRules.length > 0 
-      ? (validate() 
-        ? ' valid' 
-        : ' invalid')
-      : '')
-    " 
-    *ngIf="type === 'password' && !passwordShown"
+    [class]="getIconClasses().join(' ')"
+    style="mask-image: url('./assets/icons/eye-solid.svg');"
+    (click)="toggleVisibility()"
+    *ngIf="trueType === 'password' && !isPasswordVisible"
   ></i>
   <i 
-    [class]="
-      'pm-input__icon pm-input__icon_visibility pm-input__icon_hide'
-      + (hasBeenFocused && validationRules.length > 0 
-      ? (validate() 
-        ? ' valid' 
-        : ' invalid')
-      : '')
-    " 
-    *ngIf="type === 'password' && passwordShown"
-  ></i> 
-  <ul class="pm-input__rules" *ngIf="validationRules.length > 0">
-    <li *ngFor="let rule of validationRules" class="pm-input__rule">
-      <span 
-        [class]="
-          hasBeenFocused 
-          ? (checkRule(rule) 
-            ? 'valid' 
-            : 'invalid') 
-          : ''
-        "
-      >{{ rule.description }}</span>
-    </li>
+    [class]="getIconClasses().join(' ')" 
+    style="mask-image: url('./assets/icons/eye-slash-solid.svg');"
+    (click)="toggleVisibility()"
+    *ngIf="trueType === 'password' && isPasswordVisible"
+  ></i>
+  <ul
+    class="fang_input--rules"
+    *ngIf="validationRules.length > 0"
+  >
+    <li 
+      *ngFor="let rule of validationRules"
+      [class]="getRuleClasses(rule).join(' ')"
+    >{{rule.description}}</li>
   </ul>
 </div>

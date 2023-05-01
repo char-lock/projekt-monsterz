@@ -57,8 +57,30 @@
 
   /** Colours -> Component */
   --modal-background: var(--colour-white-100);
-  --modal-foreground: var(--colour-black-100);
+  --modal-foreground: var(--colour-black-50);
   --modal-overlay-background: var(--colour-black-50);
+
+  --colour-input-foreground: rgba(1, 2, 3, 0.75);
+  --colour-input-background: var(--colour-white-100);
+
+  --colour-input-focus: rgb(247, 176, 93);
+  --colour-input-focus-25: rgba(247, 176, 93, 0.25);
+  --colour-input-focus-shadow: rgba(247, 176, 93, 0.0625);
+  --colour-input-focus-background: rgb(253, 248, 241);
+
+  --colour-input-invalid: rgb(230, 37, 106);
+  --colour-input-invalid-50: rgba(230, 37, 106, 0.50);
+  --colour-input-invalid-25: rgba(230, 37, 106, 0.25);
+  --colour-input-invalid-12: rgba(230, 37, 106, 0.125);
+  --colour-input-invalid-shadow: rgba(230, 37, 106, 0.0625);
+  --colour-input-invalid-background: rgb(255, 240, 245);
+
+  --colour-input-valid: rgb(43, 167, 78);
+  --colour-input-valid-50: rgba(43, 167, 78, 0.50);
+  --colour-input-valid-25: rgba(43, 167, 78, 0.25);
+  --colour-input-valid-12: rgba(43, 167, 78, 0.125);
+  --colour-input-valid-shadow: rgba(43, 167, 78, 0.0625);
+  --colour-input-valid-background: rgb(240, 251, 243);
 
   --header-background-color: #481557;
   --header-text-color: #f2f4e7;
