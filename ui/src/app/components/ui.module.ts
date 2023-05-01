@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { AppRouterModule } from "../router.module";
 
 import { CardComponent } from "./card/card.component";
-import { ButtonComponent } from "./button/button.component";
+import { FangButtonComponent } from "./button/button.component";
 import { FangInputComponent } from "./input/input.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { ModalComponent } from "./modal/modal.component";
@@ -14,7 +14,7 @@ import { LoginModal } from "./modal/content/login/login.modal";
 
 @NgModule({
   declarations: [
-    ButtonComponent,
+    FangButtonComponent,
     CardComponent,
     FangInputComponent,
     ModalComponent,
@@ -28,7 +28,7 @@ import { LoginModal } from "./modal/content/login/login.modal";
     AppRouterModule
   ],
   exports: [
-    ButtonComponent,
+    FangButtonComponent,
     CardComponent,
     FangInputComponent,
     ModalComponent,
