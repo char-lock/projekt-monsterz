@@ -14,7 +14,7 @@ import { ValidationRule } from "src/app/types/other.types";
   templateUrl: "./input.component.html",
   styleUrls: ["./input.component.css"]
 })
-export class InputComponent implements DoCheck {
+export class FangInputComponent implements DoCheck {
 
   /** Placeholder text for the input. */
   @Input() placeholder: string = "Type your response here ...";

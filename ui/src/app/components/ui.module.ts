@@ -6,7 +6,7 @@ import { AppRouterModule } from "../router.module";
 
 import { CardComponent } from "./card/card.component";
 import { ButtonComponent } from "./button/button.component";
-import { InputComponent } from "./input/input.component";
+import { FangInputComponent } from "./input/input.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { ModalComponent } from "./modal/modal.component";
 import { ModalDirective } from "./modal/modal.directive";
@@ -16,7 +16,7 @@ import { LoginModal } from "./modal/content/login/login.modal";
   declarations: [
     ButtonComponent,
     CardComponent,
-    InputComponent,
+    FangInputComponent,
     ModalComponent,
     NavbarComponent,
     LoginModal,
@@ -30,7 +30,7 @@ import { LoginModal } from "./modal/content/login/login.modal";
   exports: [
     ButtonComponent,
     CardComponent,
-    InputComponent,
+    FangInputComponent,
     ModalComponent,
     NavbarComponent,
     LoginModal
