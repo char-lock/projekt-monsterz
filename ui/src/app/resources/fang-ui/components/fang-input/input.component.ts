@@ -1,5 +1,4 @@
 import { Component, Input, DoCheck, Output, EventEmitter } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
 import { LoggerService } from "src/app/services/logger.service";
 import { ValidationRule } from "src/app/types/other.types";
 
@@ -7,7 +6,6 @@ import { ValidationRule } from "src/app/types/other.types";
  * A generic input component for FangUI.
  * 
  * @class FangInputComponent
- * 
  */
 @Component({
   selector: "fang-input",
@@ -87,7 +85,7 @@ export class FangInputComponent implements DoCheck {
   }
 
   /** Generates a unique alphanumeric ID for the input element. */
-  private _generateUniqueId() {
+  private _generateUniqueId(): string {
     const idLength = 12;
     const availableCharacters = [
       "abcdefghijklmnopqrstuvwxyz",
@@ -184,7 +182,7 @@ export class FangInputComponent implements DoCheck {
    * Toggles whether or not the value for an input with a "password"
    * type should be visible to the user.
    */
-  public toggleVisibility() { 
+  public toggleVisibility(): void { 
     this._isPasswordVisible = !this._isPasswordVisible; 
   }
 

@@ -1,4 +1,4 @@
-.pm-card {
+.fang_card {
   min-height: 1vh;
   max-height: fit-content;
   min-width: 1vw;
@@ -22,7 +22,7 @@
   color: var(--colour-secondary-foreground);
 }
 
-.pm-card__shading {
+.fang_card--shading {
   position: absolute;
   
   width: 100%;
@@ -42,7 +42,7 @@
   z-index: 0;
 }
 
-.pm-card__highlight {
+.fang_card--highlight {
   position: absolute;
   
   height: calc(100% - 1em);
@@ -61,7 +61,7 @@
   z-index: 0;
 }
 
-.pm-card__content {
+.fang_card--content {
   user-select: text;
   letter-spacing: 0.0625em;
   z-index: 1;

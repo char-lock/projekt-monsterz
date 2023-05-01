@@ -5,33 +5,29 @@ import { FormsModule } from "@angular/forms";
 import { AppRouterModule } from "../router.module";
 
 import { CardComponent } from "./card/card.component";
-import { FangButtonComponent } from "./button/button.component";
-import { FangInputComponent } from "./input/input.component";
 import { NavbarComponent } from "./navbar/navbar.component";
-import { ModalComponent } from "./modal/modal.component";
-import { ModalDirective } from "./modal/modal.directive";
+import { FangModalComponent } from "./modal/modal.component";
+import { FangModalContentDirective } from "./modal/modal.directive";
 import { LoginModal } from "./modal/content/login/login.modal";
+import { FangModule } from "../resources/fang-ui/ngx-fang.module";
 
 @NgModule({
   declarations: [
-    FangButtonComponent,
     CardComponent,
-    FangInputComponent,
-    ModalComponent,
+    FangModalComponent,
     NavbarComponent,
     LoginModal,
-    ModalDirective
+    FangModalContentDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRouterModule
+    AppRouterModule,
+    FangModule
   ],
   exports: [
-    FangButtonComponent,
     CardComponent,
-    FangInputComponent,
-    ModalComponent,
+    FangModalComponent,
     NavbarComponent,
     LoginModal
   ]

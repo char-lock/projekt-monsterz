@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     },
     {
       label: "Login",
-      onClick: () => { this._modal.create("login"); },
+      onClick: () => { this._modal.show("login"); },
       displayCheck: () => { return !this._session.isValid(); }
     },
     {

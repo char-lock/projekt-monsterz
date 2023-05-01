@@ -16,7 +16,7 @@ export class WelcomePageComponent {
 
   /** Opens a modal for the Registration form.  */
   openModal() {
-    this._modal.create("register");
+    this._modal.show("register");
   }
 
 }

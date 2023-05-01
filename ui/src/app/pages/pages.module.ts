@@ -9,6 +9,7 @@ import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
 import { SuccessMessageComponent } from "./success-message/success-message.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomePage } from "./home/home.page";
+import { FangModule } from "../resources/fang-ui/ngx-fang.module";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HomePage } from "./home/home.page";
   imports: [
     UserInterfaceModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    FangModule
   ],
   exports: [
     LessonModuleComponent,
