@@ -215,9 +215,31 @@ export class ApiService {
    * the result through the callback function.
    */
   getLessonById(lessonId: number, callback: (n: CourseLesson) => void) {
-    this.getApi(`/course/lessons/${lessonId}`, undefined, (response: ApiResponse) => {
-      callback(<CourseLesson>response.data);
-    });
+    this.getApi(
+      `/course/lessons/${lessonId}`, 
+      undefined, 
+      (response: ApiResponse) => {
+        callback(<CourseLesson>response.data);
+      }
+    );
+  }
+
+  /**
+   * Requests the CourseLesson for a provided lesson position within a
+   * CourseUnit, and returns the result through the callback function.
+   */
+  getLessonByPosition(
+    unitId: number, 
+    lessonPosition: number, 
+    callback: (n: CourseLesson) => void
+  ) {
+    this.getApi(
+      `/course/units/${unitId}/lessons/${lessonPosition}`, 
+      undefined, 
+      (response: ApiResponse) => {
+        callback(<CourseLesson>response.data);
+      }
+    );
   }
 
   /** 

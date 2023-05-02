@@ -7,25 +7,83 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { SessionService } from "./session.service";
 import { User } from "../types/api.types";
 
+/**
+ * A service that handles the fetching, display, and progression of
+ * course content for the application.
+ * 
+ * @class ContentService
+ */
 @Injectable()
 export class ContentService {
 
-  private _questionList: CourseContent[] = [];
-  questionList = new BehaviorSubject<CourseContent[]>(this._questionList);
+  private _content: CourseContent[] = [];
+  /** 
+   * A list containing the content relevant to the current user's
+   * current lesson.
+   */
+  get content(): CourseContent[] {
+    return this._content;
+  }
+  set content(_: CourseContent[]) { 
+    /** This property is not settable externally. */ 
+  }
 
-  lessonId: number = 0;
-  contentId: number = 0;
-  contentPosition = 0;
+  private _contentSubject = new BehaviorSubject<CourseContent[]>(
+    this._content);
+  /**
+   * An observable subject that emits the value of content whenever
+   * the list is updated with new content.
+   */
+  get contentSubject(): BehaviorSubject<CourseContent[]> {
+    return this._contentSubject;
+  }
+  set contentSubject(_: BehaviorSubject<CourseContent[]>) { 
+    /** This property is not settable externally. */
+  }
 
-  private _currentQuestion: CourseContent | undefined = undefined;
-  private _questionSubscription: Subscription;
-  currentQuestion = new BehaviorSubject<CourseContent | undefined>(this._currentQuestion);
+  // Internal variables to track the current user's current position
+  // within the course.
+  private _unitId = 0;
+  private _lessonId = 0;
+  private _contentId = 0;
+  private _lessonPosition = 0;
+  private _contentPosition = 0;
 
-  private _answerList: string[] = [];
-  private _listSubscription: Subscription;
-  answerList = new BehaviorSubject<string[]>(this._answerList);
+  /** The current content data based upon the user's progress. */
+  get current(): CourseContent | undefined {
+    if (
+      this._contentPosition < 0 
+      || this._contentPosition > this._content.length
+    ) {
+      return undefined;
+    }
+    return this._content[this._contentPosition];
+  }
+  set current(_: CourseContent | undefined) {
+    /** This property is not settable externally. */
+  }
+  
+  private _currentSubject = new BehaviorSubject<CourseContent | undefined>(
+    this.current);
+  /** 
+   * An observable subject that emits the current content data whenever
+   * the user's progress changes.
+   */
+  get currentSubject(): BehaviorSubject<CourseContent | undefined> {
+    return this._currentSubject;
+  }
+  set currentSubject(_: BehaviorSubject<CourseContent | undefined>) {
+    /** This property is not settable externally. */
+  }
 
-  private _userSubscription: Subscription;
+  private _answers: string[] = [];
+  /** A list of answers, if any, for the current content. */
+  get answers(): string[] {
+    return this._answers;
+  }
+  set answers(_: string[]) {
+    /** This property is not settable externally. */
+  }
 
   constructor(
     private _api: ApiService,
@@ -34,41 +92,58 @@ export class ContentService {
     private _session: SessionService,
     private route: ActivatedRoute
   ) {
+    // Subscribes to the session's current user and updates the progress
+    // if a valid session has begun.
     this._session.userSubject.subscribe((change: User | undefined) => {
       if (change) {
-        this.lessonId = change.progress_lesson;
-        this.contentId = change.progress_content;
+        this._lessonId = change.progress_lesson;
+        this._contentId = change.progress_content;
+        _api.getLessonById(this._lessonId, (lesson) => {
+          this._unitId = lesson.unit_id;
+          this._lessonPosition = lesson.position;
+        });
+        _api.getContentById(this._contentId, (response) => {
+          this._contentPosition = response.position;
+        });
+        _api.getContentByLesson(this._lessonId, (allContent) => {
+          this._content = allContent;
+          this._contentSubject.next(allContent);
+        });
+      } else {
+        this._lessonId = 0;
+        this._contentId = 0;
+        this._unitId = 0;
+        this._lessonPosition = 0;
+        this._contentPosition = 0;
+        this._content = [];
+        this._contentSubject.next([]);
       }
     });
-
-    this._listSubscription = this.questionList.subscribe((change) => {
-      const filtered = change.filter(value => value.id === this.lessonId);
-      if (filtered.length > 0) {
-        this.contentPosition = change.indexOf(filtered[0]);
-      } else if (change.length > 0){
-        this.contentId = change[0].id;
-        this.contentPosition = 0;
-      }
-      if (this.contentPosition < change.length) {
-        this._currentQuestion = change[this.contentPosition];
-        this.currentQuestion.next(this._currentQuestion);
+    // Subscribes to the content and updates the current content based
+    // upon the data within.
+    this._contentSubject.subscribe((change) => {
+      if (change.length > 0) {
+        this._currentSubject.next(
+          this.current 
+            ? this.current 
+            : this.content[0]
+        );
+      } else {
+        this._currentSubject.next(undefined);
       }
     });
-
-    this._questionSubscription = this.currentQuestion.subscribe((change) => {
+    // Subscribes to the currently selected content and updates the
+    // answer list.
+    this._currentSubject.subscribe((change) => {
       if (change) {
-        this._answerList = change.other_answers.split(",")
-          .filter((_, index) => index < 3)
-          .concat([change.correct_answer]);
-        this.answerList.next(this._answerList);
-      }
-    });
-
-    this._userSubscription = this._session.userSubject.subscribe((change) => {
-      if (change) {
-        this.contentId = change.progress_content + 1;
-        this.lessonId = change.progress_lesson + 1;
-        this.updateQuestionList();
+        const update = change.other_answers.split(",")
+          .filter((_, index) => {
+            return index < 3;
+          })
+          .concat(change.correct_answer);
+        this._answers = update;
+      } else {
+        this._answers = [];
       }
     });
   }
@@ -77,19 +152,32 @@ export class ContentService {
     this._logger.log("content.service", func, message, meta);
   }
 
-  /** 
-   * Requests the question list for the current lesson using the API
-   * service, and updates the question list once received.
-   */
-  updateQuestionList() {
-    this._api.getContentByLesson(this.lessonId, (content: CourseContent[]) => {
-      this.log(
-        "updateQuestionList", 
-        `received ${content.length} content for lesson id ${this.lessonId}`
-      );
-      this._questionList = content;
-      this.questionList.next(content);
+  /** Updates the content based upon the currently set lesson ID. */
+  private _updateContent() {
+    this._api.getLessonById(this._lessonId, (lesson) => {
+      this._unitId = lesson.unit_id;
+      this._lessonPosition = lesson.position;
+      this._api.getContentByLesson(this._lessonId, (response) => {
+        this._content = response;
+        this._contentSubject.next(response);
+      })
     });
+  }
+
+  /** 
+   * Updates the lesson information based upon the currently set
+   * lesson position and unit ID.
+   */
+  private _updateLesson() {
+    this._api.getLessonByPosition(
+      this._unitId, 
+      this._lessonPosition, 
+      (lesson) => {
+        this._lessonId = lesson.id;
+        this._contentPosition = 0;
+        this._updateContent();
+      }
+    );
   }
 
   /** 
@@ -97,13 +185,13 @@ export class ContentService {
    * state accordingly.
    */
   nextContent() {
-    this.contentPosition++;
-    if (this.contentPosition >= this.questionList.value.length) {
+    if (this._content.length === 0) return;
+    this._contentPosition++;
+    if (this._contentPosition >= this._content.length) {
       this.log("nextContent", "reached end of available content");
       this.completeLesson();
     } else {
-      this._currentQuestion = this._questionList[this.contentPosition];
-      this.currentQuestion.next(this._currentQuestion);
+      this._currentSubject.next(this.current);
     }
   }
 
@@ -112,9 +200,7 @@ export class ContentService {
    * appropriate ending screen.
    */
   completeLesson() {
-    this.contentPosition = -1;
     this.nextLesson();
-    this.router.navigate(["/dashboard"], { relativeTo: this.route });
   }
 
   /** 
@@ -122,7 +208,14 @@ export class ContentService {
    * state accordingly.
    */
   nextLesson() {
-    // TODO: Implement the nextLesson method.
+    this._api.getUnitById(this._unitId, (unit) => {
+      if (this._lessonPosition < unit.lesson_count - 1) {
+        this._lessonPosition++;
+        this._updateLesson();
+      } else {
+        this.router.navigate(["/dashboard"], { relativeTo: this.route });
+      }
+    });
   }
 
   /** 
@@ -130,8 +223,9 @@ export class ContentService {
    * content's correct answer.
    */
   checkAnswer(guess: string) {
-    return this._currentQuestion
-      ? this._currentQuestion.correct_answer.toLowerCase() === guess.toLowerCase()
+    return this.current
+      ? this.current.correct_answer.toLowerCase() === guess.toLowerCase()
       : false;
   }
+
 }
