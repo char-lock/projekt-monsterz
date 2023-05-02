@@ -10,7 +10,7 @@ import { LoggerService } from "./services/logger.service";
 import { SessionService } from "./services/session.service";
 import { CookieService } from "./services/cookie.service";
 import { ValidationService } from './services/validation.service';
-import { ToastService } from './services/toast.service';
+import { ToasterService } from './services/toaster.service';
 import { ApiService } from './services/api.service';
 import { ContentService } from './services/content.service';
 import { LeaderboardService } from './services/leaderboard.service';
@@ -54,7 +54,7 @@ import { FangModule } from './resources/fang-ui/ngx-fang.module';
     ApiService,
     LeaderboardService,
     ContentService,
-    ToastService,
+    ToasterService,
     SessionService,
     ModalService,
   ],

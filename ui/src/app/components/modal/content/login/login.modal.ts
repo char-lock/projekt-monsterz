@@ -1,10 +1,5 @@
 import { Component } from "@angular/core";
-import { LoggerService } from "src/app/services/logger.service";
-import { ModalService } from "src/app/services/modal.service";
 import { SessionService } from "src/app/services/session.service";
-import { ToastService } from "src/app/services/toast.service";
-import { ValidationService } from "src/app/services/validation.service";
-import { ValidationMethod } from "src/app/types/api.types";
 
 @Component({
   selector: "[modalContentLogin]",

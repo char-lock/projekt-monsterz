@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { ToasterService } from "src/app/services/toaster.service";
 import { ValidationRule } from "src/app/types/other.types";
 
 /** A component defining the landing page for the application. */
@@ -23,8 +24,10 @@ export class HomePage {
     }
   ];
 
+  constructor(private _toaster: ToasterService) {}
+
   onClick() {
-    console.log("clicked");
+    this._toaster.toast("This is a test toast", "normal", 3000);
   }
 
 }

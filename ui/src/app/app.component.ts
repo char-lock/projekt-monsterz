@@ -5,6 +5,7 @@ import { LoggerService } from "./services/logger.service";
 import { SessionService } from "./services/session.service";
 import { NavLink } from "./types/other.types";
 import { ModalService } from "./services/modal.service";
+import { ToasterService } from "./services/toaster.service";
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
   constructor(
     private _session: SessionService,
     private _modal: ModalService,
+    private _toaster: ToasterService,
     private _logger: LoggerService
   ) {}
 

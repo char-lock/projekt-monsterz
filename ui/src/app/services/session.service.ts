@@ -5,7 +5,7 @@ import { LoggerService } from "./logger.service";
 import { BehaviorSubject } from "rxjs";
 import { NewUser, User, UserType, ValidationMethod } from "../types/api.types";
 import { CookieService } from "./cookie.service";
-import { ToastService } from "./toast.service";
+import { ToasterService } from "./toaster.service";
 
 /** 
  * A service that handles all session-related activities, including
@@ -45,7 +45,7 @@ export class SessionService {
   constructor(
     private _api: ApiService,
     private _cookie: CookieService,
-    private _toaster: ToastService,
+    private _toaster: ToasterService,
     private _logger: LoggerService
   ) {}
 
@@ -175,7 +175,7 @@ export class SessionService {
     this._api.registerUser(user, (registered: User | undefined) => {
       if (registered === undefined) {
         this.log("register", `failed to register as ${user.username}`);
-        return this._toaster.createToast("registration failed", "error");
+        return this._toaster.toast("registration failed", "failure");
       }
       this.log("register", `successfully registered new user "${user.username}"`);
       this.login(user.username, user.password);
@@ -192,7 +192,7 @@ export class SessionService {
     this._api.getAuthToken(username, password, (token: string) => {
       if (token === "") {
         this.log("login", `failed to login as ${username}`);
-        return this._toaster.createToast("login failed", "error");
+        return this._toaster.toast("login failed", "failure");
       }
       this._authToken = token;
       this._authTokenSubject.next(token);

@@ -10,6 +10,7 @@ import { FangModalComponent } from "./modal/modal.component";
 import { FangModalContentDirective } from "./modal/modal.directive";
 import { LoginModal } from "./modal/content/login/login.modal";
 import { FangModule } from "../resources/fang-ui/ngx-fang.module";
+import { FangToastComponent } from "./toast/toast.component";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FangModule } from "../resources/fang-ui/ngx-fang.module";
     FangModalComponent,
     NavbarComponent,
     LoginModal,
-    FangModalContentDirective
+    FangModalContentDirective,
+    FangToastComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { FangModule } from "../resources/fang-ui/ngx-fang.module";
     CardComponent,
     FangModalComponent,
     NavbarComponent,
-    LoginModal
+    LoginModal,
+    FangToastComponent
   ]
 })
 export class UserInterfaceModule {}
