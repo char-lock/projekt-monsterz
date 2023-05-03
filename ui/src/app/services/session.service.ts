@@ -49,8 +49,16 @@ export class SessionService {
     private _logger: LoggerService
   ) {}
 
-  /** Logs a message to the console from the SessionService.  */
-  private log(func: string, message: string, meta?: any) {
+  /** 
+   * Logs a message to the console from the SessionService.  
+   * 
+   * @param func Function from which the log originates
+   * 
+   * @param message Content of the log
+   * 
+   * @param meta Any additional data or information to log
+   */
+  private log(func: string, message: string, meta?: any): void {
     this._logger.log("session.service", func, message, meta);
   }
 
@@ -63,8 +71,11 @@ export class SessionService {
    * 
    * Alternatively, provide a callback if you would like to only
    * act on the results a single time.
+   * 
+   * @param callback (Optional) Function with which to handle
+   * success or failure of the refresh.
    */
-  refresh(callback?: (success: boolean) => void) {
+  public refresh(callback?: (success: boolean) => void): void {
     this._refreshedOn = Date.now();
     this._api.refreshAuthToken(this.authToken, (token) => {
       this._authToken = token;
@@ -78,7 +89,7 @@ export class SessionService {
    * Encodes the current session data into base64 and returns it as a
    * string for storage.
    */
-  export() {
+  private _export(): string {
     const data = { 
       authToken: this._authToken, 
       user: this._user, 
@@ -95,8 +106,15 @@ export class SessionService {
     return enc;
   }
 
-  /** Imports session data from a base64 encoded string. */
-  import(data: string) {
+  /** 
+   * Imports session data from a base64 encoded string. 
+   * 
+   * @param data Base64-encoded JSON data for a previous session
+   */
+  private _import(data: string): void {
+    if (data === "") {
+      return this.log("import", "blank session provided");
+    }
     this.log("import", `importing session from "${data}" ...`);
     const plaintext = Buffer.from(data, "base64").toString();
     this.log("import", `session data decoded to\n${plaintext}`);
@@ -127,7 +145,7 @@ export class SessionService {
    * Returns whether or not the current session is valid with a defined
    * and authenticated user.
    */
-  isValid() {
+  public isValid(): boolean {
     if (Date.now() > this._refreshedOn + (15 * 60 * 1000)
       && this.authToken !== ""
       && this._refreshedOn !== -1
@@ -141,23 +159,23 @@ export class SessionService {
    * Exports the current session to a cookie labelled as 
    * "projekt_monsterz.session".
    */
-  exportToCookie() {
-    this._cookie.saveAs("projekt_monsterz.session", this.export());
+  public exportToCookie(): void {
+    this._cookie.saveAs("projekt_monsterz.session", this._export());
   }
 
   /**
    * Attempts to import a session from a cookie labelled as
    * "projekt_monsterz.session".
    */
-  importFromCookie() {
-    this.import(this._cookie.load("projekt_monsterz.session"));
+  public importFromCookie(): void {
+    this._import(this._cookie.load("projekt_monsterz.session"));
   }
 
   /** 
    * Clears out all of the current session data and deletes the
    * session's cookie data.
    */
-  revoke() {
+  public revoke(): void {
     this.log("revoke", "revoking the current session ...");
     this._authToken = "";
     this._authTokenSubject.next("");
@@ -168,16 +186,26 @@ export class SessionService {
     this._cookie.delete("projekt_monsterz.session");
   }
 
-  /** Attempts to register a new user with the provided details. */
-  register(user: NewUser) {
+  /** 
+   * Attempts to register a new user with the provided details. 
+   * 
+   * @param user Data for the new user to register
+   */
+  public register(user: NewUser): void {
     user.username = user.username.toLowerCase();
     this.log("register", "registering new user ...", user);
     this._api.registerUser(user, (registered: User | undefined) => {
       if (registered === undefined) {
-        this.log("register", `failed to register as ${user.username}`);
+        this.log(
+          "register", 
+          `failed to register as ${user.username}`
+        );
         return this._toaster.toast("registration failed", "failure");
       }
-      this.log("register", `successfully registered new user "${user.username}"`);
+      this.log(
+        "register", 
+        `successfully registered new user "${user.username}"`
+      );
       this.login(user.username, user.password);
     });
   }
@@ -185,8 +213,12 @@ export class SessionService {
   /**
    * Attempts to authenticate a user using the provided credentials and
    * updates the session upon success.
+   * 
+   * @param username Username for the user as which to login
+   * 
+   * @param password Plaintext password for the user
    */
-  login(username: string, password: string) {
+  public login(username: string, password: string): void {
     username = username.toLowerCase();
     this.log("login", `logging in as "${username}" ...`);
     this._api.getAuthToken(username, password, (token: string) => {
