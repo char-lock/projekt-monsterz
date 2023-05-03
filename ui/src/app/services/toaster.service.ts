@@ -20,7 +20,15 @@ export class ToasterService {
     private _logger: LoggerService
   ) {}
 
-  /** Writes a log to the console from the toaster service. */
+  /** 
+   * Writes a log to the console from the toaster service. 
+   * 
+   * @param func Name of the function from which the log originates
+   * 
+   * @param message Content of the log
+   * 
+   * @param meta (Optional) Any data or information to log
+   */
   private log(func: string, message: string, meta?: any) {
     this._logger.log("toast.service", func, message, meta);
   }
@@ -28,12 +36,14 @@ export class ToasterService {
   /** 
    * Creates a new toast message and displays it.
    * 
-   * @param message - Message to display in the toast
+   * @param message Message to display in the toast
    * 
-   * @param closeAfter - (Optional) Delay in milliseconds before
-   * closing the toast
+   * @param level Severity of the toast to display
    * 
-   * @param title - (Optional) Short description to display at the top
+   * @param closeAfter (Optional) Delay in milliseconds before closing
+   * the toast
+   * 
+   * @param title (Optional) Short description to display at the top
    * of the toast
    */
   public toast(
@@ -68,7 +78,10 @@ export class ToasterService {
       this._toastRef.instance.close(closeAfter);
   }
 
-  /** Detaches the current toast instance and clears it from the service. */
+  /** 
+   * Detaches the current toast instance and clears it from the 
+   * service. 
+   */
   private _destroy() {
     if (this._toastRef) {
       this._app.detachView(this._toastRef.hostView);
