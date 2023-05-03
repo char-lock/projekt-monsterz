@@ -13,13 +13,16 @@ import { LeaderboardEntry } from "../types/other.types";
 @Injectable()
 export class LeaderboardService {
 
-  /** Whether or not the leaderboards need to be updated. */
+  /** 
+   * (Read-only)
+   * Whether or not the leaderboards need to be updated. 
+   */
   get needsUpdate() { 
     return Date.now() >= this._lastUpdatedOn + (15 * 60 * 1000)
       && this._lastUpdatedOn !== -1;
   }
-  set needsUpdate(_: boolean) { /** This property cannot be set. */ }
 
+  // Internal dictionary for storing the current leaderboard.
   private _leaderboard: { [key: string]: LeaderboardEntry[] } = {
     "global": [],
     "class": []
@@ -41,7 +44,8 @@ export class LeaderboardService {
   // Internal property to track when the leaderboard was last updated.
   private _lastUpdatedOn: number = -1;
 
-  // Internal properties to track if an update is currently in progress.
+  // Internal properties to track if an update is currently in 
+  // progress.
   private _globalUpdateInProgress = false;
   private _classUpdateInProgress = false;
 
@@ -58,21 +62,20 @@ export class LeaderboardService {
     });
   }
 
-  /** Writes a log to the console as the leaderboard service. */
+  /** 
+   * Writes a log to the console as the leaderboard service. 
+   * 
+   * @param func Name of the originating function
+   * 
+   * @param message Content of the log
+   * 
+   * @param meta (Optional) Any additional data or information to log 
+   */
   private log(func: string, message: string, meta?: any) {
     this._logger.log("leaderboard.service", func, message, meta);
   }
 
-  // Deprecated methods to allow unchanged segments to function.
-  /** @deprecated Prefer `leaderboard()` */
-  public GetGlobalLeaderboard(): LeaderboardEntry[] { 
-    return this.leaderboard(true); 
-  }
-  /** @deprecated Prefer `leaderboard()` */
-  public GetClassLeaderboard(): LeaderboardEntry[] { 
-    return this.leaderboard(false); 
-  }
-
+  /** Updates both leaderboards with the most current top scores. */
   public update(): void {
     this.log("update", "Updating the leaderboard ...");
     this._lastUpdatedOn = Date.now();
