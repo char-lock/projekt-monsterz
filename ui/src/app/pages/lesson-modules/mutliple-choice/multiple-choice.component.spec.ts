@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MutlipleChoiceComponent } from './mutliple-choice.component';
+import { MultipleChoiceComponent } from './multiple-choice.component';
 
-describe('MutlipleChoiceComponent', () => {
-  let component: MutlipleChoiceComponent;
-  let fixture: ComponentFixture<MutlipleChoiceComponent>;
+describe('MultipleChoiceComponent', () => {
+  let component: MultipleChoiceComponent;
+  let fixture: ComponentFixture<MultipleChoiceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MutlipleChoiceComponent]
+      declarations: [MultipleChoiceComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(MutlipleChoiceComponent);
+    fixture = TestBed.createComponent(MultipleChoiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

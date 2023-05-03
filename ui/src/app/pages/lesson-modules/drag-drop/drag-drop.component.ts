@@ -12,7 +12,7 @@ import { LoggerService } from 'src/app/services/logger.service';
 export class DragDropComponent implements OnInit, OnDestroy {
   selectedAnswer: string = '';
 
-  currentQuestion = this._content.currentQuestion.value;
+  currentQuestion = this._content.current;
   private subscription: Subscription;
 
   constructor(
@@ -20,7 +20,7 @@ export class DragDropComponent implements OnInit, OnDestroy {
     private _session: SessionService,
     private _logger: LoggerService
   ) {
-    this.subscription = this._content.currentQuestion.subscribe((change) => {
+    this.subscription = this._content.currentSubject.subscribe((change) => {
       this.currentQuestion = change;
     })
   }
@@ -38,7 +38,7 @@ export class DragDropComponent implements OnInit, OnDestroy {
   }
 
   getAnswerSet() {
-    return this._content.answerList.value;
+    return this._content.answers;
   }
 
   checkForRightAnswerDrag() {
@@ -52,6 +52,7 @@ export class DragDropComponent implements OnInit, OnDestroy {
     console.log($event.text);
 
   }
+  
   onDrop($event: any) {
     $event.preventDefault();
     console.log("On Drop Called");
@@ -66,11 +67,14 @@ export class DragDropComponent implements OnInit, OnDestroy {
     this.selectedAnswer = data;
     console.log(this.selectedAnswer);
   }
+  
   allowDrop($event: any) {
     $event.preventDefault();
   }
+  
   clearCurrentDragArea() {
     this.selectedAnswer = '';
     document!.getElementById('answerbox')!.innerText = 'Enter the Right Answer Here!';
   }
+
 }

@@ -1,11 +1,11 @@
 <div class="reading-container">
-     <div class="directions">
-          <p>Complete the reading below, upon completion click the button that says next!</p>
-     </div>
-     <p>
-          {{ getContent() }}
-     </p>
+  <div class="directions">
+    <p>Complete the reading below, upon completion click the button that says next!</p>
+  </div>
+  <p>
+    {{ current ? current.content_detail : "" }}
+  </p>
 </div>
-<button class="reading-button" (click)="finishReading()">
-     Next
+<button class="reading-button" (click)="finish()">
+  Next
 </button>

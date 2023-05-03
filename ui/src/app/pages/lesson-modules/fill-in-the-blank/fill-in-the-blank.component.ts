@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 import { ContentService } from 'src/app/services/content.service';
 
 @Component({
@@ -7,32 +6,20 @@ import { ContentService } from 'src/app/services/content.service';
   templateUrl: './fill-in-the-blank.component.html',
   styleUrls: ['../lesson-module.component.css']
 })
-export class FillInTheBlankComponent implements OnInit, OnDestroy {
+export class FillInTheBlankComponent {
 
-  selectedAnswer: string = '';
-  currentQuestion = this.contentService.currentQuestion.value;
-  subscription: Subscription;
+  public current = this._content.current;
 
-  constructor(
-    private contentService: ContentService
-  ) {
-    this.subscription = this.contentService.currentQuestion.subscribe((change) => {
-      this.currentQuestion = change;
-    })
+  constructor(private _content: ContentService) {
+    this._content.currentSubject.subscribe((change) => {
+      if (change) this.current = change;
+    });
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  ngOnInit(): void {
-  }
-
-  getQuestionText() {
-    return this.currentQuestion?.content_detail;
-  }
-
-  checkForRightAnswer(value: string) {
+  /** Checks the user's guess and handles the redirect if correct. */
+  checkAnswer(guess: string) {
+    const correct = this._content.checkAnswer(guess);
+    if (correct) this._content.nextContent();
   }
 
 }

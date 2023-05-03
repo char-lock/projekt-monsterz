@@ -16,7 +16,7 @@ export class LessonModuleComponent implements OnInit, OnDestroy {
   currentProgress: number = 0;
   selectedAnswer: string = '';
 
-  currentQuestion = this.contentService.currentQuestion.value;
+  currentQuestion = this.contentService.current;
   private subscription: Subscription;
 
   contentType: number = 0;
@@ -28,7 +28,7 @@ export class LessonModuleComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private _logger: LoggerService
   ) {
-    this.subscription = this.contentService.currentQuestion.subscribe((change) => {
+    this.subscription = this.contentService.currentSubject.subscribe((change) => {
       this.log("constructor", "subscription to current question triggered");
       if (change !== undefined) {
         this.log("constructor", "appropriate change detected");
@@ -49,10 +49,6 @@ export class LessonModuleComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
-  }
-
-  ngAfterViewInit(): void {
-    this.contentService.updateQuestionList();
   }
 
   navigateToCorrectLesson() {

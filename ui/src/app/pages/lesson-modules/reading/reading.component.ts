@@ -1,9 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { ContentService } from '../../../../app/services/content.service';
-import { Subscription } from 'rxjs';
+import { 
+  ContentService 
+} from '../../../../app/services/content.service';
 
+/** 
+ * A display for course content that is intended to be read. 
+ * 
+ * @class ReadingComponent
+ */
 @Component({
   selector: 'app-reading',
   templateUrl: './reading.component.html',
@@ -11,26 +16,19 @@ import { Subscription } from 'rxjs';
 })
 export class ReadingComponent {
 
-  currentQuestion = this.contentService.currentQuestion.value;
-  private subscription: Subscription;
-  constructor(
-    private contentService: ContentService
-  ) {
-    this.subscription = this.contentService.currentQuestion.subscribe((change) => {
-      this.currentQuestion = change;
-    })
+  public current = this._content.current;
+
+  constructor(private _content: ContentService) {
+    // A subscription to the content service to update the content
+    // to display.
+    this._content.currentSubject.subscribe((change) => {
+      if (change) this.current = change;
+    });
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe()
+  /** Handles when the user finishes reading the current content. */
+  public finish() {
+    this._content.nextContent();
   }
-
-  ngOnInit(): void {}
-
-  getContent() {
-    return this.currentQuestion?.content_detail;
-  }
-
-  finishReading() {}
 
 }

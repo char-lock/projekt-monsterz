@@ -9,7 +9,6 @@ import { PagesModule } from './pages/pages.module';
 import { LoggerService } from "./services/logger.service";
 import { SessionService } from "./services/session.service";
 import { CookieService } from "./services/cookie.service";
-import { ValidationService } from './services/validation.service';
 import { ToasterService } from './services/toaster.service';
 import { ApiService } from './services/api.service';
 import { ContentService } from './services/content.service';
@@ -18,7 +17,7 @@ import { ModalService } from './services/modal.service';
 
 import { AppComponent } from './app.component';
 import { DragDropComponent } from './pages/lesson-modules/drag-drop/drag-drop.component';
-import { MutlipleChoiceComponent } from './pages/lesson-modules/mutliple-choice/mutliple-choice.component';
+import { MultipleChoiceComponent } from './pages/lesson-modules/mutliple-choice/multiple-choice.component';
 import { ReadingComponent } from './pages/lesson-modules/reading/reading.component';
 import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component';
 
@@ -34,7 +33,7 @@ import { FangModule } from './resources/fang-ui/ngx-fang.module';
     AppComponent,
     MonsterCageBackgroundDirective,
     DragDropComponent,
-    MutlipleChoiceComponent,
+    MultipleChoiceComponent,
     ReadingComponent,
     FillInTheBlankComponent
   ],
@@ -49,7 +48,6 @@ import { FangModule } from './resources/fang-ui/ngx-fang.module';
   ],
   providers: [
     LoggerService,
-    ValidationService,
     CookieService,
     ApiService,
     LeaderboardService,

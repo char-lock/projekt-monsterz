@@ -3,7 +3,12 @@ import { Buffer } from "buffer";
 import { ApiService } from "./api.service";
 import { LoggerService } from "./logger.service";
 import { BehaviorSubject } from "rxjs";
-import { NewUser, User, UserType, ValidationMethod } from "../types/api.types";
+import { 
+  NewUser, 
+  User, 
+  UserType, 
+  ValidationMethod 
+} from "../types/api.types";
 import { CookieService } from "./cookie.service";
 import { ToasterService } from "./toaster.service";
 

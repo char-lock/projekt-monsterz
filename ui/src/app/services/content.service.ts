@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { ApiService } from "./api.service";
 import { CourseContent } from "../types/api.types";
 import { LoggerService } from "./logger.service";

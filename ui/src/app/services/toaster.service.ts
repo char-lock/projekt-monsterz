@@ -1,6 +1,14 @@
-import { ApplicationRef, createComponent, ComponentRef, EnvironmentInjector, Injectable } from "@angular/core";
+import { 
+  ApplicationRef, 
+  createComponent, 
+  ComponentRef, 
+  EnvironmentInjector, 
+  Injectable 
+} from "@angular/core";
 import { LoggerService } from "./logger.service";
-import { FangToastComponent } from "../components/toast/toast.component";
+import { 
+  FangToastComponent 
+} from "../components/toast/toast.component";
 
 /**
  * A service that handles the creation, display, and destruction of
