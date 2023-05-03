@@ -12,7 +12,15 @@ export class CookieService {
 
   constructor(private _logger: LoggerService) {}
 
-  /** Logs a message to the console source from the CookieService. */
+  /** 
+   * Logs a message to the console source from the CookieService.
+   * 
+   * @param func Name of the originating function
+   * 
+   * @param message Content of the log
+   * 
+   * @param meta (Optional) Any additional data or information to log
+   */
   private log(func: string, message: string, meta?: any) {
     this._logger.log("cookie.service", func, message, meta);
   }
@@ -20,8 +28,12 @@ export class CookieService {
   /** 
    * Saves the provided string value to a cookie with the provided
    * label.
+   * 
+   * @param label Name of the cookie
+   * 
+   * @param content Content to store within the cookie
    */
-  saveAs(label: string, content: string) {
+  public saveAs(label: string, content: string): void {
     const expiresOn = new Date(Date.now() + (60 * 60 * 1000));
     const cookieData = [
       `${label}=${content}`,
@@ -36,8 +48,12 @@ export class CookieService {
     ].join("; ");
   }
 
-  /** Returns the data stored within a cookie with the matching label. */
-  load(label: string) {
+  /** 
+   * Returns the data stored within a cookie with the matching label. 
+   * 
+   * @param label Name of the desired cookie
+   */
+  public load(label: string): string {
     this.log("load", `loading cookie with label "${label}" ...`);
     const cookies = `; ${document.cookie}`.split(`; ${label}=`);
     if (cookies.length === 2) {
@@ -51,8 +67,12 @@ export class CookieService {
     return "";
   }
 
-  /** Deletes all data for the specified cookie. */
-  delete(label: string) {
+  /** 
+   * Deletes all data for the specified cookie. 
+   *
+   * @param label Name of the cookie to be deleted 
+   */
+  public delete(label: string): void {
     this.log("delete", `deleting cookie with label "${label}" ...`);
     const expiresOn = new Date(Date.now() + (-1 * 24 * 60 * 60 * 1000));
     document.cookie = [
