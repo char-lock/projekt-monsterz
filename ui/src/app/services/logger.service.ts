@@ -9,11 +9,24 @@ import { isDevMode } from "@angular/core";
 @Injectable()
 export class LoggerService {
 
-  /** Logs the provided information to the console. */
+  /** 
+   * Formats and writes the provided information to the console.
+   *
+   * @param sourceFile File from which the log originates
+   * 
+   * @param sourceFunc Function from which the log originates
+   * 
+   * @param message Content of the log
+   * 
+   * @param meta (Optional) Any additional data or information to log 
+   */
   log(sourceFile: string, sourceFunc: string, message: string, meta?: any) {
     if (isDevMode()) {
       const timestamp = new Date(Date.now()).toISOString();
-      console.log(`[${timestamp} | DEBUG]: (${sourceFile}::${sourceFunc}) ${message}`);
+      console.log(
+        `[${timestamp} | DEBUG]: `
+        + `(${sourceFile}::${sourceFunc}) ${message}`
+      );
       if (meta) console.log(JSON.stringify(meta));
     }
   }
