@@ -18,27 +18,23 @@ export class ContentService {
 
   private _content: CourseContent[] = [];
   /** 
+   * (Read-only)
    * A list containing the content relevant to the current user's
    * current lesson.
    */
   get content(): CourseContent[] {
     return this._content;
   }
-  set content(_: CourseContent[]) { 
-    /** This property is not settable externally. */ 
-  }
 
   private _contentSubject = new BehaviorSubject<CourseContent[]>(
     this._content);
   /**
+   * (Read-only)
    * An observable subject that emits the value of content whenever
    * the list is updated with new content.
    */
   get contentSubject(): BehaviorSubject<CourseContent[]> {
     return this._contentSubject;
-  }
-  set contentSubject(_: BehaviorSubject<CourseContent[]>) { 
-    /** This property is not settable externally. */
   }
 
   // Internal variables to track the current user's current position
@@ -49,7 +45,10 @@ export class ContentService {
   private _lessonPosition = 0;
   private _contentPosition = 0;
 
-  /** The current content data based upon the user's progress. */
+  /** 
+   * (Read-only)
+   * The current content data based upon the user's progress. 
+   */
   get current(): CourseContent | undefined {
     if (
       this._contentPosition < 0 
@@ -59,30 +58,25 @@ export class ContentService {
     }
     return this._content[this._contentPosition];
   }
-  set current(_: CourseContent | undefined) {
-    /** This property is not settable externally. */
-  }
   
   private _currentSubject = new BehaviorSubject<CourseContent | undefined>(
     this.current);
   /** 
+   * (Read-only)
    * An observable subject that emits the current content data whenever
    * the user's progress changes.
    */
   get currentSubject(): BehaviorSubject<CourseContent | undefined> {
     return this._currentSubject;
   }
-  set currentSubject(_: BehaviorSubject<CourseContent | undefined>) {
-    /** This property is not settable externally. */
-  }
 
   private _answers: string[] = [];
-  /** A list of answers, if any, for the current content. */
+  /**
+   * (Read-only) 
+   * A list of answers, if any, for the current content. 
+   */
   get answers(): string[] {
     return this._answers;
-  }
-  set answers(_: string[]) {
-    /** This property is not settable externally. */
   }
 
   constructor(
@@ -148,7 +142,16 @@ export class ContentService {
     });
   }
 
-  log(func: string, message: string, meta?: any) {
+  /**
+   * Writes a log message to the console from the content service.
+   * 
+   * @param func Function from which the log originates
+   * 
+   * @param message Content of the log
+   * 
+   * @param meta Any additional data or information to log
+   */
+  private log(func: string, message: string, meta?: any) {
     this._logger.log("content.service", func, message, meta);
   }
 
@@ -184,12 +187,12 @@ export class ContentService {
    * Shifts to the next content in line and updates the internal service
    * state accordingly.
    */
-  nextContent() {
+  public nextContent() {
     if (this._content.length === 0) return;
     this._contentPosition++;
     if (this._contentPosition >= this._content.length) {
       this.log("nextContent", "reached end of available content");
-      this.completeLesson();
+      this._completeLesson();
     } else {
       this._currentSubject.next(this.current);
     }
@@ -199,15 +202,15 @@ export class ContentService {
    * Updates the internal service state and redirects the user to an
    * appropriate ending screen.
    */
-  completeLesson() {
-    this.nextLesson();
+  private _completeLesson() {
+    this._nextLesson();
   }
 
   /** 
    * Shifts to the next content in line and updates the internal service
    * state accordingly.
    */
-  nextLesson() {
+  private _nextLesson() {
     this._api.getUnitById(this._unitId, (unit) => {
       if (this._lessonPosition < unit.lesson_count - 1) {
         this._lessonPosition++;
@@ -221,8 +224,10 @@ export class ContentService {
   /** 
    * Returns whether or not a provided answer matches the current
    * content's correct answer.
+   * 
+   * @param guess Answer to check agains the current correct answer
    */
-  checkAnswer(guess: string) {
+  public checkAnswer(guess: string) {
     return this.current
       ? this.current.correct_answer.toLowerCase() === guess.toLowerCase()
       : false;
