@@ -97,8 +97,11 @@ export class DashboardComponent implements OnInit {
 
   getLeaderboard() {
     return (this.globalLeaderboardSelected)
-      ? this.leaderboardService.GetGlobalLeaderboard()
-      : this.leaderboardService.GetClassLeaderboard();
+      ? this.leaderboardService.GetGlobalLeaderboard().sort((a, b) => {
+        return b.score - a.score;
+      })
+      : this.leaderboardService.GetClassLeaderboard().sort((a, b) => {
+        return b.score - a.score;
+      })
   }
-
 }

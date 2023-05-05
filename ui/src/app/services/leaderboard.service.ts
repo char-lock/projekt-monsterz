@@ -35,7 +35,7 @@ export class LeaderboardService {
 
   get needUpdate() {
     return (
-      Date.now() >= this.updatedOn + (15 * 60 * 1000) 
+      Date.now() >= this.updatedOn + (15 * 60 * 1000)
       && this.updatedOn !== -1
     );
   }
@@ -58,16 +58,27 @@ export class LeaderboardService {
       this.updatingGlobal = true;
       this.leaderboardGlobal = [];
       this._api.getUsersByScore(5, (users) => {
-        this._api.getUserScores(users, (score) => { this.leaderboardGlobal.push(score); if (this.leaderboardGlobal.length === users.length) { this.updatingGlobal = false; }});
+        this._api.getUserScores(
+          users.filter((a) => {
+            if (a.username === this._user.getCurrentUsername()) {
+              a.username = 'YOU'
+            }
+            return a;
+          }),
+          (score) => {
+            this.leaderboardGlobal.push(score);
+            if (this.leaderboardGlobal.length === users.length) { this.updatingGlobal = false; }
+          });
       });
     }
     if (!this.updatingClass) {
       this.updatingClass = true;
       this.leaderboardClass = [];
       this._api.getClassUsersByScore(this._user.getClassCode(), 5, (users) => {
-        this._api.getUserScores(users, (score) => { this.leaderboardClass.push(score); if (this.leaderboardClass.length === users.length) { this.updatingGlobal = false; }});
+        this._api.getUserScores(users.filter((a) =>
+          a.username !== this._user.getCurrentUsername()),
+          (score) => { this.leaderboardClass.push(score); if (this.leaderboardClass.length === users.length) { this.updatingGlobal = false; } });
       });
     }
   }
-
 }

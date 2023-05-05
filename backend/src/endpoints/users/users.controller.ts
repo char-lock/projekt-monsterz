@@ -114,7 +114,7 @@ export default class UsersController {
       validated_on: "-1",
       validation_method: validation_method,
       validation_value: validation_value,
-      progress_lesson: 0,
+      progress_lesson: 1,
       progress_content: 0
     }
     // The first part of the user registration process is to add
