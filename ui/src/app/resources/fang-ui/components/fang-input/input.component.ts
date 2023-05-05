@@ -46,12 +46,10 @@ export class FangInputComponent implements DoCheck {
   private _everFocused = false;
   /** Whether or not this input has ever had the user's focus. */
   get everFocused() { return this._everFocused; }
-  set everFocused(_: boolean) { /** This property cannot be set externally. */ }
 
   private _isPasswordVisible = false;
   /** Whether the password has been toggled so that the user can view it. */
   get isPasswordVisible() { return this._isPasswordVisible; }
-  set isPasswordVisible(_: boolean) { /** This property cannot be set externally. */ }
 
   /** The text written to the input element at any given moment. */
   public inputValue: string = "";
@@ -81,6 +79,7 @@ export class FangInputComponent implements DoCheck {
         + `(updated value): "${this.inputValue}"`
       );
       this._onInputChange();
+      this._lastKnownValue = this.inputValue;
     }
   }
 
@@ -142,7 +141,6 @@ export class FangInputComponent implements DoCheck {
       : ["fang_input--input", "invalid"];
     // Finally, we'll update our last known value and send the value
     // out through the emitter.
-    this._lastKnownValue = this.inputValue;
     this.value.next(this.inputValue);
   }
 

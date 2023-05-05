@@ -1,5 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { LoggerService } from "src/app/services/logger.service";
+import { SessionService } from "src/app/services/session.service";
 import { ToasterService } from "src/app/services/toaster.service";
 
 /** 
@@ -23,6 +24,10 @@ export class FangButtonComponent {
   /** Size of the button represented as a percentage of the original. */
   @Input() scale: number = 1;
 
-  constructor(private _logger: LoggerService, private _toaster: ToasterService) {}
+  constructor(
+    private _logger: LoggerService, 
+    private _toaster: ToasterService,
+    private _session: SessionService
+  ) {}
 
 }

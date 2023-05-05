@@ -229,7 +229,7 @@ export class SessionService {
     this._api.getAuthToken(username, password, (token: string) => {
       if (token === "") {
         this.log("login", `failed to login as ${username}`);
-        return this._toaster.toast("login failed", "failure");
+        return this._toaster.toast("Failed to login!", "failure", 3000, "Login Failed!");
       }
       this._authToken = token;
       this._authTokenSubject.next(token);
