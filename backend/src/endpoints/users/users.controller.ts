@@ -215,5 +215,39 @@ export default class UsersController {
         res.status(500).describe("unknown server error occurred").send();
       });
   }
+  
+  static updateUserProgress(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = UsersController.fileLogger.createFunctionLogger("updateUserScore");
+    const username = req.params.username;
+    let response;
+    const {
+      contentProgress,
+    } = req.body;
+    logger.debug(`request recieved: get user with username ${username}`);
+    if (contentProgress < 10)
+    {
+      response = UsersData.updateContentProgressByUsername(username);
+    }
+    else {
+      response = UsersData.updateLessonProgressByUsername(username);
+    }
+    response.then((user) => {
+      if (user === undefined) {
+        logger.debug(`could not find user with username ${username}`);
+        return res
+          .status(404)
+          .describe(`could not find user with username ${username}`)
+          .send();
+      }
+      logger.debug(`found user with username ${username} and updated content progress`);
+      res.send([user.progress_content, 
+        user.progress_lesson]);
+      })
+    .catch((reject) => {
+      logger.error(reject);
+      res.status(500).describe("unknown server error occurred").send();
+    });
+  }
 
 }

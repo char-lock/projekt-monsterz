@@ -282,4 +282,20 @@ export class ApiService {
     return lessonProgress + (contentProgress * singleLesson);
   }
 
+  updateProgressByUsername(username: string, contentProgress: number,
+    callback: (n: Array<number>) => void) {
+    this.log("updateScoreByUsername", username);
+    this.postApi(`/users/username/${username}/updateprogress`, 
+    `{"contentProgress": "${contentProgress}"}`,
+    undefined,
+      (response: ApiResponse) => {
+      if (response.data) {
+        callback(response.data);
+        //Returns content and lesson number!
+      } else {
+        this.log("updateScoreByUsername", "failed to update score", response);
+      }
+     });
+  }
+
 }

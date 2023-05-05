@@ -121,4 +121,34 @@ export default class UsersData {
       });
   }
 
+  static updateContentProgressByUsername(userName: string) {
+    const logger = UsersData.fileLogger.createFunctionLogger("update User Content Progress");
+    logger.debug(`getting user with username ${userName} from database ...`);
+    return UsersData.prisma.user.update({
+      where: {
+        username: userName,
+      },
+      data: {
+        progress_content: {
+          increment: 1,
+        }
+      }
+    })
+  }
+  static updateLessonProgressByUsername(userName: string) {
+    const logger = UsersData.fileLogger.createFunctionLogger("update User Content Progress");
+    logger.debug(`getting user with username ${userName} from database ...`);
+    return UsersData.prisma.user.update({
+      where: {
+        username: userName,
+      },
+      data: {
+        progress_content: 0,
+        progress_lesson: {
+          increment: 1,
+        }
+      }
+    })
+  }
+
 }
