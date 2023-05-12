@@ -20,6 +20,6 @@ router.get("/validation/:value", UsersController.getUsersByValidationValue);
 router.post("/", UsersController.createUser);
 
 // Updates a user's score.
-router.post("/username/:username/updateprogress", UsersController.updateUserProgress);
+router.post("/username/:username/progress", UsersController.postUserProgressByUsername);
 
 export default router;

@@ -251,7 +251,7 @@ export class ApiService {
     });
   }
 
-  getUserScores(users: User[], callback: (n: LeaderboardEntry) => void ) {
+  getUserScores(users: User[], currentUserName: string, callback: (n: LeaderboardEntry) => void ) {
     this.log("getUserScores", "retrieving scores for users", users);
     users.forEach((user, index) => {
       this.getLessonById(user.progress_lesson + 1, (lesson) => {
@@ -261,10 +261,11 @@ export class ApiService {
               lesson.position, unit.lesson_count, 
               content.position, lesson.content_count
             );
-            callback({
-              username: user.username,
+            callback(
+              {
+              username: user.username == currentUserName ? 'YOU' : user.username,
               percent: percent,
-              score: Math.floor(percent * 10000)
+              score: Math.floor(percent * 10000),
             });
           });
         });
@@ -282,11 +283,12 @@ export class ApiService {
     return lessonProgress + (contentProgress * singleLesson);
   }
 
-  updateProgressByUsername(username: string, contentProgress: number,
+  postProgressByUsername(username: string, contentProgress: number,
+    contentLength: number,
     callback: (n: Array<number>) => void) {
     this.log("updateScoreByUsername", username);
-    this.postApi(`/users/username/${username}/updateprogress`, 
-    `{"contentProgress": "${contentProgress}"}`,
+    this.postApi(`/users/username/${username}/progress`, 
+    `{"contentProgress": "${contentProgress}", "contentLength": "${contentLength}"}`,
     undefined,
       (response: ApiResponse) => {
       if (response.data) {

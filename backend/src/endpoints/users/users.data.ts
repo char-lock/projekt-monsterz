@@ -121,7 +121,7 @@ export default class UsersData {
       });
   }
 
-  static updateContentProgressByUsername(userName: string) {
+  static postContentProgressByUsername(userName: string) {
     const logger = UsersData.fileLogger.createFunctionLogger("update User Content Progress");
     logger.debug(`getting user with username ${userName} from database ...`);
     return UsersData.prisma.user.update({
@@ -135,7 +135,7 @@ export default class UsersData {
       }
     })
   }
-  static updateLessonProgressByUsername(userName: string) {
+  static postLessonProgressByUsername(userName: string) {
     const logger = UsersData.fileLogger.createFunctionLogger("update User Content Progress");
     logger.debug(`getting user with username ${userName} from database ...`);
     return UsersData.prisma.user.update({

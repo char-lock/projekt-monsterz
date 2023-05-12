@@ -114,7 +114,7 @@ export default class UsersController {
       validated_on: "-1",
       validation_method: validation_method,
       validation_value: validation_value,
-      progress_lesson: 1,
+      progress_lesson: 0,
       progress_content: 0
     }
     // The first part of the user registration process is to add
@@ -216,21 +216,22 @@ export default class UsersController {
       });
   }
   
-  static updateUserProgress(req: Request, rawRes: Response) {
+  static postUserProgressByUsername(req: Request, rawRes: Response) {
     const res = new ApiResponse(rawRes);
     const logger = UsersController.fileLogger.createFunctionLogger("updateUserScore");
     const username = req.params.username;
     let response;
     const {
       contentProgress,
+      contentLength,
     } = req.body;
     logger.debug(`request recieved: get user with username ${username}`);
-    if (contentProgress < 10)
+    if (contentProgress < contentLength)
     {
-      response = UsersData.updateContentProgressByUsername(username);
+      response = UsersData.postContentProgressByUsername(username);
     }
     else {
-      response = UsersData.updateLessonProgressByUsername(username);
+      response = UsersData.postLessonProgressByUsername(username);
     }
     response.then((user) => {
       if (user === undefined) {
