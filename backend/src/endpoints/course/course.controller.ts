@@ -35,6 +35,31 @@ export default class CourseController {
       });
   }
 
+  static deleteLessonByContentId(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("deleteLessonByContentId");
+    const contentId = parseInt(req.params.contentId);
+    const lessonId = req.body.data || req.body;
+    logger.debug(`received request: deleting content at ${contentId}`);
+    CourseData.deleteContentByID(contentId, lessonId)
+      .then((result) => {
+        if (result === undefined) {
+          console.debug(`content ${contentId} does not exist`);
+          return res
+            .status(404)
+            .describe(`content with id ${contentId} does not exist`)
+            .send();
+        }
+        res.send(result);
+      })
+      .catch((reject) => {
+        logger.error("unhandled error encountered");
+        logger.error(reject);
+        res.status(500).describe("unknown server error occurred").send();
+      });
+  }
+
   static getLessonIdsInUnit(req: Request, rawRes: Response) {
     const res = new ApiResponse(rawRes);
     const logger = CourseController.fileLogger
@@ -310,6 +335,30 @@ export default class CourseController {
       .then((response) => {
         if (response === undefined) {
           logger.info("failed to add new unit");
+          return res.status(500).describe("unknown server error occurred").send();
+        }
+        return res.send(response);
+      })
+      .catch((reject) => {
+        logger.error("unexpected issue occurred");
+        logger.error(reject);
+        return res.status(500).describe("unknown server error occurred").send();
+      });
+  }
+  static postCompletionOfContent(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("postCompletionOfContent");
+    logger.debug(`received request: post completion of content:\n${JSON.stringify(req.body)}`);
+    const contentId = parseInt(req.params.contentId);
+    if (contentId === undefined) {
+      logger.info("Content Id is not available");
+      return res.status(400).describe("invalid contentId").send();
+    }
+    CourseData.postCompletionOfContent(contentId)
+      .then((response) => {
+        if (response === undefined) {
+          logger.info("failed to updateCompletionOfContent");
           return res.status(500).describe("unknown server error occurred").send();
         }
         return res.send(response);

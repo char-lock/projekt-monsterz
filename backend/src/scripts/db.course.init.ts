@@ -40,7 +40,8 @@ CourseData.addUnit(unit)
                 `incorrect 2 for ${newUnit.id}-${newLesson.position}-${k + 1}`,
                 `incorrect 3 for ${newUnit.id}-${newLesson.position}-${k + 1}`,
                 `incorrect 4 for ${newUnit.id}-${newLesson.position}-${k + 1}`
-              ].join(",")
+              ].join(","),
+              complete: false
             });
           }
           contents.forEach((content) => {

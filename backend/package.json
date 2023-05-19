@@ -25,7 +25,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "nodemon ./src/index.ts",
-    "filldb": "tsc ./src/scripts/db.course.init.ts;node ./src/scripts/db.course.init.js"
+    "filldb": "tsc ./src/scripts/db.course.init.ts ./src/scripts/db.course.init.js"
   },
   "dependencies": {
     "@prisma/client": "^4.13.0",

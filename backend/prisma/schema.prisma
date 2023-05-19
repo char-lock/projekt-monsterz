@@ -50,4 +50,5 @@ model CourseContent {
   content_detail  String
   correct_answer  String
   other_answers   String
+  complete Boolean
 }

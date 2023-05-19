@@ -70,4 +70,5 @@ export type CourseContent = {
   content_detail: string;
   correct_answer: string;
   other_answers: string;
+  complete: Boolean;
 };

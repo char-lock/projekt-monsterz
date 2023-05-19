@@ -41,7 +41,8 @@ export default class CourseData {
     logger.debug(`getting lesson ids in unit ${unitId}`);
     return this.prisma.courseLesson.findMany({
       select: { id: true },
-      where: { unit_id: unitId } 
+      where: { unit_id: unitId },
+       
     })
       .then((lessonIds) => {
         logger.debug(`found ${lessonIds.length} lessons in unit ${unitId}`);
@@ -96,6 +97,55 @@ export default class CourseData {
         throw(reject);
       });
   }
+  static deleteContentByID(contentIdNumber: number,
+    lessonId: number) {
+    var logger = CourseData.fileLogger.createFunctionLogger("deleteContent");
+    logger.debug("deleting content with id".concat(JSON.stringify(contentIdNumber)));
+    this.prisma.courseLesson.update({
+      where: {
+        id: lessonId,
+      },
+      data: {
+        content_count: {
+          increment: -1,
+        }
+      }
+    });
+    return this.prisma.courseContent.delete({
+      where: {
+        id: contentIdNumber,
+      }
+    })
+      .then(function (result) {
+        logger.debug("delete content with id ".concat(result.id.toString()));
+        return result;
+      })
+      .catch(function (reject) {
+        logger.error(reject);
+        throw (reject);
+      });
+  };
+
+  static postCompletionOfContent(contentId: number) {
+    const logger = CourseData.fileLogger.createFunctionLogger("updateCompletionOfContent");
+    logger.debug(`updating content with id ${contentId}`);
+    return this.prisma.courseContent.update(
+    {
+      where: {
+          id: contentId,
+        },
+      data: {
+          complete: true,
+        },
+    })
+    .then((content) => {
+      logger.debug(`found lesson id ${contentId}`);
+      return content;
+    })
+    .catch((reject) => {
+      logger.error(reject);
+      throw(reject);
+    });
 
   static getContentById(contentId: number) {
     const logger = CourseData.fileLogger.createFunctionLogger("getContentById");
@@ -114,7 +164,7 @@ export default class CourseData {
   static getContentByLesson(lessonId: number) {
     const logger = CourseData.fileLogger.createFunctionLogger("getContentByLesson");
     logger.debug(`getting content for lesson with id ${lessonId}`);
-    return this.prisma.courseContent.findMany({ where: { lesson_id: lessonId } })
+    return this.prisma.courseContent.findMany({ where: { lesson_id: lessonId, complete: false,},})
       .then((content) => {
         logger.debug(`found ${content.length} content items for lesson id ${lessonId}`);
         return content;

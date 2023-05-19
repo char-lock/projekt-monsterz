@@ -25,4 +25,5 @@ export type NewCourseContent = {
   content_detail: string;
   correct_answer: string;
   other_answers: string;
+  complete: boolean;
 };
