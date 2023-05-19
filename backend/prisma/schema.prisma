@@ -18,6 +18,7 @@ model User {
   validation_value    String
   progress_lesson     Int
   progress_content    Int
+  class_id            Int @default(0)
 }
 
 model UserAuth {
@@ -51,4 +52,10 @@ model CourseContent {
   correct_answer  String
   other_answers   String
   complete Boolean
+}
+
+model Class {
+  id              Int     @id
+  instructor      Int
+  created_on      DateTime
 }

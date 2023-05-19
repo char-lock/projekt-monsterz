@@ -95,4 +95,7 @@ export class UserService {
           this.currentUserProgressLessonCurrentProgress.next(this.currentUser!.progress_content)
           console.log(this.currentUser!.progress_content);
      }
+     getUserType() {
+          return this.currentUser?.user_type ? this.currentUser?.progress_content : -1;
+     }
 }

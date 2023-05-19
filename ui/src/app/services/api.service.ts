@@ -347,7 +347,7 @@ export class ApiService {
     lessonId: number,
     callback: (n: Array<number>) => void) {
     this.log("deleteCourseContentById", contentId.toString());
-    this.deleteApi(`course/content/${contentId}/deleteContentById`,
+    this.deleteApi(`course/content/${contentId}/removal`,
       `{"lessonId": "${lessonId}"}`,
       undefined,
       (response: ApiResponse) => {

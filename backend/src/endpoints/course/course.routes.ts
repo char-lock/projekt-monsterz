@@ -49,6 +49,6 @@ router.get(
   CourseController.getContentByPosition
 );
 
-router.delete("/content/:contentId([0-9+])/deleteContentById", CourseController.deleteLessonByContentId);
+router.delete("/content/:contentId([0-9+])/removal", CourseController.deleteLessonByContentId);
 
 export default router;
