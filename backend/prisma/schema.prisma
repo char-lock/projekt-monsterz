@@ -55,7 +55,7 @@ model CourseContent {
 }
 
 model Class {
-  id              Int     @id
+  id              Int     @id @unique @default(autoincrement())
   instructor      Int
-  created_on      DateTime
+  created_on      DateTime  @default(now())
 }

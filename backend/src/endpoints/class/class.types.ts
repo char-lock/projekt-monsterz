@@ -1,5 +1,5 @@
 export type NewClass = {
-     instructor: int;
      id: int;
+     instructor: int;
      created_on: string;
 }

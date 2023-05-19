@@ -10,14 +10,10 @@ export default class ClassData {
      
      static addClass(instructorId: number) {
           var logger = ClassData.fileLogger.createFunctionLogger("addClass");
-          var classId = Math.floor(100000 + Math.random() * 900000); //Randomly generated number with six digits.
-          var date = new Date(Date.now()).toISOString();
           //Need to have a better way to check if unique.
           return ClassData.prisma.class.create({
                data: {
-                    id: classId,
                     instructor: instructorId,
-                    created_on: date,
                }
           })
                .then(function (result) {
