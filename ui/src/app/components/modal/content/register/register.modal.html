@@ -1,0 +1,34 @@
+<div class="register-form">
+  <div class="pm-form__item">
+    <fang-input
+      id="input-username"
+      placeholder="Username / Email"
+      type="text"
+      (userChange)="onUsernameChange($event)"
+      [iconUrl]="'./assets/icons/user-regular.svg'"
+      [validationRules]="usernameValidationRules"
+    ></fang-input>
+  </div>
+  <div class="pm-form__item">
+    <fang-input
+      id="input-password"
+      placeholder="Password"
+      type="password"
+      (userChange)="onPasswordChange($event)"
+      iconUrl="'./assets/icons/lock-solid.svg'"
+      [validationRules]="passwordValidationRules"
+    ></fang-input>
+  </div>
+  <div class="pm-form__item">
+    <fang-input
+      id="input-verification"
+      placeholder="Email / Education Code"
+      type="text"
+      (userChange)="onVerificationChange($event)"
+      [validationRules]="verificationValidationRules"
+    ></fang-input>
+  </div>
+  <div class="pm-form__item">
+    <button class="bg-red-300 dark:bg-red-950 text-black dark:text-white" (click)="register()">Register</button>
+  </div>
+</div>

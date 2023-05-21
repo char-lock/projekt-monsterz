@@ -4,20 +4,20 @@
       id="input-username"
       placeholder="Username / Email"
       type="text"
+      (userChange)="onUsernameChange($event)"
+      [iconUrl]="'./assets/icons/user-regular.svg'" 
     ></fang-input>
   </div>
   <div class="pm-form__item">
     <fang-input
       id="input-password"
-      placeholder="password"
+      placeholder="Password"
       type="password"
+      (userChange)="onPasswordChange($event)"
+      iconUrl="'./assets/icons/lock-solid.svg'"
     ></fang-input>
   </div>
   <div class="pm-form__item">
-    <fang-button
-      backgroundColor="var(--colour-primary)"
-      [onClick]="login"
-      [scale]="0.66"
-    >Login</fang-button>
+    <button class="bg-red-300 dark:bg-red-950 text-black dark:text-white" (click)="login()">Login</button>
   </div>
 </div>

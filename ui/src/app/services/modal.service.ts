@@ -2,6 +2,7 @@ import { ApplicationRef, createComponent, ComponentRef, EnvironmentInjector, Inj
 import { LoggerService } from "./logger.service";
 import { FangModalComponent } from "../components/modal/modal.component";
 import { LoginModal } from "../components/modal/content/login/login.modal";
+import { RegisterModal } from "../components/modal/content/register/register.modal";
 
 /** 
  * A service that manages the display of modals throughout the
@@ -12,14 +13,15 @@ import { LoginModal } from "../components/modal/content/login/login.modal";
 @Injectable()
 export class ModalService {
 
-  private _content: { [key: string]: typeof LoginModal } = {
-    "login": LoginModal
+  private _content: { [key: string]: typeof LoginModal | typeof RegisterModal } = {
+    "login": LoginModal,
+    "register": RegisterModal
   };
   /** 
    * (Read-only)
    * Dictionary of available content to display within a modal. 
    */
-  get content(): { [key: string]: typeof LoginModal } {
+  get content(): { [key: string]: typeof LoginModal | typeof RegisterModal } {
     return this._content;
   }
 

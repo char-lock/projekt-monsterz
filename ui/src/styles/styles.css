@@ -1,5 +1,6 @@
 @import url("./_normalise.css");
 @import url("./_variables.css");
+@import url("./_tailwind.css");
 
 html, body {
   height: 100vh;

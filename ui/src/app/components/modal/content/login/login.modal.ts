@@ -1,45 +1,38 @@
 import { Component } from "@angular/core";
 import { LoggerService } from "src/app/services/logger.service";
 import { SessionService } from "src/app/services/session.service";
+import { ToasterService } from "src/app/services/toaster.service";
 
 @Component({
   selector: "[modalContentLogin]",
   templateUrl: "./login.modal.html",
-  styleUrls: ["./login.modal.css"]
+  styleUrls: ["./login.modal.scss"]
 })
 export class LoginModal {
 
-  constructor(private _session: SessionService, private _logger: LoggerService) {}
+  private _usernameValue: string = "";
+  private _passwordValue: string = "";
 
-  get username() {
-    return (<HTMLInputElement>document.getElementById("input-username"))
-      ?.value;
+  constructor(
+    private _session: SessionService, 
+    private _toaster: ToasterService,
+    private _logger: LoggerService
+  ) {}
+
+  public onUsernameChange(username: string): void {
+    this._usernameValue = username;
   }
 
-  get password() {
-    return (<HTMLInputElement>document.getElementById("input-password"))
-      ?.value;
+  public onPasswordChange(password: string): void {
+    this._passwordValue = password;
   }
 
   /** Sends a request to login as a user through the session service. */
-  login() {
-    const username = document.getElementById("input-username");
-    const password = document.getElementById("input-password");
-
-    this._logger.log("login.modal", "login", "username and password: ", { "username": username, "password": password });
-    
-    if (username) {
-      console.log((<HTMLInputElement>username).value);
+  public login(): void {
+    if (this._usernameValue.trim() === "" || this._passwordValue.trim() === "") {
+      return this._toaster.toast("Oops! You need to type a username and a password!", "warning", 3500, "Try Again!");
     }
-
-    if (password) {
-      console.log((<HTMLInputElement>password).value);
-    }
-
-    if (username && password) {
-      console.log("true!");
-      this._session.login((<HTMLInputElement>username).value, (<HTMLInputElement>password).value);
-    }
+    this._session.login(this._usernameValue, this._passwordValue);
   }
 
 }

@@ -9,6 +9,7 @@ import { ReadingComponent } from "./pages/lesson-modules/reading/reading.compone
 import { FillInTheBlankComponent } from "./pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component";
 import { SuccessMessageComponent } from "./pages/success-message/success-message.component";
 import { HomePage } from "./pages/home/home.page";
+import { MinigamePage } from "./pages/minigame/minigame.page";
 
 const routes: Routes = [
   { path: "", component: HomePage },
@@ -23,6 +24,7 @@ const routes: Routes = [
     ]
   },
   { path: "success-message", component: SuccessMessageComponent},
+  { path: "minigame", component: MinigamePage },
   { path: '**', redirectTo: "", pathMatch: 'full'}
 ];
 

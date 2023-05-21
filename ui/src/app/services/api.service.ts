@@ -14,6 +14,7 @@ import {
 } from "../types/api.types";
 import { LoggerService } from "./logger.service";
 import { LeaderboardEntry } from "../types/other.types";
+import { ToasterService } from "./toaster.service";
 
 /** 
  * A service that provides an abstraction layer for sending requests
@@ -26,7 +27,10 @@ export class ApiService {
 
   private API_ENDPOINT = "http://localhost:9696";
 
-  constructor(private _logger: LoggerService) {}
+  constructor(
+    private _toaster: ToasterService,
+    private _logger: LoggerService
+  ) {}
 
   /**
    * Writes a log to the console from the API service.
@@ -77,6 +81,7 @@ export class ApiService {
       })
       .catch((axiosError: AxiosError) => {
         if (!axiosError.response) {
+          this._toaster.toast("Oops! We ran into some trouble!", "failure", 5000, "Uh Oh!");
           return this.log(
             "postApi", 
             "Did not receive a proper response from the API",
@@ -114,6 +119,7 @@ export class ApiService {
       })
       .catch((axiosError: AxiosError) => {
         if (!axiosError.response) {
+          this._toaster.toast("Oops! We ran into some trouble!", "failure", 5000, "Uh Oh!");
           return this.log(
             "getApi",
             "Did not receive a proper response from the API",

@@ -1,0 +1,13 @@
+.pm-form__item {
+  height: fit-content;
+  width: fit-content;
+  margin: 1rem auto;
+
+  button {
+    height: 2em;
+    width: 6em;
+    border-radius: 1em;
+    cursor: pointer;
+    z-index: 3000;
+  }
+}

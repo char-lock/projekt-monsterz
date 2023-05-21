@@ -9,7 +9,8 @@ import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
 import { SuccessMessageComponent } from "./success-message/success-message.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomePage } from "./home/home.page";
-import { FangModule } from "../resources/fang-ui/ngx-fang.module";
+import { MinigamePage } from "./minigame/minigame.page";
+import { SafeHtmlPipe } from "./safeHtml.pipe";
 
 @NgModule({
   declarations: [
@@ -17,20 +18,23 @@ import { FangModule } from "../resources/fang-ui/ngx-fang.module";
     WelcomePageComponent,
     SuccessMessageComponent,
     DashboardComponent,
-    HomePage
+    HomePage,
+    MinigamePage,
+    SafeHtmlPipe
   ],
   imports: [
     UserInterfaceModule,
     CommonModule,
-    RouterModule,
-    FangModule
+    RouterModule
   ],
   exports: [
     LessonModuleComponent,
     WelcomePageComponent,
     SuccessMessageComponent,
     DashboardComponent,
-    HomePage
+    HomePage,
+    MinigamePage,
+    SafeHtmlPipe
   ]
 })
 export class PagesModule {}

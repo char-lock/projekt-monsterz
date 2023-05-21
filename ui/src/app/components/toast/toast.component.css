@@ -2,6 +2,7 @@
   position: absolute;
   bottom: 1em;
   right: 1em;
+  z-index: 9000;
 }
 
 .fang_toast--container {

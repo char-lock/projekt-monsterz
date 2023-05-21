@@ -1,10 +1,24 @@
-<nav class="pm-navbar">
-  <section class="pm-navbar__logo">Project: MONSTERZ</section>
-  <ul class="pm-navbar__items" *ngIf="routes.length > 0">
+<nav class="fang-navbar">
+  <section class="fang-navbar__logo">
+    <span class="logo-thin">Projekt:</span>
+    <span class="logo-thick">Monsterz</span>
+  </section>
+  <ul class="fang-navbar__items">
     <ng-container *ngFor="let route of routes">
-      <li class="pm-navbar__item" *ngIf="route.displayCheck ? route.displayCheck() : true;">
-        <a class="pm-navbar__link" *ngIf="route.location" [routerLink]="route.location">{{route.label}}</a>
-        <button class="pm-navbar__button" *ngIf="route.onClick" backgroundColour="var(--colour-secondary)" (click)="route.onClick()">{{route.label}}</button>
+      <li 
+        class="fang-navbar__item"
+        *ngIf="route.displayCheck ? route.displayCheck() : true"
+      >
+        <a
+          class="fang-navbar__link"
+          [routerLink]="route.location"
+          *ngIf="route.location"
+        >{{route.label}}</a>
+        <button
+          class="fang-navbar__button"
+          (click)="route.onClick()"
+          *ngIf="route.onClick"
+        >{{route.label}}</button>
       </li>
     </ng-container>
   </ul>

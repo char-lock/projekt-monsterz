@@ -1,35 +1,36 @@
-<div class="fang_input">
+<div class="fang-input">
   <input 
-    [(ngModel)]="inputValue"
+    [(ngModel)]="currentValue"
     [name]="id"
     [id]="id"
-    [class]="inputClasses.join(' ')"
+    [class]="currentClasses"
     [placeholder]="placeholder"
     [type]="type"
+    (blur)="onBlur()"
   />
-  <i 
-    [class]="getIconClasses().join(' ')"
+  <i
+    [class]="iconClasses"
     [style]="'mask-image: url(' + iconUrl + ');'"
   ></i>
   <i 
-    [class]="getIconClasses().join(' ')"
+    [class]="iconClasses"
     style="mask-image: url('./assets/icons/eye-solid.svg');"
     (click)="toggleVisibility()"
     *ngIf="trueType === 'password' && !isPasswordVisible"
   ></i>
   <i 
-    [class]="getIconClasses().join(' ')" 
+    [class]="iconClasses" 
     style="mask-image: url('./assets/icons/eye-slash-solid.svg');"
     (click)="toggleVisibility()"
     *ngIf="trueType === 'password' && isPasswordVisible"
   ></i>
   <ul
-    class="fang_input--rules"
+    class="fang-input__rules"
     *ngIf="validationRules.length > 0"
   >
     <li 
       *ngFor="let rule of validationRules"
-      [class]="getRuleClasses(rule).join(' ')"
+      [class]="getRuleClasses(rule)"
     >{{rule.description}}</li>
   </ul>
 </div>

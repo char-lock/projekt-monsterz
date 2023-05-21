@@ -9,7 +9,8 @@ import { NavbarComponent } from "./navbar/navbar.component";
 import { FangModalComponent } from "./modal/modal.component";
 import { FangModalContentDirective } from "./modal/modal.directive";
 import { LoginModal } from "./modal/content/login/login.modal";
-import { FangModule } from "../resources/fang-ui/ngx-fang.module";
+import { RegisterModal } from "./modal/content/register/register.modal";
+import { FangInputComponent } from "./input/input.component";
 import { FangToastComponent } from "./toast/toast.component";
 
 @NgModule({
@@ -18,21 +19,24 @@ import { FangToastComponent } from "./toast/toast.component";
     FangModalComponent,
     NavbarComponent,
     LoginModal,
+    RegisterModal,
     FangModalContentDirective,
-    FangToastComponent
+    FangToastComponent,
+    FangInputComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRouterModule,
-    FangModule
+    AppRouterModule
   ],
   exports: [
     CardComponent,
     FangModalComponent,
     NavbarComponent,
     LoginModal,
-    FangToastComponent
+    RegisterModal,
+    FangToastComponent,
+    FangInputComponent
   ]
 })
 export class UserInterfaceModule {}

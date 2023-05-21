@@ -22,7 +22,6 @@ import { ReadingComponent } from './pages/lesson-modules/reading/reading.compone
 import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component';
 
 import { MonsterCageBackgroundDirective } from './directives/monster-cage-background.directive';
-import { FangModule } from './resources/fang-ui/ngx-fang.module';
 
 /** 
  * A module that contains the primary application imports and
@@ -43,8 +42,7 @@ import { FangModule } from './resources/fang-ui/ngx-fang.module';
     CommonModule,
     AppRouterModule,
     UserInterfaceModule,
-    PagesModule,
-    FangModule
+    PagesModule
   ],
   providers: [
     LoggerService,

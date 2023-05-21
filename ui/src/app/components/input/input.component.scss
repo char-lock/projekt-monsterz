@@ -1,0 +1,57 @@
+.fang-input {
+  display: block;
+  height: fit-content;
+  width: fit-content;
+  position: relative;
+
+  &__input {
+    height: 2em;
+    width: 16em;
+    font-size: 16pt;
+    font-weight: 200;
+    letter-spacing: 0.0625em;
+    padding: 0.5em;
+
+    &.il {
+      padding-left: 2.25em;
+    }
+
+    &.ir {
+      padding-right: 2.25em;
+    }
+  }
+
+  &__rules {
+    margin-top: 0.125em;
+    font-size: 10pt;
+    font-variant-caps: normal;
+    font-weight: 200;
+
+    li::marker {
+      content: "";
+    }
+  }
+
+  &__rule {
+    margin-left: -1em;
+  }
+
+  &__icon {
+    height: 1em;
+    width: 1em;
+    mask-size: fill;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    position: absolute;
+
+    &:first-of-type {
+      top: 0.4em;
+      left: 0.5em;
+    }
+  
+    &:last-of-type {
+      right: 0.5em;
+      top: 0.4em;
+    }
+  }
+}

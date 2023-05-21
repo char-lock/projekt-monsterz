@@ -1,22 +1,14 @@
-<main id="page-home" class="pm-page">
-  <fang-card>
-    <div style="width: 25vw;">
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et, harum? Recusandae, quidem. Non optio, sunt veniam beatae sit deserunt vero amet ipsum facilis totam cupiditate corrupti perferendis. Aliquid, laboriosam soluta?
+<main id="landing">
+  <section class="content">
+    <div class="w-1/2 flex justify-start flex-col">
+      <h3>Planet Monsterz needs your help!</h3>
+      <p>The monsters are under attack, and they need your help to defend against the robot invaders!</p>
+      <p>We'll teach you core programming and Computer Science skills that you'll need to save Planet Monsterz!</p>
+      <button class="cta" (click)="openRegistration()">Join the Fight</button>
     </div>
-  </fang-card>
-  <fang-button [onClick]="onClick" [backgroundColour]="'var(--colour-primary)'">Submit</fang-button>
-  <fang-input 
-    [placeholder]="'Username / Email'" 
-    [iconUrl]="'./assets/icons/user-regular.svg'" 
-    [type]="'text'" 
-    [validationRules]="inputRules"
-    [id]="'username'"
-  ></fang-input>
-  <fang-input
-    [placeholder]="'Password'" 
-    [iconUrl]="'./assets/icons/lock-solid.svg'" 
-    [type]="'password'" 
-    [validationRules]="inputRules"
-    [id]="'password'"
-  ></fang-input>
+    <div class="w-1/2">
+      <img src="assets/img/monster-scared.png" width="66%"/>
+    </div>
+  </section>
+  <span class="gradient"></span>
 </main>
