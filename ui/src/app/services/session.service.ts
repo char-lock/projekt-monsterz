@@ -11,6 +11,8 @@ import {
 } from "../types/api.types";
 import { CookieService } from "./cookie.service";
 import { ToasterService } from "./toaster.service";
+import { ModalService } from "./modal.service";
+import { Router } from "@angular/router";
 
 /** 
  * A service that handles all session-related activities, including
@@ -51,7 +53,9 @@ export class SessionService {
     private _api: ApiService,
     private _cookie: CookieService,
     private _toaster: ToasterService,
-    private _logger: LoggerService
+    private _modal: ModalService,
+    private _logger: LoggerService,
+    private _router: Router
   ) {}
 
   /** 
@@ -238,6 +242,8 @@ export class SessionService {
       this._api.getUserByUsername(username, (userData: User) => {
         this._user = userData;
         this._userSubject.next(userData);
+        this._modal.close();
+        this._router.navigate(["dashboard"]);
       });
     })
   }

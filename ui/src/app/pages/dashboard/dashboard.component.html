@@ -1,62 +1,51 @@
-<main class="dashboard">
-  <div class="grid-area">
-    <div class="scoreSheet">
-      <div class="scoreSheetText"></div>
-      <div class="progress"><canvas id="progressArc" width="280" height="280"></canvas></div>
-      <div class="progress-percent">{{ (progress * 100).toFixed(2) }}%</div>
-      <div class="blocker">
-        <h1>
-          Unit Progress
-          <hr />
-          {{ currentLesson }}
-        </h1>
-      </div>
-    </div>
-    <div class="main-selection">
-      <div class="main-selection-text">
-        CONTINUE?
-        <a routerLink="/lesson">YES</a>
-      </div>
-      <div class="main-selection-footer">Explore Other Units ></div>
-    </div>
-    <div class="leaderboard">
-      <h1>Top Monsterz</h1>
-      <table>
-        <tr class="score-other" *ngFor="let entry of getLeaderboard()">
-          <td>
-            <div class="circle-color"></div>
-          </td>
-          <td class="username">{{ entry.username }}</td>
-          <td class="points">{{ entry.score }}</td>
+<main id="dashboard">
+  <div class="w-1/4 mx-auto">
+    <div class="bg-slate-100 dark:bg-slate-900">
+      <table id="leaderboard">
+        <tr class="score-row bg-slate-400 dark:bg-slate-600" *ngFor="let entry of getLeaderboard()">
+          <td><span class="score-circle-color"></span></td>
+          <td class="score-username">{{entry.username}}</td>
+          <td class="score-score">{{entry.score}}</td>
+        </tr>
+        <tr 
+          class="score-row bg-slate-400 dark:bg-slate-600" 
+          *ngFor="let empty of fillerEntries"
+        >
+          <td></td>
+          <td>BlankUser</td>
+          <td>0</td>
         </tr>
         <tr class="score-you">
-          <td>
-            <div class="circle-color"></div>
-          </td>
-          <td class="username">You</td>
-          <td class="points">{{ score }}</td>
+          <td></td>
+          <td class="score-username">You</td>
+          <td class="score-score">{{score}}</td>
         </tr>
       </table>
     </div>
-    <div class="leaderboardToggle">
-      <div class="icon-container">
-        <img class="icon" src="../../../assets/icons/globe.svg">
-        <div class="circle" [ngStyle]="{'background-color': globalLeaderboardSelected  ? 'lightgreen' : 'green'}"></div>
+    <div id="leaderboard-toggle">
+      <div class="fang-switch">
+        <label class="fang-switch__option">
+          <i class="bg-slate-800 dark:bg-slate-100 fang-icon globe"></i>
+          <span 
+            class="fang-switch__indicator"
+            [ngStyle]="globalLeaderboardSelected ? { 'background-color': 'lightgreen' } : {}"
+          ></span>
+        </label>
+        <label class="fang-switch__switch">
+          <input type="checkbox" (click)="onToggleButtonClick()" />
+          <span class="fang-switch__thumb"></span>
+        </label>
+        <label class="fang-switch__option">
+          <i class="bg-slate-800 dark:bg-slate-100 fang-icon friends"></i>
+          <span 
+            class="fang-switch__indicator"
+            [ngStyle]="!globalLeaderboardSelected ? { 'background-color': 'lightgreen' } : {}"
+          ></span>
+        </label>
       </div>
-      <label class="switch">
-        <input type="checkbox" (click)="onToggleButtonClick()">
-        <span class="slider round"></span>
-      </label>
-      <div class="icon-container">
-        <img class="icon" src="../../../assets/icons/friends.svg">
-        <div class="circle" [ngStyle]="{'background-color': globalLeaderboardSelected  ? 'green' : 'lightgreen'}"></div>
-      </div>
-    </div>
-    <div cageBackground class="monstercage">
-      <div class="characterSheet"></div>
     </div>
   </div>
+  <div class="bg-slate-100 dark:bg-slate-900 w-1/2 mx-auto">
+    
+  </div>
 </main>
-<footer>
-  MONSTER-O-VISION
-</footer>

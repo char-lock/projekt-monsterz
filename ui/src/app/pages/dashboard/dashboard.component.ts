@@ -7,7 +7,7 @@ import { SessionService } from 'src/app/services/session.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 
@@ -16,6 +16,17 @@ export class DashboardComponent implements OnInit {
   progress: number = 0;
   score: number = 0;
   currentLesson: string = "Lesson 1-8";
+
+  public get fillerEntries(): number[] {
+    const entries = this.getLeaderboard().length;
+    const filler = [];
+    if (entries < 5) {
+      for (let i = 0; i < 5 - entries; i++) {
+        filler.push(0);
+      }
+    }
+    return filler;
+  }
 
   constructor(
     private _api: ApiService,
