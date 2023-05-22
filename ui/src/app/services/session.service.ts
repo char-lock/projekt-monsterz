@@ -199,6 +199,7 @@ export class SessionService {
     this._startedOn = -1;
     this._refreshedOn = -1;
     this._cookie.delete("projekt_monsterz.session");
+    this._router.navigate(["/"]);
   }
 
   /** 
