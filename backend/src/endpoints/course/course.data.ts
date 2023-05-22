@@ -126,27 +126,6 @@ export default class CourseData {
       });
   };
 
-  static postCompletionOfContent(contentId: number) {
-    const logger = CourseData.fileLogger.createFunctionLogger("updateCompletionOfContent");
-    logger.debug(`updating content with id ${contentId}`);
-    return this.prisma.courseContent.update(
-    {
-      where: {
-          id: contentId,
-        },
-      data: {
-          complete: true,
-        },
-    })
-    .then((content) => {
-      logger.debug(`found lesson id ${contentId}`);
-      return content;
-    })
-    .catch((reject) => {
-      logger.error(reject);
-      throw(reject);
-    });
-
   static getContentById(contentId: number) {
     const logger = CourseData.fileLogger.createFunctionLogger("getContentById");
     logger.debug(`getting content with id ${contentId}`);
@@ -164,7 +143,7 @@ export default class CourseData {
   static getContentByLesson(lessonId: number) {
     const logger = CourseData.fileLogger.createFunctionLogger("getContentByLesson");
     logger.debug(`getting content for lesson with id ${lessonId}`);
-    return this.prisma.courseContent.findMany({ where: { lesson_id: lessonId, complete: false,},})
+    return this.prisma.courseContent.findMany({ where: { lesson_id: lessonId},})
       .then((content) => {
         logger.debug(`found ${content.length} content items for lesson id ${lessonId}`);
         return content;

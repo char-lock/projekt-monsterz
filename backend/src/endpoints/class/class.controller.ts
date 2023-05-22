@@ -4,19 +4,20 @@ import { ApiResponse } from "../../shared/api.response";
 import ApiLogger from "../../shared/logger";
 
 import ClassData from "./class.data";
-import { Class, User } from "@prisma/client";
+import { Class } from "@prisma/client";
 
 export default class ClassController {
 
      static fileLogger = new ApiLogger("class.controller");
 
-     //Insert Requests Below
      static createNewClass(req: Request, rawRes: Response) {
           const res = new ApiResponse(rawRes);
-          const instructorId = parseInt(req.params.instructorId);
+          const classCode = (req.params.classCode);
+          const instructorId = parseInt(req.body.instructorId);
+          const description = (req.body.description);
           const logger = ClassController.fileLogger.createFunctionLogger("createNewClass");
           logger.debug(`received request: creating new class`);
-          ClassData.addClass(instructorId)
+          ClassData.createNewClass(instructorId, classCode, description)
                .then((value: Class) => {
                     if (value === undefined) {
                          logger.info("Class information unavaiable");
@@ -30,84 +31,106 @@ export default class ClassController {
                     return res.status(500).describe("unknown server error occurred").send();
                })
      }
-     static deleteClass(req: Request, rawRes: Response) {
-          const res = new ApiResponse(rawRes);
-          const classId = parseInt(req.params.classId);
-          const logger = ClassController.fileLogger.createFunctionLogger("deleteClass");
-          logger.debug(`received request: deleting class with id: `.concat(classId.toString()));
-          ClassData.deleteClass(classId)
-               .then((value: Class) => {
-                    if (value === undefined) {
-                         logger.info("Class information unavaiable");
-                         return res.status(400).describe("invalid content data").send();
-                    }
-                    return res.send(value);
-               })
-               .catch((reject) => {
-                    logger.error("unexpected issue occurred");
-                    logger.error(reject);
-                    return res.status(500).describe("unknown server error occurred").send();
-               });
-     }
 
-     static addUserToClass(req: Request, rawRes: Response) {
+     static validateUserById(req: Request, rawRes: Response) {
           const res = new ApiResponse(rawRes);
-          const student_id = req.body.student_id;
-          const class_id = req.body.class_id;
-          const logger = ClassController.fileLogger.createFunctionLogger("addUserToClass");
-          logger.debug(`received request: add user to class: ${class_id} with id: ${student_id}`);
-          ClassData.addUserToClassById(student_id, class_id)
-               .then((student: User) => {
-                    if (student === undefined) {
-                         logger.info("User's Information is Unavailable");
-                         return res.status(400).describe("invalid content data").send();
-                    }
-                    return res.send(student);
-               })
-               .catch((reject) => {
-                    logger.error("unexpected issue occurred");
-                    logger.error(reject);
-                    return res.status(500).describe("unknown server error occurred").send();
-               });
-     }
-
-     static removeUserFromClass(req: Request, rawRes: Response) {
-          const res = new ApiResponse(rawRes);
-          const student_id = req.body.student_id;
-          const class_id = req.body.class_id;
-          const logger = ClassController.fileLogger.createFunctionLogger("removeUserFromClass");
-          logger.debug(`received request: remove user from class: ${class_id} with id: ${student_id}`);
-          ClassData.removeUserFromClassById(student_id, class_id)
-               .then((student: any) => {
-                    if (student === undefined) {
-                         logger.info("User's Information is Unavailable");
-                         return res.status(400).describe("invalid content data").send();
-                    }
-                    return res.send(student);
-               })
-               .catch((reject) => {
-                    logger.error("unexpected issue occurred");
-                    logger.error(reject);
-                    return res.status(500).describe("unknown server error occurred").send();
-               });
-     }
-     static getStudentsFromClass(req: Request, rawRes: Response) {
-          const res = new ApiResponse(rawRes);
-          const classId = parseInt(req.params.classId);
-          const logger = ClassController.fileLogger.createFunctionLogger("getStudentsFromClass");
-          logger.debug(`received request: get users from class: ${classId} with id`);
-          ClassData.getStudentsFromClass(classId)
-          .then((students: any) => {
-               if (students === undefined) {
-                    logger.info("User's Information is Unavailable");
+          const userId = parseInt(req.params.userId);
+          const logger = ClassController.fileLogger.createFunctionLogger("validateUser");
+          logger.debug(`received request: validate user id: `.concat(userId.toString()));
+          ClassData.validateUserById(userId)
+          .then((value: any) => {
+               if (value < 1) {
+                    logger.info("user's information unavaiable");
                     return res.status(400).describe("invalid content data").send();
                }
-               return res.send(students);
+               return res.send(value);
           })
           .catch((reject) => {
                logger.error("unexpected issue occurred");
                logger.error(reject);
                return res.status(500).describe("unknown server error occurred").send();
           });
+     }
+
+     static invalidateUserById(req: Request, rawRes: Response) {
+          const res = new ApiResponse(rawRes);
+          const userId = parseInt(req.params.userId);
+          const logger = ClassController.fileLogger.createFunctionLogger("validateUser");
+          logger.debug(`received request: invalidate user id: `.concat(userId.toString()));
+          ClassData.invalidateUserById(userId)
+          .then((value: any) => {
+               if (value < 1) {
+                    logger.info("user's information unavaiable");
+                    return res.status(400).describe("invalid content data").send();
+               }
+               return res.send(value);
+          })
+          .catch((reject) => {
+               logger.error("unexpected issue occurred");
+               logger.error(reject);
+               return res.status(500).describe("unknown server error occurred").send();
+          });
+     }
+     
+     static deleteClassById(req: Request, rawRes: Response) {
+          const res = new ApiResponse(rawRes);
+          const classId = parseInt(req.params.classId);
+          const logger = ClassController.fileLogger.createFunctionLogger("deleteClass");
+          logger.debug(`received request: deleting class with class code: `.concat(classId.toString()));
+          ClassData.deleteClassById(classId)
+               .then((value: Class) => {
+                    if (value === undefined) {
+                         logger.info("Class information unavaiable");
+                         return res.status(400).describe("invalid content data").send();
+                    }
+                    return res.send(value);
+               })
+               .catch((reject) => {
+                    logger.error("unexpected issue occurred");
+                    logger.error(reject);
+                    return res.status(500).describe("unknown server error occurred").send();
+               });
+     }
+
+
+     static removeUserFromClassById(req: Request, rawRes: Response) {
+          const res = new ApiResponse(rawRes);
+          const userId = parseInt(req.params.userId);
+          const classId = req.body.classId;
+          const logger = ClassController.fileLogger.createFunctionLogger("removeUserFromClass");
+          logger.debug(`received request: remove user from class: ${classId} with id: ${userId}`);
+          ClassData.removeUserFromClassById(userId, classId)
+               .then((value: any) => {
+                    if (value.count < 1) {
+                         logger.info("User's Information is Unavailable");
+                         return res.status(400).describe("invalid content data").send();
+                    }
+                    return res.send(value);
+               })
+               .catch((reject) => {
+                    logger.error("unexpected issue occurred");
+                    logger.error(reject);
+                    return res.status(500).describe("unknown server error occurred").send();
+               });
+     }
+
+     static removeAllUsersFromClassById(req: Request, rawRes: Response) {
+          const res = new ApiResponse(rawRes);
+          const classId = req.body.classId;
+          const logger = ClassController.fileLogger.createFunctionLogger("removeAllUsersFromClass");
+          logger.debug(`received request: remove all user from class: ${classId}`);
+          ClassData.removeAllUsersFromClassById(classId)
+               .then((value: any) => {
+                    if (value.count < 1) {
+                         logger.info("Users' Information is Unavailable");
+                         return res.status(400).describe("invalid content data").send();
+                    }
+                    return res.send(value);
+               })
+               .catch((reject) => {
+                    logger.error("unexpected issue occurred");
+                    logger.error(reject);
+                    return res.status(500).describe("unknown server error occurred").send();
+               });
      }
 }

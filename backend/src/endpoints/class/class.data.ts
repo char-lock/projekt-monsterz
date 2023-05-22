@@ -8,16 +8,18 @@ export default class ClassData {
      static prisma = new PrismaClient();
      static fileLogger = new ApiLogger("class.data.ts");
      
-     static addClass(instructorId: number) {
+     static createNewClass(instructorId: number, classCode: string,
+          description: string) {
           var logger = ClassData.fileLogger.createFunctionLogger("addClass");
-          //Need to have a better way to check if unique.
           return ClassData.prisma.class.create({
                data: {
                     instructor: instructorId,
+                    class_code: classCode,
+                    description: description,
                }
           })
                .then(function (result) {
-                    logger.debug("created class with id ".concat(result.id.toString()));
+                    logger.debug("created class with id ".concat(result.class_code.toString()));
                     return result;
                })
                .catch(function (reject) {
@@ -25,15 +27,57 @@ export default class ClassData {
                     throw (reject);
                });
      };
-     static deleteClass(classId: number) {
-          var logger = ClassData.fileLogger.createFunctionLogger("deleteClass");
+
+     static validateUserById(userId: number) {
+          var logger = ClassData.fileLogger.createFunctionLogger("validateUserById");
+          return UsersData.prisma.user.update({
+               where: {
+                    id: userId,
+
+               },
+               data : {
+                    validated: true,
+                    validated_on: Date.now().toString(),
+               }
+          })
+          .then(function (result) {
+               return result;
+          })
+          .catch(function (reject) {
+               logger.error(reject);
+               throw (reject);
+          });
+     }
+
+     static invalidateUserById(userId: number) {
+          var logger = ClassData.fileLogger.createFunctionLogger("invalidateUserById");
+          return UsersData.prisma.user.update({
+               where: {
+                    id: userId,
+               },
+               data : {
+                    validation_value: "NOCLASS",
+                    validated_on: '',
+                    validated: false,
+               }
+          })
+          .then(function (result) {
+               return result;
+          })
+          .catch(function (reject) {
+               logger.error(reject);
+               throw (reject);
+          });
+     }
+
+     static deleteClassById(classId: number) {
+          var logger = ClassData.fileLogger.createFunctionLogger("deleteClassById");
           return ClassData.prisma.class.delete({
                where: {
                     id: classId,
                }
           })
           .then(function (result) {
-               logger.debug("deleted class with id ".concat(result.id.toString()));
                return result;
           })
           .catch(function (reject) {
@@ -41,38 +85,20 @@ export default class ClassData {
                throw (reject);
           });
      }
-     static addUserToClassById(student_id: number, class_id: number) {
-          var logger = ClassData.fileLogger.createFunctionLogger("addUserToClassById");
-          return UsersData.prisma.user.update({
-               where: {
-                    id: student_id,
-               },
-               data: {
-                    class_id: class_id,
-               }
-          })
-          .then(function (result) {
-               logger.debug("added user to class with id: ".concat(result.id.toString()));
-               return result;
-          })
-          .catch(function (reject) {
-               logger.error(reject);
-               throw (reject);
-          });
-     }
-     static removeUserFromClassById(student_id: number, classID: number) {
+
+     static removeUserFromClassById(userId: number, classCode: string) {
           var logger = ClassData.fileLogger.createFunctionLogger("removeUserFromClassById");
           return UsersData.prisma.user.updateMany({
                where: {
-                    id: student_id,
-                    class_id: classID,
+                    id: userId,
+                    validation_value: classCode,
                },
                data: {
-                    class_id: 0,
+                    validation_value: "NOCLASS", //Check validation value default.
                },
           })
           .then(function (result) {
-               logger.debug("removed user from class: ".concat(classID.toString()).concat(" with id ").concat(student_id.toString()));
+               logger.debug("removed user from class: ".concat(classCode.toString()).concat(" with id ").concat(userId.toString()));
                return result;
           })
           .catch(function (reject) {
@@ -80,21 +106,24 @@ export default class ClassData {
                throw (reject);
           });
      }
-     static getStudentsFromClass(classID: number) {
-          var logger = ClassData.fileLogger.createFunctionLogger("getStudentsFromClass");
-          return UsersData.prisma.user.findMany({
+
+     static removeAllUsersFromClassById(classCode: string) {
+          var logger = ClassData.fileLogger.createFunctionLogger("removeAllUsersFromClass");
+          return UsersData.prisma.user.updateMany({
                where: {
-                    class_id: classID,
+                    validation_value: classCode,
+               },
+               data: {
+                    validation_value: "NOCLASS", //Check validation value default.
                },
           })
           .then(function (result) {
-               logger.debug("Grabbing users from class: ".concat(classID.toString()));
+               logger.debug("removed all user(s) from class: ".concat(classCode));
                return result;
           })
           .catch(function (reject) {
                logger.error(reject);
                throw (reject);
           });
-
      }
 }

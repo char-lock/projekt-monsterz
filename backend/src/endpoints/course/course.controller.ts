@@ -345,29 +345,4 @@ export default class CourseController {
         return res.status(500).describe("unknown server error occurred").send();
       });
   }
-  static postCompletionOfContent(req: Request, rawRes: Response) {
-    const res = new ApiResponse(rawRes);
-    const logger = CourseController.fileLogger
-      .createFunctionLogger("postCompletionOfContent");
-    logger.debug(`received request: post completion of content:\n${JSON.stringify(req.body)}`);
-    const contentId = parseInt(req.params.contentId);
-    if (contentId === undefined) {
-      logger.info("Content Id is not available");
-      return res.status(400).describe("invalid contentId").send();
-    }
-    CourseData.postCompletionOfContent(contentId)
-      .then((response) => {
-        if (response === undefined) {
-          logger.info("failed to updateCompletionOfContent");
-          return res.status(500).describe("unknown server error occurred").send();
-        }
-        return res.send(response);
-      })
-      .catch((reject) => {
-        logger.error("unexpected issue occurred");
-        logger.error(reject);
-        return res.status(500).describe("unknown server error occurred").send();
-      });
-  }
-
 }
