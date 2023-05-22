@@ -31,16 +31,19 @@ export class DashboardComponent implements OnInit {
   constructor(
     private _api: ApiService,
     private leaderboardService: LeaderboardService,
-    private _session: SessionService
+    private _session: SessionService,
+    private _router: Router
   ) {}
 
   ngOnInit() {
+    if (!this._session.isValid())
+      this._router.navigate(["/"]);
     this._session.userSubject.subscribe((change) => {
       if (change) {
         this._api.getUserScores([change], (score) => {
           this.score = score.score;
           this.progress = score.percent;
-          this.DrawProgressBar();
+          this.drawProgressBar();
         });
         this.getLessonLabel();
       }
@@ -55,8 +58,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  DrawProgressBar() {
-    const canvasElement: HTMLElement | null = document.getElementById("progressArc");
+  drawProgressBar() {
+    const canvasElement: HTMLElement | null = document.getElementById("progress-arc");
     const canvas: HTMLCanvasElement = canvasElement as HTMLCanvasElement;
     if (canvas === null) return;
     const ctx = canvas.getContext("2d");
@@ -106,6 +109,10 @@ export class DashboardComponent implements OnInit {
     return this.leaderboardService.leaderboard(
       this.globalLeaderboardSelected
     );
+  }
+
+  onContinue(): void {
+    this._router.navigate(["/lesson"]);
   }
 
 }

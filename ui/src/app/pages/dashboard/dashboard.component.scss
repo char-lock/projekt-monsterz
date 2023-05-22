@@ -189,67 +189,42 @@ main#dashboard {
       }
     }
   }
-}
 
+  #progress {
+    position: relative;
 
-.icon {
-  
-}
+    &-arc {
+      margin: -2em auto;
+    }
+    
+    &-percent {
+      position: absolute;
+      left: 44.5%;
+      top: 7.5rem;
+      font-size: 1.75em;
+      font-weight: 600;
+    }
+  }
 
-.circle {
-  border-radius: 100%;
-  width: 1vw;
-  height: 1vw;
-  margin-top: 0.5vw;
-  background-color: var(--leaderboard-indication-light);
-}
+  #continue {
+    margin: 0 auto;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
 
-.main-selection-text a:hover::before {
-  content: "▶";
-  font-size: 72pt;
-  margin-left: -2em;
-  margin-right: 1.1225em;
-}
+    &-lesson {
+      font-size: 1.5em;
+      margin: 0 auto;
+    }
 
-#myProgress {
-  border-radius: 50%;
-  ;
-  margin: 0 auto;
-  width: 50%;
-  height: 50%;
-}
-
-.progress {
-  margin: -2em auto;
-  height: 280px;
-  width: 280px;
-}
-
-.progress-percent {
-  margin-top: -4.5em;
-  color: #240101;
-  font-size: 24pt;
-  font-weight: 700;
-}
-
-.characterSheet {
-  background-image: url('../../../assets/welcome-screen-monsters/monster0.png');
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: 9vh;
-  background-size: contain;
-  height: 100%;
-  width: 100%;
-}
-
-
-
-.characterSheet {
-  align-self: center;
-}
-
-.button-group {
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
+    &-btn {
+      background-color: rgb(127, 29, 29);
+      width: fit-content;
+      padding: 0.50em 2em;
+      border-radius: 1.5em;
+    }
+  }
 }

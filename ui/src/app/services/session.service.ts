@@ -56,7 +56,13 @@ export class SessionService {
     private _modal: ModalService,
     private _logger: LoggerService,
     private _router: Router
-  ) {}
+  ) {
+    this._userSubject.subscribe((_) => {
+      if (_ !== undefined) {
+        this.exportToCookie();
+      }
+    })
+  }
 
   /** 
    * Logs a message to the console from the SessionService.  

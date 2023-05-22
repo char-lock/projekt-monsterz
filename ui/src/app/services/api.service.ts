@@ -503,6 +503,12 @@ export class ApiService {
     content: number, 
     totalContent: number
   ) {
+    this.log("_calculateProgress", "calculating score:", {
+      "lesson": lesson,
+      "totalLessons": totalLessons,
+      "content": content,
+      "totalContent": totalContent
+    });
     const lessonProgress = (lesson - 1) / totalLessons;
     const singleLesson = 1 / totalLessons;
     const contentProgress = (content - 1) / totalContent;

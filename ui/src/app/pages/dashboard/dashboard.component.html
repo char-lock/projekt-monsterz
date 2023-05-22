@@ -46,6 +46,13 @@
     </div>
   </div>
   <div class="bg-slate-100 dark:bg-slate-900 w-1/2 mx-auto">
-    
+    <div id="progress">
+      <canvas id="progress-arc" width="512" height="512"></canvas>
+      <p id="progress-percent">{{(progress * 100).toFixed(2)}}%</p>
+    </div>
+    <div id="continue">
+      <p id="continue-lesson">{{currentLesson}}</p>
+      <button id="continue-btn" class="bg-red-300" (click)="onContinue()">Continue</button>
+    </div>
   </div>
 </main>
