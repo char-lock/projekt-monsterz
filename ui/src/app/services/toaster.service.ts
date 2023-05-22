@@ -9,6 +9,7 @@ import { LoggerService } from "./logger.service";
 import { 
   FangToastComponent 
 } from "../components/toast/toast.component";
+import { timer } from "rxjs";
 
 /**
  * A service that handles the creation, display, and destruction of
@@ -67,7 +68,7 @@ export class ToasterService {
       );
     }
     this.log("toast", "Creating a new toast instance ...");
-    const toastEl = document.createElement("fang-toast");
+    const toastEl = this._createToastElement();
     this._toastRef = createComponent(FangToastComponent, {
       environmentInjector: this._injector,
       hostElement: toastEl
@@ -78,12 +79,40 @@ export class ToasterService {
     if (title) this._toastRef.instance.title = title;
     this._toastRef.instance.closed.subscribe(() => {
       this.log("toast", "received close signal");
-      document.body.removeChild(toastEl);
-      this._destroy();
+      toastEl.animate({ transform: "translateX(100%)" }, { duration: 500, iterations: 1 });
+      timer(490).subscribe(() => {
+        toastEl.style.setProperty("transform", "translateX(100%)");
+        document.body.removeChild(toastEl);
+        this._destroy();
+      });
     });
     document.body.appendChild(toastEl);
+    this._onToastEnter(toastEl);
     if (closeAfter !== -1)
       this._toastRef.instance.close(closeAfter);
+  }
+
+  private _createToastElement(): HTMLElement {
+    const el = document.createElement("fang-toast");
+    const properties: { [key: string]: string } = {
+      "height": "fit-content",
+      "width": "fit-content",
+      "display": "absolute",
+      "right": "0",
+      "top": "50%",
+      "transform": "translateX(100%)",
+      "position": "absolute",
+      "z-index": "9000"
+    };
+    Object.keys(properties).forEach((property) => {
+      el.style.setProperty(property, properties[property]);
+    });
+    return el;
+  }
+
+  private _onToastEnter(toastEl: HTMLElement) {
+    toastEl.animate([{ transform: "translateX(0)" }], { duration: 500, iterations: 1 });
+    timer(490).subscribe(() => toastEl.style.setProperty("transform", "translateX(0)"));
   }
 
   /** 

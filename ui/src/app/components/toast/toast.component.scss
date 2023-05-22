@@ -1,0 +1,76 @@
+.fang-toast {
+  position: relative;
+  z-index: 9000;
+
+  &__container {
+    height: fit-content;
+    width: 33vw;
+    max-height: 25vh;
+
+    padding: 1em;
+    padding-left: 2em;
+    font-size: 16pt;
+    font-weight: 200;
+    letter-spacing: 0.0625em;
+
+    color: rgb(50, 100, 150);
+    background-color: rgb(150, 200, 255);
+    border: 1px rgb(50, 100, 150) solid;
+
+    border-top-left-radius: 0.25em;
+    border-bottom-left-radius: 0.25em;
+
+    overflow: hidden;
+
+    .fang-toast__ribbon {
+      height: 100%;
+      width: 1em;
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-top-left-radius: 0.25em;
+      border-bottom-left-radius: 0.25em;
+      background-color: rgb(50, 100, 150);
+    }
+
+    &.fang-toast__failure {
+      color: rgb(150, 50, 100);
+      background-color: rgb(255, 150, 200);
+      border: 1px rgb(150, 50, 100) solid;
+
+      .fang-toast__ribbon {
+        background-color: rgb(150, 50, 100);
+      }
+    }
+
+    &.fang-toast__warning {
+      color: rgb(150, 100, 50);
+      background-color: rgb(255, 200, 150);
+      border: 1px rgb(150, 100, 50) solid;
+
+      .fang-toast__ribbon {
+        background-color: rgb(150, 100, 50);
+      }
+    }
+
+    &.fang-toast__success {
+      color: rgb(50, 150, 100);
+      background-color: rgb(150, 255, 200);
+      border: 1px rgb(50, 150, 100) solid;
+
+      .fang-toast__ribbon {
+        background-color: rgb(50, 150, 100);
+      }
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  &__message {
+    text-transform: unset;
+    font-variant: normal;
+  }
+}

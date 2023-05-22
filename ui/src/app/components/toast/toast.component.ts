@@ -10,7 +10,7 @@ import { LoggerService } from "src/app/services/logger.service";
 @Component({
   selector: "fang-toast",
   templateUrl: "./toast.component.html",
-  styleUrls: ["./toast.component.css"]
+  styleUrls: ["./toast.component.scss"]
 })
 export class FangToastComponent {
 
