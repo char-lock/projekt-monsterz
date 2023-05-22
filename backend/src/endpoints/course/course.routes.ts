@@ -28,9 +28,6 @@ router.post("/lessons", CourseController.createLesson);
 // POST content
 router.post("/content", CourseController.createContent);
 
-// POST content completion
-router.post("/content/:contentId/completion", CourseController.postCompletionOfContent);
-
 // GET content
 // By content ID
 router.get("/content/:contentId", CourseController.getContentById);
