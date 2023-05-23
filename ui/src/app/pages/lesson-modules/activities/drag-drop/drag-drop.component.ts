@@ -1,8 +1,5 @@
-import { Component, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { ContentService } from 'src/app/services/content.service';
-import { Subscription } from 'rxjs';
-import { SessionService } from 'src/app/services/session.service';
-import { LoggerService } from 'src/app/services/logger.service';
 import { CourseActivityComponent } from '../activity.class';
 
 @Component({

@@ -13,12 +13,12 @@
       (dragover)="enableDrop($event)"
     >(empty)</div>
     <div class="lesson-activity__group">
-      <button
+      <p
         *ngFor="let answer of answers"
         draggable="true"
         class="lesson-activity__draggable" 
         (dragstart)="onDragStart($event)"
-      >{{answer}}</button>
+      >{{answer}}</p>
     </div>
     <button 
       class="lesson-activity__submit"

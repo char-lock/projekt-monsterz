@@ -46,7 +46,7 @@ export class LessonModuleComponent implements OnInit {
       '/lesson/fill-in-the-blank'
     ];
     let route = '/lesson/reading'
-    if (this._current.content_type > 1 && this._current.content_type < 4 )
+    if (this._current.content_type > 0 && this._current.content_type < 4 )
       route = contentDisplay[this._current.content_type];
     this._router.navigate([route], { skipLocationChange: true });
   }

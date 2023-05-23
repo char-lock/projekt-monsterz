@@ -27,6 +27,7 @@ main#lesson {
   justify-self: center;
   height: fit-content;
   width: 100%;
+  scale: 0.75;
 
   &__details {
     font-size: 0.75em;
@@ -76,6 +77,18 @@ main#lesson {
     width: fit-content;
   }
 
+  &__draggable {
+    margin: 1rem;
+    width: 18rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    font-size: 1.125em;
+    font-weight: 700;
+    letter-spacing: 0.125em;
+    background-color: rgb(29, 29, 127);
+    cursor: grabbing;
+  }
+
   &__submit {
     margin: 1rem;
     width: 18rem;
@@ -86,5 +99,14 @@ main#lesson {
     letter-spacing: 0.125em;
     background-color: rgb(127, 29, 29);
     text-transform: uppercase;
+  }
+
+  &__drop {
+    width: 50%;
+    padding: 1em;
+    background-color: rgba(0, 0, 0, 0.33);
+    margin: 1em auto;
+    border-radius: 0.25em;
+    font-weight: 700;
   }
 }
