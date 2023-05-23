@@ -1,12 +1,11 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
-import { WelcomePageComponent } from "./pages/welcome-page/welcome-page.component";
 import { LessonModuleComponent } from "./pages/lesson-modules/lesson-module.component";
-import { MultipleChoiceComponent } from "./pages/lesson-modules/mutliple-choice/multiple-choice.component";
-import { DragDropComponent } from "./pages/lesson-modules/drag-drop/drag-drop.component";
-import { ReadingComponent } from "./pages/lesson-modules/reading/reading.component";
-import { FillInTheBlankComponent } from "./pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component";
+import { MultipleChoiceComponent } from "./pages/lesson-modules/activities/mutliple-choice/multiple-choice.component";
+import { DragDropComponent } from "./pages/lesson-modules/activities/drag-drop/drag-drop.component";
+import { ReadingComponent } from "./pages/lesson-modules/activities/reading/reading.component";
+import { FillInTheBlankComponent } from "./pages/lesson-modules/activities/fill-in-the-blank/fill-in-the-blank.component";
 import { SuccessMessageComponent } from "./pages/success-message/success-message.component";
 import { HomePage } from "./pages/home/home.page";
 import { MinigamePage } from "./pages/minigame/minigame.page";

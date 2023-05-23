@@ -1,0 +1,17 @@
+<div id="lesson-activity__multiple-choice" class="lesson-activity">
+  <div class="lesson-activity__info">
+    <p class="lesson-activity__details">{{details}}</p>
+  </div>
+  <div class="lesson-activity__response">
+    <p class="lesson-activity__directions">
+      Click the correct answer for the question above!
+    </p>
+    <div class="lesson-activity__group">
+      <button 
+        class="lesson-activity__submit"
+        *ngFor="let answer of answers"
+        (click)="onSubmit(answer)"
+      >{{answer}}</button>
+    </div>
+  </div>
+</div>

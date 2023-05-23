@@ -1,0 +1,27 @@
+<div id="lesson-activity__drag-drop" class="lesson-activity">
+  <div class="lesson-activity__info">
+    <p class="lesson-activity__details">{{details}}</p>
+  </div>
+  <div class="lesson-activity__response">
+    <p class="lesson-activity__directions">
+      Drag the correct answer to the slot and click submit!
+    </p>
+    <div 
+      class="lesson-activity__drop"
+      id="answer-drop"
+      (drop)="onDrop($event)"
+      (dragover)="enableDrop($event)"
+    >(empty)</div>
+    <div class="lesson-activity__group">
+      <button
+        *ngFor="let answer of answers"
+        draggable="true"
+        class="lesson-activity__draggable" 
+        (dragstart)="onDragStart($event)"
+      >{{answer}}</button>
+    </div>
+    <button 
+      class="lesson-activity__submit"
+      (click)="onSubmit()"
+    >Submit</button>
+</div>

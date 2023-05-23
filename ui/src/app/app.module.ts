@@ -16,10 +16,10 @@ import { LeaderboardService } from './services/leaderboard.service';
 import { ModalService } from './services/modal.service';
 
 import { AppComponent } from './app.component';
-import { DragDropComponent } from './pages/lesson-modules/drag-drop/drag-drop.component';
-import { MultipleChoiceComponent } from './pages/lesson-modules/mutliple-choice/multiple-choice.component';
-import { ReadingComponent } from './pages/lesson-modules/reading/reading.component';
-import { FillInTheBlankComponent } from './pages/lesson-modules/fill-in-the-blank/fill-in-the-blank.component';
+import { DragDropComponent } from './pages/lesson-modules/activities/drag-drop/drag-drop.component';
+import { MultipleChoiceComponent } from './pages/lesson-modules/activities/mutliple-choice/multiple-choice.component';
+import { ReadingComponent } from './pages/lesson-modules/activities/reading/reading.component';
+import { FillInTheBlankComponent } from './pages/lesson-modules/activities/fill-in-the-blank/fill-in-the-blank.component';
 
 import { MonsterCageBackgroundDirective } from './directives/monster-cage-background.directive';
 

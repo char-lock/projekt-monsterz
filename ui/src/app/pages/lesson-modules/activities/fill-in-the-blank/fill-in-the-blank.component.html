@@ -1,0 +1,23 @@
+<div id="lesson-activity__fill-in-the-blank" class="lesson-activity">
+  <div class="lesson-activity__info">
+    <p class="lesson-activity__details">{{details}}</p>
+  </div>
+  <div class="lesson-activity__response">
+    <p class="lesson-activity__directions">
+      Type in the correct answer for the question above!
+    </p>
+    <input
+      #answer
+      class="lesson-activity__input bg-slate-300 dark:bg-slate-700
+        text-black dark:text-slate-200
+        placeholder:text-slate-500
+        rounded focus:outline-none"
+      type="text"
+      name="answer"
+      placeholder="Enter your answer here ..."
+    />
+    <button 
+      class="lesson-activity__submit"
+      (click)="onSubmit(answer.value)"
+    >Submit</button>
+</div>

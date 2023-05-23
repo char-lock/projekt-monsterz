@@ -1,5 +1,6 @@
-<main>
-     <div class="lesson-box">
-          <router-outlet></router-outlet>
-     </div>
+<main id="lesson">
+  <div class="lesson__title">{{lessonTitle}}</div>
+  <div class="lesson__activity bg-slate-100 dark:bg-slate-900">
+    <router-outlet></router-outlet>
+  </div>
 </main>

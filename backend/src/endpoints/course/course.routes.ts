@@ -15,7 +15,7 @@ router.get("/units/:unitId([0-9+])/lessons", CourseController.getLessonIdsInUnit
 router.get("/lessons/:lessonId([0-9+])", CourseController.getLessonMetadataById);
 // By Unit # and Lesson #
 router.get(
-  "units/:unitId/lessons/:lessonPosition([0-9+])",
+  "/units/:unitId/lessons/:lessonPosition([0-9+])",
   CourseController.getLessonMetadataByPosition
 );
 

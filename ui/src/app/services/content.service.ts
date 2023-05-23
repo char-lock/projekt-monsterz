@@ -44,17 +44,36 @@ export class ContentService {
   private _contentId = 0;
   private _lessonPosition = 0;
   private _contentPosition = 0;
+  private _lessonTitle = "";
+
+  /**
+   * (Read-only)
+   * The text to display the current lesson's name
+   */
+  get currentLessonDisplay(): string {
+    return `Lesson ${this._unitId}-${this._lessonPosition}: ${this._lessonTitle}`;
+  }
 
   /** 
    * (Read-only)
    * The current content data based upon the user's progress. 
    */
-  get current(): CourseContent | undefined {
+  get current(): CourseContent {
     if (
-      this._contentPosition < 0 
+      this._content === undefined
+      || this._content.length === 0
+      || this._contentPosition < 0 
       || this._contentPosition > this._content.length
     ) {
-      return undefined;
+      return {
+        id: -1,
+        lesson_id: -1,
+        position: -1,
+        content_type: 0,
+        content_detail: '',
+        correct_answer: '',
+        other_answers: '1,2,3,4'
+      };
     }
     return this._content[this._contentPosition];
   }
@@ -91,10 +110,13 @@ export class ContentService {
     this._session.userSubject.subscribe((change: User | undefined) => {
       if (change) {
         this._lessonId = change.progress_lesson;
+        if (this._lessonId < 1) this._lessonId = 1;
         this._contentId = change.progress_content;
+        if (this._contentId < 1) this._contentId = 1;
         _api.getLessonById(this._lessonId, (lesson) => {
           this._unitId = lesson.unit_id;
           this._lessonPosition = lesson.position;
+          this._lessonTitle = lesson.title;
         });
         _api.getContentById(this._contentId, (response) => {
           this._contentPosition = response.position;
@@ -107,6 +129,7 @@ export class ContentService {
         this._lessonId = 0;
         this._contentId = 0;
         this._unitId = 0;
+        this._lessonTitle = "";
         this._lessonPosition = 0;
         this._contentPosition = 0;
         this._content = [];
@@ -173,8 +196,8 @@ export class ContentService {
    */
   private _updateLesson() {
     this._api.getLessonByPosition(
-      this._unitId, 
-      this._lessonPosition, 
+      this._unitId,
+      this._lessonPosition,
       (lesson) => {
         this._lessonId = lesson.id;
         this._contentPosition = 0;
@@ -188,7 +211,7 @@ export class ContentService {
    * state accordingly.
    */
   public nextContent() {
-    if (this._content.length === 0) return;
+    if (this._content !== undefined && this._content.length === 0) return this._updateContent();
     this._contentPosition++;
     if (this._contentPosition >= this._content.length) {
       this.log("nextContent", "reached end of available content");
