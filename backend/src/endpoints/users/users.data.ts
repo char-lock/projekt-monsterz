@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 import ApiLogger from "../../shared/logger";
 import { NewUser } from "./users.types";
+import CourseData from "../course/course.data.js"
 
 export default class UsersData {
 
@@ -23,7 +24,7 @@ export default class UsersData {
         }
         logger.error(`unhandled error occurred`);
         logger.error(reject);
-        throw(reject);
+        throw (reject);
       });
   }
 
@@ -42,7 +43,7 @@ export default class UsersData {
         }
         logger.error("unhandled error occurred");
         logger.error(reject);
-        throw(reject);
+        throw (reject);
       })
   }
 
@@ -60,8 +61,8 @@ export default class UsersData {
     const logger = UsersData.fileLogger.createFunctionLogger("getUsersByScore");
     logger.debug(`getting ${count} users from database, sorting by progress ...`);
     return UsersData.prisma.user.findMany({
-      orderBy: [{ progress_lesson: "desc"}, {progress_content: "desc"}],
-      take: count 
+      orderBy: [{ progress_lesson: "desc" }, { progress_content: "desc" }],
+      take: count
     })
       .then((result) => {
         logger.debug(`found ${result.length} users`);
@@ -73,7 +74,7 @@ export default class UsersData {
     const logger = UsersData.fileLogger.createFunctionLogger("getUsersByScore");
     logger.debug(`getting ${count} users from database with education code ${educationCode}, sorting by progress ...`);
     return UsersData.prisma.user.findMany({
-      orderBy: [{ progress_lesson: "desc"}, {progress_content: "desc"}],
+      orderBy: [{ progress_lesson: "desc" }, { progress_content: "desc" }],
       take: count,
       where: { validation_value: educationCode }
     })
@@ -98,7 +99,7 @@ export default class UsersData {
           logger.error("unhandled error occurred");
           logger.error(JSON.stringify(reject));
         }
-        throw(reject);
+        throw (reject);
       });
   }
 
@@ -117,11 +118,11 @@ export default class UsersData {
         }
         logger.error("unhandled error occurred");
         logger.error(reject);
-        throw(reject);
+        throw (reject);
       });
   }
 
-  static postContentProgressByUsername(userName: string) {
+  static postContentProgressByUsername(userName: string, progressContent: number) {
     const logger = UsersData.fileLogger.createFunctionLogger("update User Content Progress");
     logger.debug(`getting user with username ${userName} from database ...`);
     return UsersData.prisma.user.update({
@@ -129,26 +130,62 @@ export default class UsersData {
         username: userName,
       },
       data: {
-        progress_content: {
-          increment: 1,
-        }
-      }
+        progress_content: progressContent,
+      },
+    }).then((user) => {
+      logger.debug("successfully updated user's content progress to database");
+      return user;
     })
+      .catch((reject) => {
+        if (reject.code === "P2025") {
+          logger.debug(`user with username ${userName} not found`);
+          return undefined;
+        }
+        logger.error("unhandled error occurred");
+        logger.error(reject);
+        throw (reject);
+      });
   }
-  static postLessonProgressByUsername(userName: string) {
+  static postLessonProgressByUsername(userName: string, progressLesson: number) {
     const logger = UsersData.fileLogger.createFunctionLogger("update User Content Progress");
     logger.debug(`getting user with username ${userName} from database ...`);
+    let lowestAvailableContent;
+    this.getLowestAvailableContent(progressLesson).then((value) => {
+      lowestAvailableContent = value;
+    });
     return UsersData.prisma.user.update({
       where: {
         username: userName,
       },
       data: {
-        progress_content: 0,
-        progress_lesson: {
-          increment: 1,
-        }
-      }
+        progress_content: lowestAvailableContent,
+        progress_lesson: progressLesson + 1,
+      },
+    }).then((user) => {
+      logger.debug("successfully updated user's lesson progress to database");
+      return user;
     })
+      .catch((reject) => {
+        if (reject.code === "P2025") {
+          logger.debug(`user with username ${userName} not found`);
+          return undefined;
+        }
+        logger.error("unhandled error occurred");
+        logger.error(reject);
+        throw (reject);
+      });
   }
-
+  static getLowestAvailableContent(progressLesson: number) {
+    const logger = UsersData.fileLogger.createFunctionLogger("get Lowest Available Content");
+    logger.debug(`getting lowest content of Lesson ${progressLesson.toString()} from database ...`);
+    return CourseData.prisma.courseContent.findMany({
+      where: {
+        lesson_id: progressLesson + 1,
+      },
+      orderBy: {
+        position: 'asc',
+      },
+      take: 1,
+    });
+  }
 }

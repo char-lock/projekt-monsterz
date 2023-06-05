@@ -7,7 +7,7 @@ export default class ClassData {
 
      static prisma = new PrismaClient();
      static fileLogger = new ApiLogger("class.data.ts");
-     
+
      static createNewClass(instructorId: number, classCode: string,
           description: string) {
           var logger = ClassData.fileLogger.createFunctionLogger("addClass");
@@ -28,25 +28,40 @@ export default class ClassData {
                });
      };
 
+     static getClassByClassCode(classCode: string) {
+          var logger = ClassData.fileLogger.createFunctionLogger("getClassByClassCode");
+          return ClassData.prisma.class.findFirstOrThrow({
+               where: {
+                    class_code: classCode,
+               },
+          })
+               .then(function (result) {
+                    return result;
+               })
+               .catch(function (reject) {
+                    logger.error(reject);
+                    throw (reject);
+               });
+     }
+
      static validateUserById(userId: number) {
           var logger = ClassData.fileLogger.createFunctionLogger("validateUserById");
           return UsersData.prisma.user.update({
                where: {
                     id: userId,
-
                },
-               data : {
+               data: {
                     validated: true,
                     validated_on: Date.now().toString(),
                }
           })
-          .then(function (result) {
-               return result;
-          })
-          .catch(function (reject) {
-               logger.error(reject);
-               throw (reject);
-          });
+               .then(function (result) {
+                    return result;
+               })
+               .catch(function (reject) {
+                    logger.error(reject);
+                    throw (reject);
+               });
      }
 
      static invalidateUserById(userId: number) {
@@ -55,19 +70,19 @@ export default class ClassData {
                where: {
                     id: userId,
                },
-               data : {
+               data: {
                     validation_value: "NOCLASS",
                     validated_on: '',
                     validated: false,
                }
           })
-          .then(function (result) {
-               return result;
-          })
-          .catch(function (reject) {
-               logger.error(reject);
-               throw (reject);
-          });
+               .then(function (result) {
+                    return result;
+               })
+               .catch(function (reject) {
+                    logger.error(reject);
+                    throw (reject);
+               });
      }
 
      static deleteClassById(classId: number) {
@@ -77,13 +92,13 @@ export default class ClassData {
                     id: classId,
                }
           })
-          .then(function (result) {
-               return result;
-          })
-          .catch(function (reject) {
-               logger.error(reject);
-               throw (reject);
-          });
+               .then(function (result) {
+                    return result;
+               })
+               .catch(function (reject) {
+                    logger.error(reject);
+                    throw (reject);
+               });
      }
 
      static removeUserFromClassById(userId: number, classCode: string) {
@@ -94,17 +109,19 @@ export default class ClassData {
                     validation_value: classCode,
                },
                data: {
-                    validation_value: "NOCLASS", //Check validation value default.
+                    validation_value: "NOCLASS",
+                    validated_on: '',
+                    validated: false,
                },
           })
-          .then(function (result) {
-               logger.debug("removed user from class: ".concat(classCode.toString()).concat(" with id ").concat(userId.toString()));
-               return result;
-          })
-          .catch(function (reject) {
-               logger.error(reject);
-               throw (reject);
-          });
+               .then(function (result) {
+                    logger.debug("removed user from class: ".concat(classCode.toString()).concat(" with id ").concat(userId.toString()));
+                    return result;
+               })
+               .catch(function (reject) {
+                    logger.error(reject);
+                    throw (reject);
+               });
      }
 
      static removeAllUsersFromClassById(classCode: string) {
@@ -114,16 +131,18 @@ export default class ClassData {
                     validation_value: classCode,
                },
                data: {
-                    validation_value: "NOCLASS", //Check validation value default.
+                    validation_value: "NOCLASS",
+                    validated_on: '',
+                    validated: false,
                },
           })
-          .then(function (result) {
-               logger.debug("removed all user(s) from class: ".concat(classCode));
-               return result;
-          })
-          .catch(function (reject) {
-               logger.error(reject);
-               throw (reject);
-          });
+               .then(function (result) {
+                    logger.debug("removed all user(s) from class: ".concat(classCode));
+                    return result;
+               })
+               .catch(function (reject) {
+                    logger.error(reject);
+                    throw (reject);
+               });
      }
 }
