@@ -101,30 +101,7 @@ export default class ClassData {
                });
      }
 
-     static removeUserFromClassById(userId: number, classCode: string) {
-          var logger = ClassData.fileLogger.createFunctionLogger("removeUserFromClassById");
-          return UsersData.prisma.user.updateMany({
-               where: {
-                    id: userId,
-                    validation_value: classCode,
-               },
-               data: {
-                    validation_value: "NOCLASS",
-                    validated_on: '',
-                    validated: false,
-               },
-          })
-               .then(function (result) {
-                    logger.debug("removed user from class: ".concat(classCode.toString()).concat(" with id ").concat(userId.toString()));
-                    return result;
-               })
-               .catch(function (reject) {
-                    logger.error(reject);
-                    throw (reject);
-               });
-     }
-
-     static removeAllUsersFromClassById(classCode: string) {
+     static removeAllUsersFromClassByClassCode(classCode: string) {
           var logger = ClassData.fileLogger.createFunctionLogger("removeAllUsersFromClass");
           return UsersData.prisma.user.updateMany({
                where: {

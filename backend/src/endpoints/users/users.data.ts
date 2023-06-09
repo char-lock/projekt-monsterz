@@ -146,11 +146,12 @@ export default class UsersData {
         throw (reject);
       });
   }
+
   static postLessonProgressByUsername(userName: string, progressLesson: number) {
     const logger = UsersData.fileLogger.createFunctionLogger("update User Content Progress");
     logger.debug(`getting user with username ${userName} from database ...`);
     let lowestAvailableContent;
-    this.getLowestAvailableContent(progressLesson).then((value) => {
+    UsersData.getLowestAvailableContent(progressLesson).then((value) => {
       lowestAvailableContent = value;
     });
     return UsersData.prisma.user.update({
@@ -159,7 +160,7 @@ export default class UsersData {
       },
       data: {
         progress_content: lowestAvailableContent,
-        progress_lesson: progressLesson + 1,
+        progress_lesson: progressLesson,
       },
     }).then((user) => {
       logger.debug("successfully updated user's lesson progress to database");
@@ -175,12 +176,13 @@ export default class UsersData {
         throw (reject);
       });
   }
+
   static getLowestAvailableContent(progressLesson: number) {
     const logger = UsersData.fileLogger.createFunctionLogger("get Lowest Available Content");
     logger.debug(`getting lowest content of Lesson ${progressLesson.toString()} from database ...`);
     return CourseData.prisma.courseContent.findMany({
       where: {
-        lesson_id: progressLesson + 1,
+        lesson_id: progressLesson,
       },
       orderBy: {
         position: 'asc',
