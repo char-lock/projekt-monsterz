@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
 
   progress: number = 0;
   score: number = 0;
-  currentLesson: string = "Lesson 1-8";
+  currentLesson: string = "";
 
   constructor(
     private _api: ApiService,
@@ -30,7 +30,9 @@ export class DashboardComponent implements OnInit {
     this.appController.checkForAuthentication();
     this.userService.user.subscribe((change) => {
       if (change) {
-        this._api.getUserScores([change], (score) => {
+        this._api.getUserScores([change],
+          change.username,
+          (score) => {
           this.score = score.score;
           this.progress = score.percent;
           this.DrawProgressBar();
@@ -96,9 +98,10 @@ export class DashboardComponent implements OnInit {
   }
 
   getLeaderboard() {
-    return (this.globalLeaderboardSelected)
-      ? this.leaderboardService.GetGlobalLeaderboard()
-      : this.leaderboardService.GetClassLeaderboard();
+    return (
+      this.globalLeaderboardSelected 
+        ? this.leaderboardService.GetGlobalLeaderboard() 
+        : this.leaderboardService.GetClassLeaderboard()
+      ).sort((a, b) => b.score - a.score);
   }
-
 }

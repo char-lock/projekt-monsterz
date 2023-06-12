@@ -46,22 +46,14 @@ export class DragDropComponent implements OnInit, OnDestroy {
   drag($event: any) {
     $event.dataTransfer.clearData();
     $event.dataTransfer.setData("text", $event.target.innerText);
-    console.log($event.text);
-
   }
   onDrop($event: any) {
     $event.preventDefault();
-    console.log("On Drop Called");
     let data = $event.dataTransfer.getData("text");
-    console.log(data);
     if (document.getElementById('answerbox')!.innerHTML != null) {
       document!.getElementById('answerbox')!.innerHTML = data.toString()
     }
-    else {
-      console.log("An Issue Occured")
-    }
     this.selectedAnswer = data;
-    console.log(this.selectedAnswer);
   }
   allowDrop($event: any) {
     $event.preventDefault();

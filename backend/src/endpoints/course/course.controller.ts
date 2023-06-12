@@ -35,6 +35,31 @@ export default class CourseController {
       });
   }
 
+  static deleteLessonByContentId(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = CourseController.fileLogger
+      .createFunctionLogger("deleteLessonByContentId");
+    const contentId = parseInt(req.params.contentId);
+    const lessonId = req.body.data || req.body;
+    logger.debug(`received request: deleting content at ${contentId}`);
+    CourseData.deleteContentByID(contentId, lessonId)
+      .then((result) => {
+        if (result === undefined) {
+          console.debug(`content ${contentId} does not exist`);
+          return res
+            .status(404)
+            .describe(`content with id ${contentId} does not exist`)
+            .send();
+        }
+        res.send(result);
+      })
+      .catch((reject) => {
+        logger.error("unhandled error encountered");
+        logger.error(reject);
+        res.status(500).describe("unknown server error occurred").send();
+      });
+  }
+
   static getLessonIdsInUnit(req: Request, rawRes: Response) {
     const res = new ApiResponse(rawRes);
     const logger = CourseController.fileLogger
@@ -320,5 +345,4 @@ export default class CourseController {
         return res.status(500).describe("unknown server error occurred").send();
       });
   }
-
 }

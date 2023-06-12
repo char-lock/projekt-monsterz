@@ -28,7 +28,6 @@ router.post("/lessons", CourseController.createLesson);
 // POST content
 router.post("/content", CourseController.createContent);
 
-
 // GET content
 // By content ID
 router.get("/content/:contentId", CourseController.getContentById);
@@ -46,5 +45,7 @@ router.get(
   "/units/:unitId([0-9+])/lessons/:lessonPosition([0-9+])/content/:contentPosition([0-9+])",
   CourseController.getContentByPosition
 );
+
+router.delete("/content/:contentId([0-9+])/removal", CourseController.deleteLessonByContentId);
 
 export default router;

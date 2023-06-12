@@ -203,10 +203,10 @@ export default class UsersController {
                   logger.error(createReject);
                   res.status(500).describe("unknown server error occurred").send();
                 });
-              } else {
-                logger.debug("weirdly, there's no deleted user data to recreate");
-                res.status(500).describe("unknown server error occurred").send();
-              }
+            } else {
+              logger.debug("weirdly, there's no deleted user data to recreate");
+              res.status(500).describe("unknown server error occurred").send();
+            }
           });
       })
       .catch((deleteReject) => {
@@ -216,4 +216,38 @@ export default class UsersController {
       });
   }
 
+  static postUserProgressByUsername(req: Request, rawRes: Response) {
+    const res = new ApiResponse(rawRes);
+    const logger = UsersController.fileLogger.createFunctionLogger("updateUserScore");
+    const username = req.params.username;
+    let response;
+    const {
+      contentProgress,
+      lessonProgress,
+      contentLength,
+    } = req.body;
+    logger.debug(`request recieved: get user with username ${username}`);
+    if (contentProgress < contentLength) {
+      response = UsersData.postContentProgressByUsername(username, contentProgress);
+    }
+    else {
+      response = UsersData.postLessonProgressByUsername(username, lessonProgress);
+    }
+    response.then((user: any) => {
+      if (user === undefined) {
+        logger.debug(`could not find user with username ${username}`);
+        return res
+          .status(404)
+          .describe(`could not find user with username ${username}`)
+          .send();
+      }
+      logger.debug(`found user with username ${username} and updated content progress`);
+      res.send([user.progress_content,
+      user.progress_lesson]);
+    })
+      .catch((reject) => {
+        logger.error(reject);
+        res.status(500).describe("unknown server error occurred").send();
+      });
+  }
 }
