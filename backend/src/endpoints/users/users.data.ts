@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 
 import ApiLogger from "../../shared/logger";
-import { NewUser } from "./users.types";
-import CourseData from "../course/course.data.js"
+import { NewUser, ValidationMethod } from "./users.types";
+import CourseData from "../course/course.data";
 
 export default class UsersData {
 
@@ -87,20 +87,31 @@ export default class UsersData {
   static createUser(user: NewUser) {
     const logger = UsersData.fileLogger.createFunctionLogger("createUser");
     logger.debug("received request to add new user to database");
-    return UsersData.prisma.user.create({ data: user })
-      .then((result) => {
-        logger.debug(`successfully added user to database - id = ${result.id}`);
-        return result;
-      })
-      .catch((reject) => {
-        if (reject.code === "P2002" && reject.meta.target.includes("username")) {
-          logger.debug("user already exists -- throwing ...");
-        } else {
-          logger.error("unhandled error occurred");
-          logger.error(JSON.stringify(reject));
-        }
-        throw (reject);
-      });
+    return UsersData.getUsersByValidationValue(user.validation_value).then((value) => {
+      if (user.validation_method !== ValidationMethod.EMAIL || value.length === 0) {
+        return UsersData.prisma.user.create({ data: user })
+          .then((result) => {
+            logger.debug(`successfully added user to database - id = ${result.id}`);
+            return result;
+          })
+          .catch((reject) => {
+            if (reject.code === "P2002" && reject.meta.target.includes("username")) {
+              logger.debug("user already exists -- throwing ...");
+            } else {
+              logger.error("unhandled error occurred");
+              logger.error(JSON.stringify(reject));
+            }
+            throw (reject);
+          });
+      } else {
+        throw({
+          code: "P2002",
+          meta: {
+            target: "validation_value"
+          }
+        });
+      }
+    });
   }
 
   static deleteUserById(userId: number) {

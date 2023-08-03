@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ApiResponse } from "../../shared/api.response";
 
 import UsersController from "./users.controller";
 
@@ -15,6 +16,11 @@ router.get("/username/:username", UsersController.getUserByUsername);
 
 // Get users via their validation value.
 router.get("/validation/:value", UsersController.getUsersByValidationValue);
+
+// Verify endpoint
+router.get("/", (_, res) => {
+  (new ApiResponse(res)).send("users endpoint");
+});
 
 // Create a user
 router.post("/", UsersController.createUser);

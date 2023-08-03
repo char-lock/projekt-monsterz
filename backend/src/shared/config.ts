@@ -1,8 +1,8 @@
-import { getRandomValues } from "crypto";
+import * as crypto from "crypto";
 
 function generateJwtSecret() {
   const secretSeed = new Uint8Array(64);
-  getRandomValues(secretSeed);
+  crypto.webcrypto.getRandomValues(secretSeed);
   return Array.from(secretSeed)
     .map((value) => { return value.toString(16); })
     .join("");

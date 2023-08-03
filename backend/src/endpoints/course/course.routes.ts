@@ -1,8 +1,13 @@
 import { Router } from "express";
+import { ApiResponse } from "../../shared/api.response";
 
 import CourseController from "./course.controller";
 
 const router = Router();
+
+router.get("/", (_, res) => {
+  (new ApiResponse(res)).send("courses endpoint");
+});
 
 // GET unit metadata
 router.get("/units/:unitId([0-9+])", CourseController.getUnitMetadataById);

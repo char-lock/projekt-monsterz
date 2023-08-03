@@ -1,8 +1,13 @@
 import { Router } from "express";
+import { ApiResponse } from "../../shared/api.response";
 
 import ClassController from "./class.controller";
 
 const router = Router();
+
+router.get("/", (_, res) => {
+  (new ApiResponse(res)).send("class endpoint");
+});
 
 //For educator users, used to create a new class.
 router.post("/:classCode([a-zA-Z]{6})/new", ClassController.createNewClass);

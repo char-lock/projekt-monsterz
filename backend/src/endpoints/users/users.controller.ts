@@ -163,6 +163,12 @@ export default class UsersController {
             .status(400)
             .describe(`username ${username} is already in use`)
             .send();
+        } else if (createReject.code === 'P2002' && createReject.meta.target.includes("validation_value")) {
+          logger.debug(`user already exists with validation value ${validation_value}`);
+          return res
+            .status(400)
+            .describe(`validation value ${validation_value} is already in use`)
+            .send();
         }
         // Any unknown case will simply be marked as a server error in the response.
         logger.error(createReject);

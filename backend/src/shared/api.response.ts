@@ -32,6 +32,10 @@ export class ApiResponse {
     this.responseLongDesc = "";
   }
 
+  getResponseCode(): number { return this.responseCode; }
+  getResponseShortDesc(): string { return this.responseShortDesc; }
+  getResponseLongDesc(): string { return this.responseLongDesc; }
+
   /** Set the response status for the API response. */
   status(statusCode: number) {
     if (!Object.keys(HttpResponseCode).includes(statusCode.toString()))
